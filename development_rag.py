@@ -7,9 +7,9 @@ import argparse
 import hashlib
 import re
 import sqlite3
-import sys
 from pathlib import Path
 
+import config  # noqa: F401
 
 ROOT = Path(__file__).resolve().parent.parent
 ENGINE = Path(__file__).resolve().parent
@@ -18,9 +18,6 @@ EXTENSIONS = {".md", ".py", ".js", ".jsx", ".ts", ".tsx", ".html", ".css"}
 EXCLUDED_PARTS = {".git", "node_modules", "__pycache__", "ocr-data", "raw", "work"}
 CHUNK_SIZE = 5_000
 OVERLAP = 500
-
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
 
 
 def source_files() -> list[Path]:

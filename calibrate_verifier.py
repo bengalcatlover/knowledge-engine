@@ -1,5 +1,4 @@
 """Bounded LLM entailment calibration; never promotes scientific claims."""
-import config  # noqa: F401 — load .env
 import hashlib
 import json
 import os
@@ -7,7 +6,9 @@ from pathlib import Path
 import time
 import urllib.request
 
-MODEL=os.environ.get('LLM_WORKER_MODEL', '')
+from config import LLM_API_KEY, WORKER_MODEL
+
+MODEL = WORKER_MODEL
 CASES=[
  ('support','The experiment recorded 12 successful trials out of 20 trials.',
   'The experiment recorded 12 successes in 20 trials.','yes'),
@@ -25,7 +26,7 @@ CASES=[
 
 
 def run():
-    from evidence_miner import LLM_API_KEY
+    # LLM_API_KEY is now imported from config at module level
     from mvp_store import get_db
     cases=[{'id':i,'quote':q,'claim':c,'expected':e,'synthetic':True} for i,q,c,e in CASES]
     db=get_db()

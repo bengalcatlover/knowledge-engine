@@ -1,12 +1,10 @@
 """知識グラフ可視化サーバー — DBから直接JSONを生成して配信"""
 import http.server
 import json
-import sys
 import webbrowser
 from io import BytesIO
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+import config  # noqa: F401
 
 PORT = 8765
 HTML = """<!DOCTYPE html>

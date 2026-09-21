@@ -33,15 +33,13 @@ Usage:
 
 import argparse
 import json
-import sys
 import sqlite3
 import time
 from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+import config  # noqa: F401
 
 from mvp_store import init_db, get_db, _uid, _now, DB_PATH
 
@@ -250,7 +248,7 @@ def collect_metrics(db) -> dict:
         metrics["gaps_by_type"] = {}
         for r in db.execute("SELECT gap_type, COUNT(*) FROM gap GROUP BY gap_type"):
             metrics["gaps_by_type"][r[0]] = r[1]
-    except Exception:
+    except sqlite3.OperationalError:
         metrics["gaps_by_state"] = {}
         metrics["gaps_by_type"] = {}
 
@@ -309,7 +307,7 @@ def collect_metrics(db) -> dict:
         metrics["mined_evidence"] = mined[0] or 0
         metrics["mined_claims_extracted"] = mined[1] or 0
         metrics["mined_claims_new"] = mined[2] or 0
-    except Exception:
+    except sqlite3.OperationalError:
         pass
 
     return metrics
@@ -345,7 +343,7 @@ def run_cycle(budget_mode: str = "normal", dry_run: bool = False) -> dict:
             # Only comparable, successful cycles may carry a convergence count.
             if prev.get("yield_policy") == "verified-v2" and not previous_stats.get("execution_failed"):
                 breaker.consecutive_low_yield = prev.get("consecutive_low_yield", 0)
-    except Exception:
+    except (sqlite3.Error, json.JSONDecodeError, KeyError):
         pass
 
     print("=" * 60)
@@ -387,7 +385,7 @@ def run_cycle(budget_mode: str = "normal", dry_run: bool = False) -> dict:
             results["phases"]["repair"] = {
                 "G1": len(g1), "G2": len(g2), "G3": len(g3), "new_gaps": new_gaps
             }
-        except Exception as e:
+        except (ImportError, sqlite3.Error, ValueError) as e:
             print(f"  [ERROR] {e}")
             results["phases"]["repair"] = {"error": str(e)}
 
@@ -416,7 +414,7 @@ def run_cycle(budget_mode: str = "normal", dry_run: bool = False) -> dict:
                 "skipped": mine_result.get("skipped", 0),
                 "failed": mine_result.get("failed", 0),
             }
-        except Exception as e:
+        except (ImportError, sqlite3.Error, ValueError, KeyError) as e:
             print(f"  [ERROR] {e}")
             results["phases"]["extract"] = {"error": str(e)}
 
@@ -442,7 +440,7 @@ def run_cycle(budget_mode: str = "normal", dry_run: bool = False) -> dict:
 
             print(f"  Generated: {generated}, Absorbed: {absorbed}, Rejected: {gen_result.get('rejected', 0)}")
             results["phases"]["grow"] = gen_result
-        except Exception as e:
+        except (ImportError, sqlite3.Error, ValueError, KeyError) as e:
             print(f"  [ERROR] {e}")
             results["phases"]["grow"] = {"error": str(e)}
 
@@ -482,7 +480,7 @@ def run_cycle(budget_mode: str = "normal", dry_run: bool = False) -> dict:
             results["phases"]["relate"] = {
                 **relate_result, "edge_node_ratio": round(ratio, 2),
             }
-        except Exception as e:
+        except (ImportError, sqlite3.Error, ValueError, KeyError) as e:
             print(f"  [ERROR] {e}")
             results["phases"]["relate"] = {"error": str(e)}
 
@@ -501,7 +499,7 @@ def run_cycle(budget_mode: str = "normal", dry_run: bool = False) -> dict:
                   f"Archived: {promo_result.get('archived', 0)}, "
                   f"Pending: {promo_result.get('pending', 0)}")
             results["phases"]["promote"] = promo_result
-        except Exception as e:
+        except (ImportError, sqlite3.Error, ValueError, KeyError) as e:
             print(f"  [ERROR] {e}")
             results["phases"]["promote"] = {"error": str(e)}
 
@@ -516,7 +514,7 @@ def run_cycle(budget_mode: str = "normal", dry_run: bool = False) -> dict:
             validation = run_pilot()
             results['phases']['validate'] = {'passed':validation['passed'],'deferred':validation['deferred']}
             cycle_stats['validation_ran'] = True
-    except Exception as exc:
+    except (ImportError, sqlite3.Error, ValueError, KeyError) as exc:
         results['phases']['validate'] = {'error':str(exc)}
         cycle_stats['validation_ran'] = False
     print("\n[Phase 6/7] EXPAND — domain expansion")
@@ -551,7 +549,7 @@ def run_cycle(budget_mode: str = "normal", dry_run: bool = False) -> dict:
             }
             if frontier_report.paused:
                 print(f"  [PAUSED] {frontier_report.pause_reasons}")
-        except Exception as e:
+        except (ImportError, sqlite3.Error, ValueError, KeyError) as e:
             print(f"  [ERROR] {e}")
             results["phases"]["expand"] = {"error": str(e)}
 
@@ -582,7 +580,7 @@ def run_cycle(budget_mode: str = "normal", dry_run: bool = False) -> dict:
         resolved_gaps = db.execute("SELECT COUNT(*) FROM gap WHERE state='resolved'").fetchone()[0]
         gap_fulfillment = resolved_gaps / total_gaps if total_gaps > 0 else 0
         print(f"  Gap fulfillment: {gap_fulfillment:.0%} ({resolved_gaps}/{total_gaps})")
-    except Exception:
+    except sqlite3.OperationalError:
         gap_fulfillment = 0
 
     # メトリクス差分
@@ -625,7 +623,7 @@ def run_cycle(budget_mode: str = "normal", dry_run: bool = False) -> dict:
                 _now(), "orchestrator"
             ))
             db.commit()
-        except Exception:
+        except sqlite3.Error:
             pass
 
     results["budget"] = budget_summary

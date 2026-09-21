@@ -1,5 +1,3 @@
-import config  # noqa: F401 — load .env
-
 """知識増幅器: LLMから知識を吸い出し、4層検証してMVPストアに投入
 
 検証パイプライン:
@@ -18,18 +16,14 @@ import argparse
 import json
 import os
 import re
+import sqlite3
 import sys
 import time
 import urllib.request
 import urllib.error
 from pathlib import Path
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
-
-LLM_API_KEY = os.environ.get("LLM_API_KEY", "")
-LLM_SECONDARY_KEY = os.environ.get("LLM_SECONDARY_KEY", "")
-WORKER_MODEL = os.environ.get("LLM_WORKER_MODEL", "")
+from config import LLM_API_KEY, LLM_SECONDARY_KEY, WORKER_MODEL
 
 
 # ════════════════════════════════════════════
@@ -145,7 +139,7 @@ def verify_crossref(doi: str) -> dict | None:
     except urllib.error.HTTPError as e:
         return {"source": "crossref", "doi": doi, "verified": False,
                 "reason": f"HTTP {e.code}" if e.code != 404 else "not found"}
-    except Exception as e:
+    except (urllib.error.URLError, json.JSONDecodeError, TimeoutError, OSError) as e:
         return {"source": "crossref", "doi": doi, "verified": False, "reason": str(e)}
 
 
@@ -179,7 +173,7 @@ def verify_openalex(doi: str) -> dict | None:
         }
     except urllib.error.HTTPError:
         return {"source": "openalex", "doi": doi, "verified": False, "reason": "not found"}
-    except Exception as e:
+    except (urllib.error.URLError, json.JSONDecodeError, TimeoutError, OSError) as e:
         return {"source": "openalex", "doi": doi, "verified": False, "reason": str(e)}
 
 
@@ -228,7 +222,7 @@ def verify_semantic_scholar(doi: str, claim_statement: str = "") -> dict | None:
         }
     except urllib.error.HTTPError:
         return {"source": "semantic_scholar", "doi": doi, "verified": False, "reason": "not found"}
-    except Exception as e:
+    except (urllib.error.URLError, json.JSONDecodeError, TimeoutError, OSError) as e:
         return {"source": "semantic_scholar", "doi": doi, "verified": False, "reason": str(e)}
 
 
@@ -252,7 +246,7 @@ def check_unpaywall(doi: str) -> dict | None:
             "version": best.get("version", ""),
             "journal": data.get("journal_name", ""),
         }
-    except Exception:
+    except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError, TimeoutError, OSError):
         return {"source": "unpaywall", "doi": doi, "is_oa": False}
 
 
@@ -279,7 +273,7 @@ def cross_check_claim(claim_statement: str) -> dict:
         match = re.search(r'\{.*?\}', raw, re.DOTALL)
         if match:
             results["worker"] = json.loads(match.group(0))
-    except Exception:
+    except (json.JSONDecodeError, ValueError):
         results["worker"] = None
 
     # Secondary worker
@@ -288,7 +282,7 @@ def cross_check_claim(claim_statement: str) -> dict:
         match = re.search(r'\{.*?\}', raw, re.DOTALL)
         if match:
             results["secondary"] = json.loads(match.group(0))
-    except Exception:
+    except (json.JSONDecodeError, ValueError):
         results["secondary"] = None
 
     # DOI一致度
@@ -451,7 +445,7 @@ def register_to_store(claims_data: dict, verifications: dict, dry_run: bool = Fa
                     "citations": v.get("citation_count", 0),
                     "claim": claim["statement"][:80],
                 })
-            except Exception as e:
+            except (sqlite3.Error, KeyError) as e:
                 print(f"  WARN: Failed to register {eid}: {e}")
 
     return registered
@@ -480,7 +474,7 @@ def amplify(topic: str, depth: int = 1, dry_run: bool = False, crosscheck: bool 
         print("  Extracting claims from LLM...")
         try:
             claims_data = extract_claims(current_topic)
-        except Exception as e:
+        except (ValueError, json.JSONDecodeError, urllib.error.URLError, TimeoutError, OSError) as e:
             print(f"  ERROR: {e}")
             continue
 

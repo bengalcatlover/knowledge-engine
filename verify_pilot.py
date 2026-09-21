@@ -7,7 +7,8 @@ import hashlib
 import itertools
 import json
 from pathlib import Path
-import sys
+
+import config  # noqa: F401
 
 from mvp_store import init_db, add_evidence, add_support, _now, _uid
 from knowledge_policy import POLICY, ROOT, claim_fingerprint, digest, claim_usable
@@ -163,5 +164,4 @@ def run_pilot():
 
 
 if __name__ == '__main__':
-    sys.stdout.reconfigure(encoding='utf-8')
     run_pilot()

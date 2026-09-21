@@ -15,15 +15,14 @@ Usage:
 import argparse
 import hashlib
 import json
-import sys
 import sqlite3
+import urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 
-from mvp_store import init_db, DB_PATH
+import config  # noqa: F401
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+from mvp_store import init_db, DB_PATH
 
 
 # ════════════════════════════════════════════
@@ -349,7 +348,7 @@ def _auto_link_evidence(db, gap: dict) -> int:
                 assessor="gap_detector")
             linked += 1
             print(f"      Linked: {eid} → {gap['anchor_claim']} ({relevance})")
-        except Exception as e:
+        except sqlite3.Error as e:
             print(f"      WARN: Failed to link {eid}: {e}")
 
     return linked
@@ -373,7 +372,7 @@ def _check_relevance(source_uri: str, claim_text: str) -> str:
             elif rel == "low_relevance":
                 return "irrelevant"
         return "unknown"  # abstractなしでも紐付け（unknown = 弱い支持）
-    except Exception:
+    except (ImportError, OSError, urllib.error.URLError, TimeoutError):
         return "unknown"
 
 

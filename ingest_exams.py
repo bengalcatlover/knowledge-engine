@@ -8,7 +8,6 @@ import hashlib
 import json
 import os
 import subprocess
-import sys
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -16,8 +15,7 @@ from pathlib import Path
 from pypdf import PdfReader
 import fitz
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+import config  # noqa: F401
 
 
 ROOT = Path(__file__).resolve().parent

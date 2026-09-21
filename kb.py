@@ -20,18 +20,16 @@ import re
 import shutil
 import sqlite3
 import subprocess
-import sys
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+
+import config  # noqa: F401
 
 ROOT = Path(__file__).resolve().parent
 STATE_DB = ROOT / "work" / "state.sqlite3"
 CONCEPTS_INBOX = ROOT / "concepts" / "_inbox"
 CONCEPTS_ACCEPTED = ROOT / "concepts"
-
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
 
 
 # ═══════════════════════════════════════════

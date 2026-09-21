@@ -101,7 +101,10 @@ class Worker:
             except urllib.error.HTTPError as exc:
                 self.errors += 1
                 raise WorkerError(f"LLM HTTP {exc.code}; no retry or fallback") from None
-            except Exception:
+            except WorkerError:
+                self.errors += 1
+                raise
+            except (urllib.error.URLError, json.JSONDecodeError, KeyError, IndexError, TimeoutError, OSError, sqlite3.Error, ValueError):
                 self.errors += 1
                 raise WorkerError("Worker request/output failed; no retry or fallback") from None
             finally:

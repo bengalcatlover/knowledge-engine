@@ -12,6 +12,7 @@ import json
 import math
 import sqlite3
 import time
+import urllib.error
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -441,7 +442,7 @@ def probe_expansion(candidate: dict, *, dry_run: bool = False) -> dict:
 
     try:
         claims_data = extract_claims(candidate["search"], llm="worker")
-    except Exception as e:
+    except (ValueError, KeyError, json.JSONDecodeError, OSError, TimeoutError) as e:
         result["error"] = str(e)
         return result
 
@@ -467,8 +468,8 @@ def probe_expansion(candidate: dict, *, dry_run: bool = False) -> dict:
                         "doi": doi,
                         "grade": v["final_grade"],
                     })
-            except Exception:
-                pass
+            except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError, TimeoutError, OSError, KeyError):
+                pass  # DOI verification failure; skip this DOI
 
     if result["total"] > 0:
         rate = result["verified"] / result["total"]
@@ -524,8 +525,8 @@ def register_probe_claims(db, candidate: dict, probe_result: dict, *, dry_run: b
                              source_uri=f"https://doi.org/{doi}",
                              reliability_grade=store_grade)
                 registered += 1
-        except Exception:
-            pass
+        except (sqlite3.Error, KeyError):
+            pass  # evidence registration failure; skip this claim
 
     return registered
 
@@ -549,7 +550,7 @@ def compute_budget_split(health: GraphHealth, db) -> dict:
             WHERE nf.coverage >= 0.8 AND nf.facet IN ('application','moderator','boundary')
         """).fetchone()[0]
         saturation = saturated / max(total_science, 1)
-    except Exception:
+    except sqlite3.OperationalError:
         saturation = 0.0
 
     if health.support_ratio < 0.45 or health.edge_node_ratio < 1.5:
@@ -588,7 +589,7 @@ def check_safety(db, health: GraphHealth, config: FrontierConfig) -> list:
         """).fetchone()
         if recent and recent[0] >= 6 and recent[1] == 0:
             reasons.append("6+ consecutive frontier runs with no success")
-    except Exception:
+    except sqlite3.OperationalError:
         pass
 
     return reasons
@@ -692,7 +693,7 @@ def run_frontier(db, *, cycle_id: int = 0, budget_remaining: int = 6,
                     if verbose:
                         print(f"    Registered {new_evidence} new evidence items")
 
-                except Exception as e:
+                except (ValueError, KeyError, json.JSONDecodeError, sqlite3.Error, OSError, TimeoutError) as e:
                     if verbose:
                         print(f"    [ERROR] {e}")
                     _log_run(db, cycle_id, "deepen", t["node_id"], None,
@@ -794,9 +795,7 @@ def _log_run(db, cycle_id, mode, target_node, domain_id, facet, query, outcome,
 
 def main():
     import argparse
-    import sys
-    if hasattr(sys.stdout, "reconfigure"):
-        sys.stdout.reconfigure(encoding="utf-8")
+    import config  # noqa: F401
 
     parser = argparse.ArgumentParser(description="Frontier Manager: deepen + expand")
     parser.add_argument("command", choices=["run", "rank", "seeds", "health", "status"])

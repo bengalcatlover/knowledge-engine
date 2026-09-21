@@ -7,17 +7,14 @@ import argparse
 import hashlib
 import re
 import sqlite3
-import sys
-from knowledge_policy import note_usable
 from pathlib import Path
 
+import config  # noqa: F401
+from knowledge_policy import note_usable
 
 ROOT = Path(__file__).resolve().parent
 DATABASE = ROOT / "work" / "brain.sqlite3"
 ROLES = ("accepted", "candidates", "concepts", "perspectives")
-
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
 
 
 def sources(include_inbox: bool = False) -> list[tuple[str, Path]]:
@@ -104,7 +101,7 @@ def search(query: str, limit: int, roles: list[str] | None, include_candidates=F
     try:
         from kb import log_query
         log_query(query, activated, searcher="brain_rag")
-    except Exception:
+    except (ImportError, AttributeError, OSError):
         pass
 
 

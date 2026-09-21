@@ -11,14 +11,12 @@ from __future__ import annotations
 
 import argparse
 import re
-import sys
 from pathlib import Path
+
+import config  # noqa: F401
 
 ROOT = Path(__file__).resolve().parent
 CONCEPTS = ROOT / "concepts"
-
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
 
 # 正準文脈
 CONTEXTS = ("science", "business", "everyday")

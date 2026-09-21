@@ -23,21 +23,18 @@ import hashlib
 import json
 import os
 import re
+import sqlite3
 import sys
 import urllib.request
 import urllib.error
 from pathlib import Path
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+from config import LLM_API_KEY, WORKER_MODEL
 
 from mvp_store import (
     init_db, get_db, add_node, add_claim, add_edge, add_support,
     _uid, _now, DB_PATH
 )
-
-LLM_API_KEY = os.environ.get("LLM_API_KEY", "")
-WORKER_MODEL = os.environ.get("LLM_WORKER_MODEL", "")
 
 
 # ════════════════════════════════════════════
@@ -193,7 +190,7 @@ def collect_unresolved_claims(db) -> list[dict]:
         """):
             if r[0]:
                 processed.add(r[0])
-    except Exception:
+    except sqlite3.Error:
         pass
 
     unresolved = []
@@ -335,7 +332,7 @@ def generate_nodes(dry_run: bool = False, verbose: bool = True,
                     claim.get("claim_type", "empirical"),
                     db
                 )
-            except Exception as e:
+            except (json.JSONDecodeError, ValueError, KeyError, OSError, TimeoutError) as e:
                 if verbose:
                     print(f"  [ERROR] Classification failed: {e}")
                 stats["rejected"] += 1
@@ -367,7 +364,7 @@ def generate_nodes(dry_run: bool = False, verbose: bool = True,
                                         target_claim=cid, support_role="premise",
                                         rationale=json.dumps({"worker": "node_factory", "claim": claim}),
                                         assessor="node_factory")
-                        except Exception as e:
+                        except (sqlite3.Error, KeyError) as e:
                             if verbose:
                                 print(f"  [WARN] Absorb failed: {e}")
                     stats["absorbed"] += 1

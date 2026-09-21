@@ -28,13 +28,9 @@ import urllib.request
 import urllib.error
 from pathlib import Path
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+from config import LLM_API_KEY, WORKER_MODEL
 
 from mvp_store import init_db, get_db, add_claim, add_support, _uid, _now, DB_PATH
-
-LLM_API_KEY = os.environ.get("LLM_API_KEY", "")
-WORKER_MODEL = os.environ.get("LLM_WORKER_MODEL", "")
 
 # ════════════════════════════════════════════
 # Mining台帳スキーマ
@@ -92,7 +88,7 @@ def _fetch_abstract_s2(doi: str) -> dict | None:
                 "abstract": abstract, "tldr": tldr_text,
             }
         return None  # abstractなし → フォールバックへ
-    except Exception:
+    except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError, TimeoutError, OSError):
         return None
 
 
@@ -126,7 +122,7 @@ def _fetch_abstract_openalex(doi: str) -> dict | None:
                 "abstract": abstract, "tldr": "",
             }
         return None
-    except Exception:
+    except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError, TimeoutError, OSError):
         return None
 
 
@@ -152,7 +148,7 @@ def _fetch_crossref_meta(doi: str) -> dict | None:
         if title:
             return {"title": title, "authors": authors, "year": year, "journal": journal}
         return None
-    except Exception:
+    except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError, TimeoutError, OSError):
         return None
 
 
@@ -201,7 +197,7 @@ Output ONLY valid JSON:
     try:
         raw_a = complete(prompt_a, task="llm_abstract_synth_a", max_tokens=1024)
         raw_b = complete(prompt_b, task="llm_abstract_synth_b", max_tokens=1024)
-    except Exception:
+    except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError, TimeoutError, OSError, ValueError):
         return None
 
     # JSON parse
@@ -950,7 +946,7 @@ def mine_evidence(evidence_id: str, dry_run: bool = False, verbose: bool = True)
             abstract,
             nodes_with_claims=nodes_with_claims
         )
-    except Exception as e:
+    except (json.JSONDecodeError, ValueError, KeyError, urllib.error.URLError, TimeoutError, OSError) as e:
         result["status"] = "extraction_failed"
         _log_mining(db, evidence_id, "failed", error_detail=str(e), dry_run=dry_run)
         if verbose:

@@ -28,13 +28,9 @@ import sys
 import urllib.request
 from dataclasses import dataclass
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+from config import LLM_API_KEY, WORKER_MODEL
 
 from mvp_store import init_db, get_db, add_edge, add_support, _uid, _now
-
-LLM_API_KEY = os.environ.get("LLM_API_KEY", "")
-WORKER_MODEL = os.environ.get("LLM_WORKER_MODEL", "")
 
 # エッジ型の許可リスト（設計準拠）
 VALID_EDGE_TYPES = [

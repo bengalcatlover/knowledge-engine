@@ -9,7 +9,7 @@
 
 from __future__ import annotations
 
-import config  # noqa: F401 — load .env
+import config  # noqa: F401 — load .env + UTF-8 reconfigure
 
 import argparse
 import hashlib
@@ -32,9 +32,6 @@ ROLES = ("accepted", "candidates", "concepts", "perspectives")
 EMBED_API_KEY = os.environ.get("EMBED_API_KEY", "")
 EMBED_MODEL = os.environ.get("EMBED_MODEL", "")
 EMBED_ENDPOINT = os.environ.get("EMBED_ENDPOINT", "")
-
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
 
 
 # ═══════════════════════════════════════════
@@ -311,7 +308,7 @@ def search_cli(query: str, limit: int, use_vectors: bool) -> None:
         from kb import log_query
         scores_list = [score for _, score in results]
         log_query(query, activated, searcher="search_engine", scores=scores_list)
-    except Exception:
+    except (ImportError, AttributeError, OSError):
         pass  # kb.py未初期化でも検索は止めない
 
 
@@ -443,7 +440,7 @@ def trace_cli(query: str, limit: int, use_vectors: bool) -> None:
         activated = ref_ids
         scores_list = [score for _, score in results]
         log_query(query, activated, searcher="search_engine_trace", scores=scores_list)
-    except Exception:
+    except (ImportError, AttributeError, OSError):
         pass
 
 

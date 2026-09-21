@@ -8,9 +8,9 @@ import hashlib
 import json
 import re
 import sqlite3
-import sys
 from pathlib import Path
 
+import config  # noqa: F401
 
 ENGINE = Path(__file__).resolve().parent
 CORPUS = Path(r"C:\Users\akira\OneDrive\Desktop\kyousanto-ai\mitocw-txt")
@@ -18,9 +18,6 @@ DATABASE = ENGINE / "work" / "mitocw.sqlite3"
 DISCIPLINE_FILE = ENGINE / "work" / "discipline-final.json"
 CHUNK_SIZE = 4_000
 OVERLAP = 400
-
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
 
 
 def files() -> list[Path]:

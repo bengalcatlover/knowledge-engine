@@ -1,11 +1,9 @@
 """知識グラフ成長リプレイサーバー — 0→100ノードの早回し再生"""
 import http.server
 import json
-import sys
 import webbrowser
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+import config  # noqa: F401
 
 PORT = 8766
 

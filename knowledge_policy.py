@@ -7,6 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import sqlite3
 from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parent
@@ -66,7 +67,7 @@ def independence_metrics(db):
               WHERE sa.target_claim=? AND l.independence_review='confirmed' ''',(cid,)):
                 if row[9] and row[10]==digest(list(row[:9])): groups.add(row[9])
             if len(groups)>=2: counts.append(cid)
-    except Exception:
+    except sqlite3.OperationalError:
         return 0
     return len(counts)
 
@@ -105,7 +106,7 @@ def claim_usable(db, claim_id, require_node=True):
     try:
         audit = db.execute('''SELECT decision,validated_state,fingerprint,policy,report
               FROM claim_validation WHERE claim_id=? ORDER BY id DESC LIMIT 1''', (claim_id,)).fetchone()
-    except Exception:
+    except sqlite3.OperationalError:
         return False  # unmigrated databases are not implicitly trusted
     if not audit or audit[0] != 'passed' or audit[1] != row[0] or audit[3] != POLICY:
         return False
@@ -138,7 +139,7 @@ def edge_usable(db, edge_id):
         return False
     try:
         review = db.execute('SELECT status,fingerprint FROM edge_review WHERE edge_id=?', (edge_id,)).fetchone()
-    except Exception:
+    except sqlite3.OperationalError:
         return False
     return bool(review and review[0] == 'validated' and review[1] == digest(list(row))
                 and node_usable(db, row[2], row[3]) and node_usable(db, row[5], row[6])
