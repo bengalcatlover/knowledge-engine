@@ -1,0 +1,57 @@
+知識OSの自律・再帰・拡大ループの設計を提案せよ。
+
+## 現状（実装済み）
+
+### 知識増幅器 (knowledge_amplifier.py)
+- LLMにトピックを投げてclaim+DOI付き出典を抽出
+- 4層検証: CrossRef → OpenAlex → Semantic Scholar → Unpaywall
+- ハレーション検出率: 約12-28%を自動で弾く
+- 検証済みevidenceをMVPストアに自動登録
+
+### Gap Detector (gap_detector.py)
+- G1: unsupported_claim — evidenceが紐付いていないclaim検出
+- G2: missing_instance — HAS_SCOPED_INSTANCEが0本のクラス検出
+- gap台帳（冪等キー、状態管理、リトライ制御）
+- 穴検出 → amplifier呼び出し → evidence取得 → claim自動紐付け → 穴が閉じる
+- 1サイクルで11本の検証済み論文を自動追加した実績あり
+
+### 検索→根拠追跡→回答 (ask_knowledge.py)
+- 質問 → 検索 → MVPノード解決 → claim@revision → evidence → LLM回答
+
+### MVPストア
+- 19ノード / 19エッジ / 20エビデンス（2ドメイン）
+- policy engine: stale伝播、承認前チェック、独自証明保護、HYP隔離
+
+## ユーザーの意図
+
+「餌をやらなくても知識を勝手に増やし、クラスを増やし、インスタンスを突き合わせて、知識を抜く」
+「拾うべき知識をガリガリ拾って知識世界を広げる」
+
+## 現在の限界
+
+1. Gap detectorは穴を見つけてevidenceを足すが、**新しいノードやエッジを自動生成しない**
+2. 知識グラフの**構造（ノード間の関係）が自律的に成長しない**
+3. amplifierが拾った論文の**内容（abstract）から新しいclaimを抽出してノード化**する仕組みがない
+4. **ドメイン自体を自律的に拡大する**（「次はどのドメインを探索すべきか」を知識OS自身が判断する）仕組みがない
+
+## 質問
+
+以下を具体的に設計せよ:
+
+1. **Evidence → Claim抽出**: 取得した論文のabstractからclaimを自動抽出し、既存ノードに追加するか新ノードを生成するかの判定ロジック
+2. **ノード自動生成**: 新claimが既存ノードに属さない場合の新ノード生成フロー（層の決定、type決定、エッジ生成）
+3. **エッジ自動推論**: 既存ノード間・新旧ノード間のエッジを自動検出する仕組み
+4. **ドメイン拡大**: 現在のグラフの境界から「次にどのドメインを探索すべきか」を知識OS自身が判断する仕組み
+5. **再帰ループ**: 上記1-4を組み合わせた完全自律サイクルの設計（停止条件、品質保証、暴走防止を含む）
+6. **スケーリング**: ノード数が100、1000、10000に増えたときに破綻しない設計上の考慮
+
+出力形式:
+```yaml
+autonomous_loop_design:
+  evidence_to_claim: ...
+  auto_node_generation: ...
+  edge_inference: ...
+  domain_expansion: ...
+  recursive_loop: ...
+  scaling: ...
+```

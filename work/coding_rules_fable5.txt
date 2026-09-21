@@ -1,0 +1,347 @@
+# CODING_GUIDELINES.md
+
+```markdown
+# あきらぐ コーディングガイドライン（絶対ルール）
+
+最終更新: 制定版 v1.0
+適用範囲: 全12モジュール + 今後追加される全コード
+
+---
+
+## 0. 【最優先】今すぐやること（このガイドライン制定の契機となった事故対応）
+
+このセクションは恒久ルールではなく、現在進行中の事故対応。完了したら削除する。
+
+- [ ] **漏洩したAPIキーの無効化・再発行**。ハードコードされていた時点で
+      Anthropic / Gemini のキーは「漏洩済み」として扱う。コードから消しただけでは不十分。
+      各コンソールで revoke → 新キー発行 → `.env` に設定。
+- [ ] `.env` を作成し、全モジュールが起動することを確認（後述のスモークテスト実行）。
+- [ ] `git init` → 初回コミット。**これ以前の状態には二度と戻れないことを認識する。**
+- [ ] 「AI痕跡消し一括変更」の壊れ箇所洗い出し:
+      `python -m scripts.smoke_test` を実行し、失敗モジュールを列挙してから直す。
+
+---
+
+## 1. シークレット管理
+
+### ルール
+
+1. **APIキー・トークン・DB接続情報をソースコードに書くことを禁止する。**
+   コメント、docstring、テストコード、ログ出力も含む。例外なし。
+
+2. シークレットは `.env` ファイルからのみ読む。読み込みは1箇所に集約する。
+
+   ```python
+   # config.py（唯一のシークレット読み込み地点）
+   import os
+   from dotenv import load_dotenv
+
+   load_dotenv()
+
+   def require_env(name: str) -> str:
+       value = os.environ.get(name, "").strip()
+       if not value:
+           raise RuntimeError(
+           f"環境変数 {name} が未設定です。.env.example を参照して .env を作成してください。"
+           )
+       return value
+   ```
+
+3. **fail-fast 原則**: キーが空のまま黙って動き続けることを禁止。
+   今回「環境変数が空でAPIコールが死んでいるかも」という状態になったのは、
+   起動時チェックがないため。LLMを使う全モジュールは起動時に `require_env()` を通すこと。
+
+4. リポジトリには `.env.example` を置く（値は空、キー名と説明のみ）:
+
+   ```bash
+   # .env.example
+   PRIMARY_LLM_API_KEY=      # 主力LLMのAPIキー
+   BATCH_LLM_API_KEY=        # バッチ処理用低コストLLMのAPIキー
+   AKIRAG_DB_PATH=./data/akirag.db
+   AKIRAG_DAILY_BUDGET_USD=5.0
+   ```
+
+5. `.gitignore` に以下を**初回コミット前に**必ず含める:
+
+   ```gitignore
+   .env
+   *.db
+   *.sqlite*
+   data/
+   logs/
+   cost_reports/
+   __pycache__/
+   ```
+
+6. **pre-commit でシークレットスキャンを必須化**:
+
+   ```yaml
+   # .pre-commit-config.yaml
+   repos:
+     - repo: https://github.com/gitleaks/gitleaks
+       rev: v8.18.0
+       hooks:
+         - id: gitleaks
+   ```
+
+### 禁止例 / 許可例
+
+```python
+# ❌ 禁止
+client = SomeClient(api_key="sk-ant-api03-xxxx")
+API_KEY = "AIza..."  # TODO: あとで消す ← 「あとで」は来ない
+
+# ✅ 許可
+from config import require_env
+client = LLMClient(api_key=require_env("PRIMARY_LLM_API_KEY"))
+```
+
+---
+
+## 2. AI抽象化（ベンダー名の隔離）
+
+### 設計原則
+
+**「どのAI会社を使っているか」を知ってよいのは `llm_client.py`（新設）と設定ファイルのみ。**
+他の11モジュールはベンダー名を一切知らない。
+
+### ルール
+
+1. **禁止語リスト**をコードベース全体（変数名・関数名・クラス名・コメント・
+   docstring・ログメッセージ・プロンプト内の自己言及）に適用する:
+
+   ```
+   claude, haiku, sonnet, opus, anthropic,
+   openai, gpt, chatgpt,
+   gemini, google-genai, fable, astra
+   ```
+
+   ※ 設定ファイル（`llm_config.yaml`）と `llm_client.py` 内部のみ例外。
+
+2. **役割ベースの命名**を使う。モデル名ではなく用途で名付ける:
+
+   | 用途 | 呼び名 | 使用モジュール |
+   |---|---|---|
+   | claim抽出・関係検証などの本処理 | `primary_llm` | knowledge_amplifier, relation_engine |
+   | 大量バッチの安価処理 | `batch_llm` | cheap_llm |
+   | 対話的な外部問い合わせ | `external_llm` | ask_llm |
+
+3. **モデル名・エンドポイントは設定ファイルに追い出す**:
+
+   ```yaml
+   # llm_config.yaml（.gitignore対象。llm_config.example.yaml を代わりにコミット）
+   primary_llm:
+     provider: vendor_a
+     model: model-large-v1        # 実モデル名はここだけ
+     max_tokens: 4096
+   batch_llm:
+     provider: vendor_b
+     model: model-small-v1
+   ```
+
+4. **アダプタパターンで統一インターフェース化**:
+
+   ```python
+   # llm_client.py — ベンダー依存を閉じ込める唯一のファイル
+   class LLMClient:
+       def complete(self, prompt: str, *, role: str = "primary") -> str: ...
+       def complete_batch(self, prompts: list[str]) -> list[str]: ...
+   ```
+
+   knowledge_amplifier / relation_engine / cheap_llm / ask_llm は
+   直接ベンダーSDKを import してはならない。`import anthropic` 等が
+   `llm_client.py` 以外に現れたらレビューで即差し戻し。
+
+5. **CIで禁止語を機械チェック**（手作業の目視grepは信用しない — 今回散在を許した原因）:
+
+   ```bash
+   # scripts/check_banned_words.sh
+   grep -rniE "claude|haiku|anthropic|openai|gpt|gemini|fable|astra" \
+     --include="*.py" \
+     --exclude="llm_client.py" \
+     . && { echo "禁止語検出"; exit 1; } || echo "OK"
+   ```
+
+---
+
+## 3. バージョン管理（git運用）
+
+### ルール
+
+1. **git管理外のコードを編集することを禁止する。**
+   今回「元に戻せない」事態はここが根本原因。作業前に必ず `git status` が通る状態にする。
+
+2. ブランチ運用（1人開発でも守る）:
+   - `main`: 常に「スモークテストが通る」状態を維持。直接コミット禁止。
+   - `feat/xxx`, `fix/xxx`: 作業ブランチ。mainへは squash merge。
+
+3. コミット粒度:
+   - **1コミット = 1つの意図**。「AI痕跡消し + バグ修正 + リファクタ」を混ぜない。
+     混ぜると revert できなくなる。
+   - 機械的一括変更（rename等）と手動修正は**必ず別コミット**にする。
+     一括変更コミットは diff レビュー不能なので、分離しないと手動修正が埋もれる。
+
+4. **大規模変更の前にタグを打つ**:
+
+   ```bash
+   git tag pre-rename-20xx-xx-xx
+   # → 失敗したら git reset --hard pre-rename-20xx-xx-xx で即復旧
+   ```
+
+5. コミットメッセージ形式:
+
+   ```
+   <type>(<module>): <要約>
+   例: fix(cheap_llm): 環境変数未設定時にfail-fastするよう修正
+       chore(all): 禁止語一括rename（scripts/rename_ai_terms.py による機械変更）
+   ```
+
+6. `main` への merge 条件: スモークテスト + 禁止語チェック + gitleaks が全て green。
+
+---
+
+## 4. 変更安全性（大規模変更の手順）
+
+今回の「一括変更→動作未確認→壊れているかも」の再発防止。
+
+### 大規模変更（3ファイル以上に及ぶ変更）の必須手順
+
+```
+1. git tag でセーブポイント作成
+2. 変更を「機械的に再現可能なスクリプト」にする
+   （scripts/ に置いてコミット。手作業の find & replace 禁止）
+3. まず1モジュールだけに適用 → スモークテスト → 通ったら残りに適用
+4. 全適用後、フルスモークテスト + 禁止語チェック
+5. 「何を・なぜ・どのスクリプトで」変更したかをコミットメッセージに記録
+```
+
+### rename時の特別ルール
+
+- rename は grep での**逆引き確認**をセットにする。
+  「`claude_client` → `primary_llm`」なら、旧名の残存ゼロ **かつ**
+  新名の参照箇所数が旧名の参照箇所数と一致することを確認する。
+- 文字列リテラル内の rename（プロンプトテンプレート、SQLカラム名、
+  設定キー名）は機械renameから漏れやすい。特に mvp_store.py の
+  スキーマとpolicy engineのルール名は目視必須。
+
+---
+
+## 5. テスト
+
+### 3層構造
+
+| 層 | 内容 | 実行タイミング | LLM課金 |
+|---|---|---|---|
+| スモークテスト | 全12モジュールが import でき、主要関数がモックで動く | 全コミット前 | なし |
+| 契約テスト | `LLMClient` のI/F（入力→出力の型・形式）をモックで検証 | 全コミット前 | なし |
+| ライブテスト | 実APIで1リクエストだけ疎通確認 | merge前・キー変更時 | 最小限 |
+
+### ルール
+
+1. **スモークテストを作る（最優先タスク）**:
+
+   ```python
+   # scripts/smoke_test.py
+   MODULES = [
+       "mvp_store", "knowledge_amplifier", "evidence_miner",
+       "gap_detector", "node_factory", "relation_engine",
+       "autonomous_orchestrator", "frontier_manager", "graph_server",
+       "cheap_llm", "search_engine", "ask_llm",
+   ]
+   # ①全モジュールimport ②config読み込み ③DBスキーマ検証
+   # ④LLMClientをモックに差し替えて1サイクルのdry-run
+   ```
+
+2. **契約テストの位置づけ**: `llm_client.py` はベンダーを隠蔽する境界なので、
+   「この境界の契約が守られている限り、上位11モジュールはベンダー変更の影響を受けない」
+   ことを保証する要。プロバイダーを差し替えても契約テストが通れば上位は無変更で動く、
+   が成立していなければ抽象化の失敗。
+
+3. ライブテストは `pytest -m live` で明示実行のみ。CI では走らせない
+   （課金と、キーがCI環境に漏れるリスクの両方を避ける）。
+
+4. autonomous_orchestrator の**予算制御・サーキットブレーカーは必ずモックでテスト**。
+   実APIでテストすると「テストで予算を溶かす」本末転倒が起きる。
+
+---
+
+## 6. コードの見せ方（外部公開）
+
+### フォルダ構成
+
+```
+akirag/
+├── src/                  # 12モジュール本体
+├── scripts/              # smoke_test, check_banned_words, rename等
+├── tests/
+├── llm_config.example.yaml
+├── .env.example
+├── .gitignore
+├── .pre-commit-config.yaml
+├── README.md
+└── CODING_GUIDELINES.md  # 本ファイル
+```
+
+### 外部に見せる前のチェックリスト（scripts/pre_publish_check.sh として自動化）
+
+- [ ] `gitleaks detect` — **作業ツリーだけでなく git 履歴全体**をスキャン
+      （履歴にキーが残っていたら履歴ごと作り直すか filter-repo で除去）
+- [ ] `check_banned_words.sh` が green
+- [ ] `.env`, `llm_config.yaml`, `*.db`, `logs/`, `cost_reports/` が含まれていない
+- [ ] **SQLite DBファイルを絶対に含めない**: mvp_store の中身には
+      収集した文献データ・LLM生成claim・コスト実績が入っており、これ自体が情報資産
+- [ ] graph_server のデフォルトホストが `127.0.0.1` になっている（`0.0.0.0` 公開禁止）
+- [ ] README にセットアップ手順（`.env.example` からの作成手順）が書いてある
+      → 「見せた相手が動かせない」も評価を下げる
+
+### 公開方法
+
+- 見せる用のブランチを切るのではなく、**mainが常に見せられる状態**を保つのが原則。
+  「見せる用に急いで消す」が今回の事故の直接原因。
+
+---
+
+## 7. このプロジェクト特有の注意点
+
+1. **コスト事故は取り返しがつかない**
+   autonomous_orchestrator は自律ループするため、バグ = 無限課金になりうる。
+   - サーキットブレーカーの発動条件をコードレビューの必須確認項目にする
+   - `AKIRAG_DAILY_BUDGET_USD` 未設定時はデフォルト `0`（=動かない）とする。
+     「未設定なら無制限」は絶対禁止。
+
+2. **cheap_llm と primary_llm の取り違え防止**
+   バッチ処理を誤って高コストモデルに流すと即予算超過。
+   `LLMClient.complete(role=...)` の role を必須引数にし、デフォルト値を持たせない。
+
+3. **プロンプト内の自己言及**
+   プロンプトテンプレートに「You are Claude...」のような文言が残りやすい。
+   禁止語チェックは `.py` 内の文字列リテラルとテンプレートファイルも対象にする。
+
+4. **4層検証・policy engine のルール名**
+   mvp_store の policy 名や検証層の識別子にモデル名を埋め込まない
+   （例: `haiku_verified` → `l2_verified` のような層番号ベース命名にする）。
+
+5. **evidence（DOI・abstract）の再配布ライセンス**
+   外部公開時、コードは見せてよいがDBに格納した abstract 全文は
+   出典のライセンス次第で再配布不可。コードとデータの公開可否は別判断とする。
+
+---
+
+## 付録: 日次・作業開始時の習慣
+
+```bash
+git status                        # 未コミット変更がないか
+python scripts/smoke_test.py      # 現状が動くことを確認してから触る
+git switch -c feat/xxx            # ブランチを切ってから編集
+```
+
+**「動く状態を確認してから触る。触ったら動く状態に戻してからコミットする。」**
+これが本ガイドラインの一行要約である。
+```
+
+---
+
+補足（ガイドライン外のレビューコメント）:
+
+- 最も緊急なのは**キーのローテーション**です。「コードから消した」は対策になっていません。外部に見せる前にハードコードされていた時点のコードを誰かが見た可能性、バックアップやエディタ履歴に残っている可能性を考えると、revoke一択です。
+- 「AI痕跡消し」を再度やり直すなら、今の壊れた状態を直してからではなく、まず `git init` → 現状コミット → スモークテスト作成 → それから修正、の順を推奨します。現状を記録しないまま直し始めると、また「戻れない」状態を再生産します。

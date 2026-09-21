@@ -1,0 +1,101 @@
+You are creating a discipline knowledge index for: Music & Theater
+Broad category: Arts & Humanities
+Total courses: 6
+Total lecture units: 132
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 21M.303 Writing in Tonal Forms I, Spring 2009 (12 lectures)
+- Song 1 | MIT 21M.303 Writing in Tonal Forms I, Spring 2009
+- Song 2 | MIT 21M.303 Writing in Tonal Forms I, Spring 2009
+- Song 3 | MIT 21M.303 Writing in Tonal Forms I, Spring 2009
+- Song 4 | MIT 21M.303 Writing in Tonal Forms I, Spring 2009
+- Song 5 | MIT 21M.303 Writing in Tonal Forms I, Spring 2009
+- ** Song 5 | MIT 21M.303 Writing in Tonal Forms I, Spring 2009
+- Song 6 | MIT 21M.303 Writing in Tonal Forms I, Spring 2009
+
+### MIT 21M.342 Composing for Jazz Orchestra, Fall 2008 (16 lectures)
+- "Empty Bottles" by Mike Lee | MIT 21M.342 Composing for Jazz Orchestra, Fall 2008
+- "Totality" by Chris Kottke | MIT 21M.342 Composing for Jazz Orchestra, Fall 2008
+- ** "Totality" by Chris Kottke | MIT 21M.342 Composing for Jazz Orchestra, Fall 2008
+- Evening Workshop | MIT 21M.342 Composing for Jazz Orchestra, Fall 2008
+- Lecture 16: Gil Evans / Miles Davis collaborations (audio only)
+- Lecture 17: George Russell and modal jazz (audio only)
+- Lecture 18: Afro-Cuban music and bebop (audio only)
+- Lecture 20: Postmodern approaches  (audio only)
+- Lecture 21 | MIT 21M.342 Composing for Jazz Orchestra, Fall 2008
+
+### MIT 21M.355 Musical Improvisation, Spring 2013 (2 lectures)
+- Concert Series 3: Neil Leonard and Robin Eubanks
+
+### MIT 21M.380 Music and Technology, Fall 2009 (8 lectures)
+- Lecture 12d | MIT 21M.380 Music and Technology (Contemporary History and Aesthetics), Fall 2009
+- Lecture 12w | MIT 21M.380 Music and Technology (Contemporary History and Aesthetics), Fall 2009
+- Lecture 13 | MIT 21M.380 Music and Technology (Contemporary History and Aesthetics), Fall 2009
+- Lecture 16 | MIT 21M.380 Music and Technology (Contemporary History and Aesthetics), Fall 2009
+
+### MIT 21M.383 Computational Music Theory and Analysis, Spring 2023 (74 lectures)
+- Class 1 Video: How Do Computers "Hear" Music?
+- ** Class 1 Video: How Do Computers "Hear" Music?
+- Class 10 Video: Equivalence and Intervals (I); Hierarchies (IV)
+- Class 13 Video: Corpus Studies and Statistics
+- Class 14 Video: Corpus Studies and Statistics (II)
+- Class 15 Video: Encoding Corpora and Voice Leading
+- Class 17 Video: Introduction to Music Cognition
+- Class 2 Video: Representation of Notes, Pitches, and Durations
+- Class 24 Video: Algorithmic Composition (II)
+- Class 25 Video: Algorithmic Composition (III)
+- Class 27 Video: Feature Extraction and Machine Learning
+- Class 28 Video: Feature Extraction and Machine Learning (II)
+- Class 31 Video: Music Visualization and Optical Music Recognition
+- Class 4 Video: Intro to Scores and Music Representation
+- Class 5 Video: Music Representation (II)
+- Class 7 Video: Music Representation (IV) & Hierarchies (I)
+- Class 8 Video: Hierarchies (II): Streams and Recursions
+- Classes 18-21 Video: Brief Synopsis of Guest Sessions on Music Cognition
+- Video 0: Overview of 21M.383 Computational Music Theory for OCW Learners
+- Video 10a: Review: Equivalence Classes and OPTIC
+- Video 12a: Painting Emotions in Music and Text
+- Video 12b: Chorales as a Corpus
+- Video 12d: How to Work with Ties in music21
+- Video 1a: music21 Coding Tutorial for OCW Learners
+- Video 22a: Chord Review and 13 Chords: Some Problems with Roots
+- Video 22b: Problem Sets 7-8: Working and Composing with Scales, Chords, and Roman Numerals
+- Video 26a: Vocabulary Reduction
+- Video 32a: Tipping the Iceberg
+- Video 3b: Pitch Representation: Pros, Cons, and Stakeholders
+- Video 3c: How to Approach the Problem Sets
+- ... and 9 more
+
+### Suburbia Soundtrack (from MIT 21M.873 Theater Arts Topics - Suburbia, IAP 2008) (20 lectures)
+- Dress Rehearsal Rag - Between the Lines Things were Laid Bare
+- kc quilty - Clothes
+- Limited Slip - Broken Glass & Alibis
+- ** Limited Slip - Broken Glass & Alibis
+- Limited Slip - The End
+- Off White Noise - Moo’s so Great she could Probably be Science Fiction
+- Off White Noise - Weenie
+- ** Off White Noise - Weenie
+- Rob Morris - Your Hope
+- Sarah Dupuis - New Song in Calculus
+- Show 2 Intermission
+- Show 4 Intermission
+

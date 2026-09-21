@@ -1,0 +1,33 @@
+あなたは世界モデル知識エンジンの設計レビュアーです。以下の現在地を踏まえ、次の実装優先順を判断してください。
+
+## 現在地（2026-09-14）
+
+### 完了済み
+1. MVPストア: 19ノード / 19エッジ / 23エビデンス / 75 support_assessments / 45 claims
+2. Knowledge Amplifier: LLM→claim+DOI→4層検証→自動登録
+3. Evidence Miner: evidence→abstract取得→LLM claim抽出→重複判定→ノード帰属→登録（34 new claims）
+4. Gap Detector: G1(unsupported_claim) + G2(missing_instance) + G3(unverified_edge)
+5. Node Factory: unresolved claim→LLM分類→provisional生成→昇格判定（現在待機中、unresolved 0件）
+6. Autonomous Orchestrator: 6フェーズサイクル（repair→extract→grow→promote→expand→audit）+ 予算制御 + サーキットブレーカー
+
+### 現在のメトリクス
+- Evidence coverage: 98%
+- Provisional ratio: 5%（H-0100の1件のみ）
+- Unsupported claims: 1件
+- Gap台帳: G1×1 open, G2×4 open, G3×5 open, 2 resolved
+- 2ドメイン: 第二価格オークション + 情報理論
+
+### 未実装
+A. **relation_engine.py** — エッジ推論・検証。G3(unverified_edge)の充填、新エッジの自動生成。候補生成（co-evidence/co-citation/embedding/claim共起）→ LLM検証 → HYP_EDGE隔離
+B. **frontier_manager.py** — ドメイン拡大。境界ノード検出、スコアリング、1サイクル最大1ドメイン。現在19ノードで統計が効かないため、Fable設計では100ノード後を推奨
+C. **新ドメインevidenceの手動投入** — amplifierで新トピックのevidenceを追加し、evidence_miner→node_factoryのパイプラインを回す。ノード数を増やして frontier_manager の前提条件（100ノード）に近づける
+D. **relation_engine不要のG3解消** — G3の5件中一部はderivation_refを手動で設定するか、共通evidenceを追加することで解消可能
+
+## 質問
+
+1. **A, B, C, D のうち、次に実装すべきものはどれか？** 理由と共に答えてください。
+2. **その次は？** 3番目まで順序を示してください。
+3. **今の設計に致命的な見落としや危険な設計判断はあるか？** あれば指摘してください。
+4. **19ノード→100ノードへの成長戦略として、どのドメインを次に追加すべきか？** 既存の2ドメイン（オークション理論+情報理論）との接続性が高いドメインを推薦してください。
+
+簡潔に、根拠付きで回答してください。

@@ -1,0 +1,233 @@
+```yaml
+gap_detector_design:
+
+  # ============================================================
+  # 1. 穴の種類と優先順位
+  # ============================================================
+  gap_types:
+    - id: G1_evidence_gap
+      priority: 1
+      description: "claimが存在するがsupport_assessmentが0件、またはreliability_gradeが閾値未満"
+      rationale: "根拠追跡が売りのシステムで根拠なしclaimは最重大。amplifierが最も得意な穴（DOI探索で直接埋まる）"
+
+    - id: G2_instance_gap
+      priority: 2
+      description: "science/universe層の抽象ノード（クラス）にHAS_SCOPED_INSTANCEが1本もない"
+      rationale: "『インスタンスを突き合わせる』の前提。具体例のない理論は検証不能"
+
+    - id: G3_abstraction_gap
+      priority: 3
+      description: "object層ノードが複数あるのにABSTRACTS_FROM/DERIVES_FROMで上位層に接続されていない（孤児インスタンス）"
+      rationale: "帰納の穴。新クラス候補の発見源 = 『クラスを増やす』の駆動力"
+
+    - id: G4_bridge_gap
+      priority: 4
+      description: "隣接層間の構造エッジ欠落（例: science層ノードがfoundation層への DERIVES_FROM を持たない）"
+      rationale: "5層モデルの整合性。層をまたぐ根拠チェーンが切れる"
+
+    - id: G5_analogy_gap
+      priority: 5
+      description: "異ドメイン間で構造的に相似なノード対にSIMILAR_TOがない（例: オークションの均衡 ↔ 情報理論の最適符号）"
+      rationale: "ドメイン横断こそグラフの付加価値だが、LLM判定が必要でコスト高"
+
+    - id: G6_contradiction_gap
+      priority: 6
+      description: "同一/類似claimに対しsupport_roleがsupportとrefuteで割れている"
+      rationale: "MVP時点では稀。ただし発生時は即人間レビュー行き"
+
+    - id: G7_staleness_gap
+      priority: 7
+      description: "stale伝播で汚染されたノード群、revision不整合のdanglingエッジ"
+      rationale: "policy engineが既に半分カバー。detectorは再検証トピック生成のみ担当"
+
+  # ============================================================
+  # 2. 検出方法
+  # ============================================================
+  detection_methods:
+    - gap: G1_evidence_gap
+      method: SQL
+      query: |
+        SELECT c.claim_id, c.statement, n.layer
+        FROM claim c
+        JOIN node n ON c.node_id = n.id AND c.node_revision = n.revision
+        LEFT JOIN support_assessment sa ON sa.target_claim = c.claim_id
+        LEFT JOIN evidence e ON sa.evidence_id = e.evidence_id
+        GROUP BY c.claim_id
+        HAVING COUNT(sa.evidence_id) = 0
+            OR MAX(CASE e.reliability_grade WHEN 'A' THEN 3 WHEN 'B' THEN 2 ELSE 1 END) < 2;
+
+    - gap: G2_instance_gap
+      method: SQL
+      query: |
+        SELECT n.id, n.layer FROM node n
+        WHERE n.layer IN ('science','universe') AND n.status = 'approved'
+        AND NOT EXISTS (
+          SELECT 1 FROM edge e
+          WHERE e.type = 'HAS_SCOPED_INSTANCE' AND e.from_node = n.id
+        );
+
+    - gap: G3_abstraction_gap
+      method: SQL + LLM
+      note: "SQLで孤児object層ノードを列挙 → 2件以上あればLLMに『共通する上位概念は何か』を判定させ、新クラスノード候補を生成"
+
+    - gap: G4_bridge_gap
+      method: graph_traversal
+      note: |
+        各ノードからfoundation層へ向けて構造エッジ(DERIVES_FROM/ABSTRACTS_FROM/FORMALIZED_BY)
+        のみを辿るBFS。到達不能ノード = bridge gap。19ノード規模なら全探索でも一瞬。
+
+    - gap: G5_analogy_gap
+      method: LLM (embedding pre-filter)
+      note: |
+        全ノード対は O(n²) で爆発するため:
+        1. claim statementのembedding cosine類似で上位k対に絞る
+        2. 既にSIMILAR_TOがある対を除外
+        3. 残りをLLMに「構造的相似か？根拠は？」とバッチ判定
+        MVPでは後回し可。
+
+    - gap: G6_contradiction_gap
+      method: SQL
+      query: |
+        SELECT sa1.target_claim FROM support_assessment sa1
+        JOIN support_assessment sa2 ON sa1.target_claim = sa2.target_claim
+        WHERE sa1.support_role = 'support' AND sa2.support_role = 'refute';
+
+    - gap: G7_staleness_gap
+      method: SQL (policy engineのstale flagを流用)
+      note: "status='stale'のノード + edge.to_revisionがnodeの最新revisionと不一致のもの"
+
+    method_selection_principle: |
+      構造的欠落 → SQL（決定的・安価・毎サイクル実行）
+      到達可能性 → グラフ走査（決定的・グラフ規模に比例）
+      意味的判定 → LLM（非決定的・高価・SQL/embeddingで絞ってから）
+      原則: LLMは「候補生成」と「意味判定」のみ。「穴の存在確認」は必ず決定的手法。
+
+  # ============================================================
+  # 3. amplifierへのトピック生成
+  # ============================================================
+  amplifier_integration:
+    strategy: "gap型ごとのテンプレート + ノードコンテキスト注入"
+    templates:
+      G1_evidence_gap: |
+        topic = f"{claim.statement} — 学術的根拠・原典論文"
+        context = 隣接ノードのstatement上位3件（BM25距離順）を付与し、
+        amplifierのLLMプロンプトに「この主張を直接支持/反証する一次文献のDOI」と指定
+      G2_instance_gap: |
+        topic = f"{node.statement} の具体的応用例・実証研究・ケーススタディ"
+        期待戻り値: object層ノード候補 + HAS_SCOPED_INSTANCEエッジ候補
+      G3_abstraction_gap: |
+        LLMが提案した上位概念名を使い
+        topic = f"{proposed_class_name} の理論的定式化・サーベイ論文"
+        期待戻り値: science層ノード候補 + ABSTRACTS_FROMエッジ候補
+      G4_bridge_gap: |
+        topic = f"{node.statement} の数学的/理論的基礎"
+        期待戻り値: DERIVES_FROM先候補（既存foundation ノードへの接続を優先、
+        なければ新ノード）
+      G7_staleness_gap: |
+        topic = f"{claim.statement} の最新の検証状況・追試・反証"
+    output_contract: |
+      detectorはamplifierに GapTicket を渡す:
+        gap_ticket:
+          gap_id: sha256(gap_type + target_node_id + target_claim_id)  # 冪等キー
+          gap_type: G1..G7
+          topic: <生成文字列>
+          expected_artifact: evidence | node+edge | edge_only
+          target: {node_id, revision, claim_id}
+          depth_budget: 0または1
+      amplifierの戻り値には gap_id を必ず含め、充填結果をgapに紐付けてeventログに記録
+
+  # ============================================================
+  # 4. 暴走防止
+  # ============================================================
+  safety_controls:
+    - name: budget_per_cycle
+      spec: "1サイクル = 最大N件のgap処理（初期値N=5）、amplifier呼び出し上限、LLMトークン上限、外部API呼び出し上限を設定ファイルで管理。超過で即停止"
+    - name: gap_ledger
+      spec: |
+        gap_idをキーにした台帳テーブルを新設:
+          gap_ledger(gap_id, gap_type, status[open/filling/filled/failed/wontfix],
+                     attempt_count, last_attempt_at, cooldown_until)
+        同一gapへの再挑戦は attempt_count<=3 かつ cooldown経過後のみ。
+        3回失敗で wontfix にして人間キューへ。→ 無限リトライ防止
+    - name: depth_cap
+      spec: "amplifierの芋づるdepthはgap充填モードでは常に0または1。深掘りはdetectorが次サイクルで新gapとして検出する設計にし、展開の主導権をdetector側に固定 → 無限展開防止"
+    - name: quality_gate
+      spec: |
+        自動commitの条件を段階分け:
+          - evidence追加（既存claimへの根拠）: 4層検証全通過 + grade B以上 → 自動承認
+          - 新ノード/新エッジ: status='proposed' で登録し、policy engineの承認前チェック通過後も
+            人間承認キューに滞留。既存の独自証明保護ポリシーをそのまま適用
+        → 品質劣化防止。グラフの「骨格」は人間ゲート、「肉付け(evidence)」のみ全自動
+    - name: convergence_monitor
+      spec: |
+        サイクルごとに gap_count(type別) をeventログに記録。
+        2サイクル連続で open gap 総数が減少しない、または proposed滞留数が閾値超過
+        → ループ自動停止 + アラート。「埋めるほど穴が増える」発散を検知
+    - name: novelty_dedup
+      spec: "amplifier戻りのcontent_hashとclaim embedding類似で既存evidence/nodeとの重複を検査。重複はエッジ追加のみに変換（新ノード作らない）"
+    - name: kill_switch
+      spec: "全自動アクションはevent(append-only)に gap_id 付きで記録。1コマンドでループ停止 + 直近サイクルのproposedを一括reject可能に"
+
+  # ============================================================
+  # 5. MVP実装（1サイクル）
+  # ============================================================
+  mvp_implementation:
+    scope: "G1(evidence_gap)とG2(instance_gap)のみ。SQL検出のみ。LLM判定なし"
+    new_files:
+      - "gap_detector.py (~200行)"
+      - "gap_ledger テーブル追加 (mvp_store.py に1テーブル)"
+    flow: |
+      1. detect():   G1/G2のSQLを実行 → GapTicketリスト生成（優先度順、上位5件）
+      2. dedup():    gap_ledgerと照合、open以外をスキップ
+      3. fill():     各ticketについてテンプレートでtopic生成 →
+                     knowledge_amplifier(topic, depth=0) 呼び出し
+      4. commit():   G1→ evidence + support_assessment を自動登録（4層検証通過が条件）
+                     G2→ node/edge を status='proposed' で登録
+      5. redetect(): detect()を再実行し、before/after のgap数をeventに記録
+      6. report():   「G1: 4→1, G2: 3→3(proposed 2件が承認待ち)」形式で出力
+    cli: "python gap_detector.py --cycle 1 --budget 5 --dry-run"
+    tests:
+      - "契約テスト追加: gap_idの冪等性（同一gapを2回検出→ledger 1行）"
+      - "契約テスト追加: dry-runがストアを一切変更しない"
+      - "契約テスト追加: 検証不通過evidenceは登録されない"
+    existing_data_check: |
+      現状 19claim vs 9evidence なので G1 が確実に複数ヒットするはず。
+      初回サイクルの成功判定 = 「evidence数が9から増え、gap数が減る」
+
+  # ============================================================
+  # 6. OOP対応
+  # ============================================================
+  oop_mapping:
+    class_definition: "science/universe層ノード = クラス（不変条件はclaim、契約はFORMALIZED_BY先の形式化）"
+    instance: "object/practice層ノード = インスタンス"
+    instantiation: "HAS_SCOPED_INSTANCE エッジ = new演算子。G2_instance_gapは『インスタンスゼロのクラス』の検出 = 死んだ抽象の排除"
+    class_extraction: |
+      「クラスを増やす」= G3_abstraction_gap の充填:
+        複数の孤児インスタンス → LLMが共通構造を抽出 → 新science層ノード(proposed)
+        → ABSTRACTS_FROM で接続 = 帰納によるクラス昇格。
+        自動リファクタリングの「Extract Superclass」に相当
+    instance_matching: |
+      「インスタンスを突き合わせる」= 2つの操作:
+        (a) 同一クラス配下のインスタンス比較 → 片方だけ持つ属性/claimは
+            もう片方の G1/G2 gap 候補（差分がそのまま穴になる）
+        (b) 異クラスのインスタンスがembedding空間で近接 → G5_analogy_gap 候補
+            → SIMILAR_TO 提案 → さらにクラス統合(Extract Interface)候補へ
+    knowledge_extraction: |
+      「知識を抜く」= ask_knowledge.py の経路が
+        instance → HAS_SCOPED_INSTANCE⁻¹ → class → DERIVES_FROM → foundation
+      と辿れること。gap detectorはこの継承チェーンの断線(G4)を塞ぐ役 =
+      グラフ全体を「全ノードがfoundationまで根拠追跡可能」という不変条件に収束させる
+    summary: |
+      detector = 型検査器（未実装インターフェース・未使用クラス・断絶した継承を検出）
+      amplifier = コード生成器（検出された穴に対する実装候補を外部文献から合成）
+      policy engine = コンパイラの最終ゲート
+      この3者のループが「餌をやらなくても増える」の実体
+```
+
+**設計の要点を3つだけ補足:**
+
+1. **主導権はdetector側**: amplifierの芋づる展開(depth)を殺し、「深掘りは次サイクルの新gapとして検出される」構造にした。展開の速度・方向・停止がすべてdetectorの予算とledgerで制御可能になり、暴走の根を断てる。
+
+2. **骨格は人間、肉付けは自動**: evidence追加は4層検証が実質的な品質保証になるので全自動。ノード/エッジ（グラフ構造そのもの）は`proposed`止まり。既存policy engineをそのまま流用でき、追加実装が最小で済む。
+
+3. **gap_idの冪等性が生命線**: `sha256(gap_type + target)`を冪等キーにしたledgerがないと、失敗gapへの無限リトライと重複充填で即座に破綻する。MVPで最初に作るべきはdetector本体よりこの台帳。

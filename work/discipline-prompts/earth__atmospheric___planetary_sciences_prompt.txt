@@ -1,0 +1,48 @@
+You are creating a discipline knowledge index for: Earth, Atmospheric & Planetary Sciences
+Broad category: Natural Sciences
+Total courses: 2
+Total lecture units: 44
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 12.742 Marine Chemistry, Fall 2006 (Selected Lectures) (36 lectures)
+- Session 07: Marine Carbonate Chemistry
+- ** Session 07: Marine Carbonate Chemistry
+- Session 10: Non-conservative Processes in Estuaries/ Groundwater/Hydrothermal
+- Session 11: Gas Exchange Across the Air-sea Interface
+- Session 12: Atmospheric-ocean interaction
+- Session 13: Primary Production (1)
+- ** Session 13: Primary Production (1)
+- Session 14: Primary Production (2)
+- Session 17: Sinking Particles and Remineralization (2)
+- ** Session 17: Sinking Particles and Remineralization (2)
+- Session 18: Nov Quantifying Biogeochemical Fluxes and Rates
+- Session 19: Early Diagenesis I
+- Session 20: Early Diagenesis II and Sediment Distributions
+- Session 22: P Cycle
+- Session 25: Anthropogenic CO2 (2) and Review
+
+### MIT RES.12-003 Fluid Motions, Sediment Transport, and Current-Generated Sedimentary Structures, Fall 2025 (8 lectures)
+- Lecture 1: Fluid Dynamics
+- Lecture 2: Mechanics of Sediment Transport
+- Lecture 3: Bed Forms
+- Lecture 4: Sedimentary Structures Produced by Sediment Transport
+

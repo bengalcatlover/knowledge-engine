@@ -1,0 +1,2 @@
+decision: revise
+reason: C1/C2は添付引用で追跡でき、未検証事項・応用仮説も明確に分離されているが、主張台帳が card_revision: v2 のままでレビュー対象のv3と版が不整合であり、カードのメタデータも旧判定(status/review_decision: defer)を保持している。台帳と front matter を v3 に整合させれば承認可能な、具体的に修正可能な不備である。

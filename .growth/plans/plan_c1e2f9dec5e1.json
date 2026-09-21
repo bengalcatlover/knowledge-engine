@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T09:07:48.880465+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_5cb61d0589ba659f",
+      "question_id": "q_987e9b9109f927b2",
+      "question": "健康習慣を定着させる試みで、ナッシュ均衡と戦略的相互作用は何を説明し、どこで使えないか",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_987e9b9109f927b2",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0003"
+      ],
+      "external_query": null
+    },
+    {
+      "gap_id": "gap_20e966ac919ef9a2",
+      "question_id": "q_28f9d1d001f5938c",
+      "question": "ナッジとデフォルト効果とは何で、近い概念と何が違うか",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_28f9d1d001f5938c",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0005"
+      ],
+      "external_query": null
+    },
+    {
+      "gap_id": "gap_75fcb90276a079c5",
+      "question_id": "q_0fcfd6c706051ee3",
+      "question": "複数のAIエージェントが同じ仕事を避けながら、停止や通信遅延があっても担当を決めるには何が必要か。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_0fcfd6c706051ee3",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存草案のcanonical_nameと英語探索語が明確に一致した。新規カードではなく根拠レビューへ送る。",
+      "related_cards": [
+        "K-0016"
+      ],
+      "external_query": "distributed consensus fault tolerance"
+    }
+  ],
+  "plan_id": "plan_c1e2f9dec5e1",
+  "input_hash": "c1e2f9dec5e18f6c7e2314421729f8e30becc7c09593ea14711a0deeaa541532"
+}

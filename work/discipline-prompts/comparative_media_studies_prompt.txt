@@ -1,0 +1,98 @@
+You are creating a discipline knowledge index for: Comparative Media Studies
+Broad category: Arts & Humanities
+Total courses: 6
+Total lecture units: 120
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT CMS.595 Learning, Media, and Technology, Spring 2024 (20 lectures)
+- 02. How People Learn: Cognitive Load Theory
+- 03. How People Learn: Situated Learning
+- 07. EdTech Before the Internet
+- 09. Massive Open Online Courses (MOOCs)
+- 10. Intelligent Tutors
+- 12. Interest-Driven Learning
+- 14. Learning Games
+- 16. Start-Up and the Curse of the Familiar
+- 18. Trap of Routine Assessment
+- ** 18. Trap of Routine Assessment
+- 20. The Toxic Power of Data and Experiment
+
+### MIT CMS.608 Game Design, Spring 2014 (48 lectures)
+- 1-1: Introduction, Overview, and Syllabus for Game Design
+- 1-2: Game Mechanics
+- 10. History of American Board Games
+- 11. Defining Game, Play, and Sport
+- 13. Cybernetics and Multiplayer
+- 14. Adding and Cutting Mechanics
+- 15. Assignment 3
+- 16. The Simulation Gap & Assignment 3 Pitches
+- 17. Guest Lectures by Professional Designers
+- 19. Space Control
+- 2-1: Meaningful Decisions in Gameplay
+- 2-2: Brainstorming
+- 20. Cooperative Games
+- 21. Social Play
+- 22. Changing Rules I
+- 23. Changing Rules II
+- 24. Indie Games and Aesthetics with Jesper Juul
+- 3-1: Prototyping
+- 3-2: Altering Rules & Playtesting
+- 4. Mechanics, Dynamics, Aesthetics - The MDA Framework
+- 5. Imperfect Information and Dice
+- 6. Constraints and Usability
+- 7. Aesthetics and Player Experience
+- 9. Randomness and Player Choice
+
+### MIT CMS.608 ⧸ CMS.864 Game Design, Fall 2010 (34 lectures)
+- Lecture 12: Knowing Your Players
+- Lecture 18: Puzzles
+- Lecture 20: What is Intellectual Property?
+- Lecture 21: Games as Teaching Tools
+- Lecture 23: Creating Sequels
+- Lecture 25: Fiction and Stories in Games
+- Lecture 27: Games as Art
+- Lecture 2: Iterative Design
+- Lecture 30: Clients for Assignment 3 Visit
+- Lecture 31: Assignment 3 Brainstorming and Team Formation
+- Lecture 32: Live Action Games
+- Lecture 33: Ethics in Games
+- Lecture 3: Where Do Game Ideas Come From?
+- Lecture 4: Prototyping
+- Lecture 5: Assignment 1 Brainstorming and Team Formation
+- Lecture 6: The Social Function of Games
+- Lecture 9: Strategy, Skill, and Chance, Part 2
+
+### MIT CMS.611J Creating Video Games, Fall 2014 (4 lectures)
+- Client Interview: Pablo Suarez
+- Student Interview: Matthew Susskind
+
+### MIT CMS.930 Media, Education, and the Marketplace (2 lectures)
+- Lec 9 | MIT CMS.930 Media, Education and the Marketplace
+
+### MIT CMS.S63 Playful Augmented Reality Audio Design Exploration, Fall 2019 (12 lectures)
+- Bose AR Unity Workshop
+- Contributory Audio AR: Practice and Technology
+- Example Seminar Discussion (CMS.S63 Playful Augmented Reality Audio Design Exploration)
+- Student Project: 'Going in Blind'
+- Student Project: 'INMUSE'
+- Student Project: 'Night Hunter'
+

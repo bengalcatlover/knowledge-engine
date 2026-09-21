@@ -1,0 +1,82 @@
+{
+  "verification_id": "V-0100@1",
+  "timestamp": "2026-09-12T08:58:11.584887+00:00",
+  "code_hash": "d160b64258fe1763",
+  "code_path": "C:\\Users\\akira\\OneDrive\\Desktop\\clauce\\knowledge-engine\\mvp_auction_sim.py",
+  "second_price": {
+    "total_scenarios": 36,
+    "deviations_count": 0,
+    "verdict": "NO_PROFITABLE_DEVIATION",
+    "deviations": []
+  },
+  "first_price_mutation": {
+    "total_scenarios": 36,
+    "deviations_count": 5,
+    "verdict": "MUTATION_DETECTED",
+    "deviations": [
+      {
+        "player": 2,
+        "value": 2,
+        "other_bid": 0,
+        "truthful_bid": 2,
+        "deviated_bid": 1,
+        "truthful_utility": 0,
+        "deviated_utility": 1,
+        "gain": 1
+      },
+      {
+        "player": 1,
+        "value": 1,
+        "other_bid": 0,
+        "truthful_bid": 1,
+        "deviated_bid": 0,
+        "truthful_utility": 0,
+        "deviated_utility": 1.0,
+        "gain": 1.0
+      },
+      {
+        "player": 1,
+        "value": 2,
+        "other_bid": 0,
+        "truthful_bid": 2,
+        "deviated_bid": 0,
+        "truthful_utility": 0,
+        "deviated_utility": 2.0,
+        "gain": 2.0
+      },
+      {
+        "player": 1,
+        "value": 2,
+        "other_bid": 0,
+        "truthful_bid": 2,
+        "deviated_bid": 1,
+        "truthful_utility": 0,
+        "deviated_utility": 1,
+        "gain": 1
+      },
+      {
+        "player": 1,
+        "value": 2,
+        "other_bid": 1,
+        "truthful_bid": 2,
+        "deviated_bid": 1,
+        "truthful_utility": 0,
+        "deviated_utility": 1.0,
+        "gain": 1.0
+      }
+    ]
+  },
+  "conclusions": {
+    "Q1_answer": "指定モデル（入札者2人、評価額{0,1,2}、私的価値、準線形効用）において、第二価格封印入札では正直入札からの有利な逸脱は存在しない。正直入札は弱支配戦略であり、正直入札プロファイルはナッシュ均衡である。",
+    "H1_status": "not_run",
+    "limitations": [
+      "有限離散モデル({0,1,2})のみ。連続評価額への拡張は未検証",
+      "入札者2人のみ。n>=3への拡張は別途検証が必要",
+      "人間への効果(H1)は実験未実施のため未検証"
+    ]
+  },
+  "pass_criteria": {
+    "no_profitable_deviation": true,
+    "mutation_detected": true
+  }
+}

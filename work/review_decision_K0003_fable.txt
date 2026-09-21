@@ -1,0 +1,13 @@
+decision: revise
+
+理由:
+1. 定義・メカニズム・境界条件の記述は正確で、レビュー票の確認点1(最適反応・均衡・社会的最適の区別)と確認点2(完全情報逐次ゲームの過剰一般化なし)は本文が満たしている。
+2. レビュー票の確認点4が指摘する通り、Source Referencesが講義群ID(`C-MIT-14.12`)のみで、レビュー票に確認済みの断片URL・引用が存在するのに本文へ反映されていない。
+3. Non-Examplesに「단なる」という混入文字(韓国語混在の表記エラー)があり、そのまま承認できない。
+4. 確認点3について、AIエージェント・価格競争への言及はBusiness TransferにCaveat付きで書かれているが、Definition内のAI応用文は講義由来の事実と応用提案の区別が明示されていない。
+5. 以上はいずれも内容の誤りではなく最小修正で解消可能なため、`defer`ではなく`revise`が妥当。
+
+最小限の修正:
+- Non-Examplesの「단なる」を「単なる」に修正する。
+- Source Referencesに、レビュー票で確認済みの2断片(Lecture 5: Nash Equilibrium、Lecture 8: Backward Induction)のURLと引用文を主張単位で追記する。
+- Definition末尾のAIシステムへの言及に「応用提案であり講義由来の主張ではない」旨の注記を加える(またはBusiness Transferへ移動する)。

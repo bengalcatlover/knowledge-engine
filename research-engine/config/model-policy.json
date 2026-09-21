@@ -1,0 +1,26 @@
+{
+  "dry_run": false,
+  "policy_version": 1,
+  "models": {
+    "concept_extraction": "gemini:gemini-3.1-flash-lite",
+    "claim_extraction": "gemini:gemini-3.1-flash-lite",
+    "counterexample_review": "anthropic:claude-haiku-4-5",
+    "structured_synthesis": "openai:gpt-5.6-luna"
+  },
+  "routing": {
+    "one_model_per_task": true,
+    "high_cost_models_enabled": false,
+    "retry_limit": 1,
+    "escalation": "disabled"
+  },
+  "budget_usd": {
+    "per_run": 0.25,
+    "daily": 1.0,
+    "monthly": 20.0
+  },
+  "limits": {
+    "max_sources_per_question": 5,
+    "max_search_rounds": 2,
+    "max_unreviewed_runs": 10
+  }
+}

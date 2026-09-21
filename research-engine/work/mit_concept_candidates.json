@@ -1,0 +1,46 @@
+{
+  "candidates": [
+    {
+      "label": "Design Structure Matrix (DSM) for Agent Orchestration",
+      "domain": "Systems Engineering",
+      "why_relevant": "Provides a methodology to map and quantify information flow interfaces between AI agents, helping identify bottlenecks and failure points in agentic workflows.",
+      "source_ids": ["mitocw:9AtMQqCBdhw"],
+      "research_questions": ["How can DSM be used to visualize and optimize communication latency in multi-agent systems?", "Can a DSM approach identify redundant agent interdependencies to reduce compute overhead?"]
+    },
+    {
+      "label": "Interface Control Documents (ICD) for Agent Interoperability",
+      "domain": "Systems Engineering",
+      "why_relevant": "Standardizing interface definitions (ICDs) between agents or external services prevents systemic failures and simplifies integration of heterogeneous agent components.",
+      "source_ids": ["mitocw:9AtMQqCBdhw"],
+      "research_questions": ["What is the minimum documentation set required to reliably scale agent-to-agent interactions?", "How can automated interface definitions reduce integration errors in autonomous workflows?"]
+    },
+    {
+      "label": "Goal-Tree and Rule-Based Reasoning",
+      "domain": "AI Architecture",
+      "why_relevant": "Provides a structured framework (goal trees, forward/backward chaining) for deterministic agent decision-making, which can be more cost-efficient than purely probabilistic LLM approaches.",
+      "source_ids": ["mitocw:leXa7EKUPFk"],
+      "research_questions": ["How can rule-based expert systems be hybridized with LLM-based agents to improve reliability and reduce tokens?", "Can goal trees simplify state management in long-running agent workflows?"]
+    },
+    {
+      "label": "Rapid Marketplace Experimentation",
+      "domain": "Product Strategy",
+      "why_relevant": "Advocates for short iteration cycles (6 months) and failing fast, which is critical for finding cost-effective, high-value AI agent applications without over-investing in long-term plans.",
+      "source_ids": ["mitocw:vClihWycysk"],
+      "research_questions": ["How can 'fail fast' metrics be applied to evaluate the economic viability of new agent workflows?", "What constitutes a 'low-fidelity' prototype for a complex multi-agent system?"]
+    },
+    {
+      "label": "Performance-Oriented Code Review Cycles",
+      "domain": "Software Engineering",
+      "why_relevant": "The use of targeted peer-reviews and beta submissions for performance optimization is a transferable practice for ensuring agent code efficiency and maintainability.",
+      "source_ids": ["mitocw:nukI0huUEiM"],
+      "research_questions": ["Can a 'mentor-based' peer-review process be adapted for LLM-generated agent code to reduce technical debt?", "What metrics should be prioritized in automated performance reviews for AI-agent codebases?"]
+    },
+    {
+      "label": "Canonical Interface Categorization",
+      "domain": "Systems Engineering",
+      "why_relevant": "Classifying agent interactions into physical, energy, mass, or information flows helps in designing resilient architectures that handle information-related failure modes explicitly.",
+      "source_ids": ["mitocw:9AtMQqCBdhw"],
+      "research_questions": ["How can 'information flow' bottlenecks between agent reasoning steps be identified?", "Are there specific failure modes associated with 'asymmetric' information flows in agent chains?"]
+    }
+  ]
+}

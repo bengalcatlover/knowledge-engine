@@ -1,0 +1,159 @@
+You are creating a discipline knowledge index for: Brain & Cognitive Sciences
+Broad category: Natural Sciences
+Total courses: 9
+Total lecture units: 290
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 9.00 Introduction To Psychology, Fall 2004 (2 lectures)
+- 18. Freud and Fairy Tales (audio only)
+
+### MIT 9.00SC Introduction to Psychology, Fall 2011 (2 lectures)
+- Lec 12 | MIT 9.00SC Introduction to Psychology, Spring 2011
+
+### MIT 9.04 Sensory Systems, Fall 2013 (30 lectures)
+- 10. The neural control of visually guided eye movements 1
+- 11. The neural control of visually guided eye movements 2
+- 12. Motion perception and pursuit eye movements
+- 13. Review: The visual and oculomotor systems
+- 14. Sound: External, middle and inner ears
+- 15. Hair cells
+- 16. Auditory nerve; psychophysics of frequency resolution
+- 17. Cochlear nucleus: Tonotopy, unit types and cell types
+- 18. Hearing loss; demo by Sheila Xu, cochlear implant user
+- 19. Descending systems and reflexes
+- 20. Sound localization 1: Psychophysics and neural circuits
+- 21. Sound localization 2: Superior olivary complex and IC
+- 22. Auditory cortex 1: Physiology and sound localization
+- 23. Auditory cortex 2: Language; bats and echolocation
+- 9. Illusions and visual prosthesis
+
+### MIT 9.13 The Human Brain, Spring 2019 (34 lectures)
+- 1. Introduction to the Human Brain
+- 10. Development, Nature & Nurture I
+- 11. Development, Nature & Nurture II (2018)
+- 13. Number
+- 15. Hearing and Speech
+- 16. Music
+- 18. Language I
+- 2. Neuroanatomy
+- 20. Theory of Mind & Mentalizing
+- 21. Brain Networks
+- 24. Attention and Awareness
+- 4. Cognitive Neuroscience Methods I
+- 5. Cognitive Neuroscience Methods II
+- 6. Introduction to the Human Brain
+- 7. Category Selectivity, Controversies, and MVPA
+- 8. Navigation I
+- 9. Navigation II
+
+### MIT 9.14 Brain Structure and Its Origins, Spring 2014 (6 lectures)
+- 15. Motor systems and brain states, part 1
+- 2. Introduction: methods and primitive cellular activities
+- 38. Plasticity in brain connections
+
+### MIT 9.20 Animal Behavior, Fall 2013 (10 lectures)
+- Lec11: Lorenz on fundamentals of ethology, part 3
+- Lec12: Evolution and the development and plasticity of behavior, part 1
+- Lec20: Sociobiology
+- Lec2: Introduction to ethology
+- Lec30: Konrad Lorenz on learning, part 3
+
+### MIT 9.35 Perception, Spring 2024 (46 lectures)
+- 10: Mid-Level Vision
+- 11: Mid-Level Vision (cont'd)
+- 12: Lightness Perception, Color Perception
+- 13: Color Perception (cont'd), Motion Perception
+- 14: Motion Perception (cont'd)
+- 15: Depth Perception
+- 16: Depth Perception (cont'd)
+- 17: The Generic Viewpoint Assumption; Object Recognition
+- 18: Object Recognition (cont'd), Texture Perception
+- 19: Texture Perception (cont'd)
+- 1: Introduction to Perception
+- 20: Attention
+- 21: Attention (cont'd)
+- 22: Attention (cont'd), Touch
+- 23: Olfaction and Gustation
+- 2: Frequency Selectivity and Nonlinearity in Hearing
+- 3: Sound Localization, Pitch, Timbre, and Loudness / Psychophysical Methods
+- 4: Pitch Perception and Scene Analysis
+- 5: Auditory Scene Analysis
+- 6: Auditory Scene Analysis (cont'd) and Speech Perception
+- 7: The Eye and Retina
+- 8: The Eye and the Retina (cont'd)
+- 9: Lateral Geniculate Nucleus (LGN) / Primary Visual Cortex (V1)
+
+### MIT 9.40 Introduction to Neural Computation, Spring 2018 (40 lectures)
+- 10: Time Series - Intro to Neural Computation
+- 11: Spectral Analysis Part 1 - Intro to Neural Computation
+- 12: Spectral Analysis Part 2 - Intro to Neural Computation
+- 13: Spectral Analysis Part 3 - Intro to Neural Computation
+- 14: Rate Models and Perceptrons - Intro to Neural Computation
+- 15: Matrix Operations - Intro to Neural Computation
+- 16: Basis Sets - Intro to Neural Computation
+- 17: Principal Components Analysis_ - Intro to Neural Computation
+- 18: Recurrent Networks - Intro to Neural Computation
+- 19: Neural Integrators - Intro to Neural Computation
+- 1: Course Overview and Ionic Currents - Intro to Neural Computation
+- 20: Hopfield Networks - Intro to Neural Computation
+- 2: Resistor Capacitor Circuit and Nernst Potential - Intro to Neural Computation
+- 3: Resistor Capacitor Neuron Model - Intro to Neural Computation
+- 4: Hodgkin-Huxley Model Part 1 - Intro to Neural Computation
+- 5: Hodgkin-Huxley Model Part 2 - Intro to Neural Computation
+- 6: Dendrites - Intro to Neural Computation
+- 7: Synapses - Intro to Neural Computation
+- 8: Spike Trains - Intro to Neural Computation
+- 9: Receptive Fields - Intro to Neural Computation
+
+### MIT RES.9-003 Brains, Minds and Machines Summer Course, Summer 2015 (120 lectures)
+- Alon Baram & Laurie Bayet: Learning to Recognize Digits and Faces from Few Examples
+- Danny Jeck: Impact of Attention on Cortical Models of Visual Recognition
+- David Rolnick & Ishita Dasgupta: Modeling Dynamic Memory with Hopfield Networks
+- Lecture 0: Tomaso Poggio - Introduction to Brains, Minds, and Machines
+- Lecture 1.1: Nancy Kanwisher - Human Cognitive Neuroscience
+- Lecture 1.2: Gabriel Kreiman - Computational Roles of Neural Feedback
+- Lecture 1.3: James DiCarlo - Neural Mechanisms of Recognition Part 1
+- Lecture 1.4: Neural Mechanisms of Recognition, Part 2
+- Lecture 1.5: Winrich Freiwald - Primates, Faces, & Intelligence
+- Lecture 1.6: Matt Wilson - Hippocampus, Memory, & Sleep Part 1
+- Lecture 1.7: Hippocampus, Memory, & Sleep, Part 2
+- Lecture 2.1: Josh Tenenbaum - Computational Cognitive Science Part 1
+- ** Lecture 2.1: Josh Tenenbaum - Computational Cognitive Science Part 1
+- Lecture 2.2: Josh Tenenbaum - Computational Cognitive Science Part 2
+- ** Lecture 2.2: Josh Tenenbaum - Computational Cognitive Science Part 2
+- Lecture 2.3: Josh Tenenbaum - Computational Cognitive Science Part 3
+- Lecture 3.1: Liz Spelke - Cognition in Infancy (Part 1)
+- Lecture 3.2: Cognition in Infancy, Part 2
+- Lecture 3.3: Alia Martin - Developing an Understanding of Communication
+- Lecture 3.4: Laura Schulz - Childrens' Sensitivity to Cost and Value of Information
+- Lecture 3.5: Josh Tenenbaum - The Child as Scientist
+- ** Lecture 3.5: Josh Tenenbaum - The Child as Scientist
+- Lecture 4.1: Shimon Ullman - Development of Visual Concepts
+- Lecture 4.2: Shimon Ullman - Atoms of Recognition
+- Lecture 4.3. Aude Oliva - Predicting Visual Memory
+- Lecture 5.1: Vision and Language
+- Lecture 5.2: Andrei Barbu - From Language to Vision and Back Again
+- Lecture 5.3: Patrick Winston - Story Understanding
+- Lecture 6.1: Nancy Kanwisher - Introduction to Social Intelligence
+- Lecture 6.2: Ken Nakayama - The Social Mind
+- ... and 39 more
+

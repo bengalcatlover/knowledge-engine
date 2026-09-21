@@ -1,0 +1,54 @@
+You are creating a discipline knowledge index for: Lincoln Lab
+Broad category: Engineering
+Total courses: 2
+Total lecture units: 48
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT RES.LL-004 LL EduCATE： Introduction to Engineering Concepts, Spring 2022 (8 lectures)
+- Experiment: Bluetooth Hide and Seek
+- Experiment: Clausewitzian Chess
+- Experiment: Filtration Lab
+- Introduction for LL EduCATE: Introduction to Engineering Concepts
+
+### MIT RES.LL-005 Mathematics of Big Data and Machine Learning, IAP 2020 (40 lectures)
+- 0. Examples Demonstration
+- 0. Introduction
+- 1. Artificial Intelligence and Machine Learning
+- 1. Examples Demonstration
+- 1. Using Associative Arrays
+- 2. Cyber Network Data Processing; AI Data Architecture
+- 2. Examples Demonstration
+- 2. Group Theory
+- 3. Entity Analysis in Unstructured Data
+- 3. Examples Demonstration
+- 4. Analysis of Structured Data
+- 4. Examples Demonstration
+- 5. Examples Demonstration
+- 5. Perfect Power Law Graphs -- Generation, Sampling, Construction, and Fitting
+- ** 5. Perfect Power Law Graphs -- Generation, Sampling, Construction, and Fitting
+- 6. Bio Sequence Cross Correlation
+- 6. Examples Demonstration
+- 7. Examples Demonstration
+- 7. Kronecker Graphs, Data Generation, and Performance
+- Demonstration 7
+- Lecture: Mathematics of Big Data and Machine Learning
+

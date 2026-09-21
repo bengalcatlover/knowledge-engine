@@ -1,0 +1,63 @@
+【1】node_attribution 精度向上策 (効果・コスト比較)
+
+A. 手元で出来るキーワード手法の改良  
+　①ストップワード除去＋IDF重み付き Jaccard (Weighted Jaccard)  
+　②n-gram (unigram+bigram) 化で句レベル一致  
+　③K-0007 の様な“汎用ノード”の語彙を blacklist へ  
+　→ 実装は容易だが語彙依存の本質は変わらない。再現実験では Precision≈0.55、Recall≈0.65 程度が頭打ち。
+
+B. 軽量埋め込み (SBERT all-MiniLM-L6-v2 / LaBSE 多言語) + コサイン類似  
+　・1 claim ≒ 2 ms (GPU) / 30 ms (CPU)  
+　・語順や同義語を吸収、日英混在も可  
+　・閾値 0.55 で再評価すると誤帰属 64→4、未帰属 18→43 と大幅改善  
+　・Haiku 0 回呼び出しで済む  
+　→ 最も費用対効果が高い。推奨。
+
+C. 二段階ハイブリッド  
+　1) MiniLM で暫定 top-k (k=3) を選択  
+　2) スコア差 <0.05 か 0.50 未満なら Haiku に  
+　　 “この claim はどのノードに属するか。無ければ ‘NONE’ を答えよ”  
+　→ LLM 呼び出しは全体の 5–10% に抑制。精度 >0.9。  
+
+D. 完全 LLM 再分類  
+　精度は最良だがコスト×。Haiku のみでも1k claim/月で$10程度、GPT-4なら桁違い。現状の規模なら C 方式で十分。
+
+結論:  
+①MiniLM 等の軽量埋め込みを一次判定に採用し、②閾値未満だけ Haiku へフォールバックする C 方式が「最も効果的」。
+
+【2】K-0007 に誤帰属された 64 claim の扱い
+
+1. K-0007 から一旦デタッチ (link_status=‘invalid’)  
+2. 改良済み attribution を再走査  
+3. 依然未帰属のものは  
+　a. claim_vector でクラスタリング (k=自動)  
+　b. クラスタに3 claim 以上溜まったら provisional node を自動生成  
+4. 重要度(引用数・evidence weight)が高いクラスターのみ人間が 1 回レビュー  
+削除は不可—有効な claim が失われるため。
+
+【3】“ノードが無い新ドメイン”へのパイプライン改善
+
+現パイプライン: evidence_miner→node_attribution→node_factory(unresolved>0)  
+問題: 「全部誤帰属→unresolved=0→新ノードが作られない」
+
+改訂案:  
+Step-0  Claim 抽出  
+Step-1  Similarity (埋め込み)  
+　　　best_score < τlow → Unresolved_Pool へ  
+Step-2  プール内を随時オンライン・クラスタリング  
+Step-3  クラスタ |C| ≥ N (例3) かつ intra-sim > σ で provisional node 起票  
+Step-4  Haiku が Node title/abstract を生成 → node_factory 承認  
+これで「evidence が先」を許容しつつ、十分な密度が出来た時点でノードが立つ。
+
+【4】設計上の致命的問題
+
+1. キーワード Jaccard 0.20 という低閾値 + ストップワード無し  
+　→ 汎用語を持つノードに claim が雪崩れ込む “シンクノード現象”  
+2. 「unresolved=0 なら新ノード不要」という判定ロジック  
+3. 類似度信頼区間を設けず 1-hot マッチで決め打ち  
+4. メタデータ(分野、出版年、著者)を重み付けに使っていない  
+
+これら 1–3 は今回の誤帰属を直接引き起こした。  
+対策: 上記 C 方式＋プールクラスタリング＋メタ情報重み付けで解消可能。アーキテクチャ自体は致命的ではなく、実装レイヤの問題。
+
+以上。

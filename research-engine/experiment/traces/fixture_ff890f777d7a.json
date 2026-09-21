@@ -1,0 +1,72 @@
+{
+  "run_id": "fixture_ff890f777d7a",
+  "experiment_id": "agent-interface-pilot-v1",
+  "executed_at": "2026-09-08T08:31:29.459551+00:00",
+  "limits": {
+    "max_attempts": 2,
+    "timeout_seconds": 30,
+    "max_agent_calls": 4
+  },
+  "traces": [
+    {
+      "condition": "baseline",
+      "agent_calls": 0,
+      "tool_calls": 0,
+      "retries": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost_usd": 0,
+      "result": {
+        "count": 3,
+        "sum": 15
+      },
+      "success": true,
+      "note": "fixture-only; no model or condition-specific optimization was invoked"
+    },
+    {
+      "condition": "dsm_only",
+      "agent_calls": 0,
+      "tool_calls": 0,
+      "retries": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost_usd": 0,
+      "result": {
+        "count": 3,
+        "sum": 15
+      },
+      "success": true,
+      "note": "fixture-only; no model or condition-specific optimization was invoked"
+    },
+    {
+      "condition": "icd_only",
+      "agent_calls": 0,
+      "tool_calls": 0,
+      "retries": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost_usd": 0,
+      "result": {
+        "count": 3,
+        "sum": 15
+      },
+      "success": true,
+      "note": "fixture-only; no model or condition-specific optimization was invoked"
+    },
+    {
+      "condition": "dsm_and_icd",
+      "agent_calls": 0,
+      "tool_calls": 0,
+      "retries": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost_usd": 0,
+      "result": {
+        "count": 3,
+        "sum": 15
+      },
+      "success": true,
+      "note": "fixture-only; no model or condition-specific optimization was invoked"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+あなたは世界モデル知識エンジンの設計レビュアーです。以下の問題を分析し、修正方針を提案してください。
+
+## 問題: evidence_minerのノード帰属精度が低く、新ドメインのclaimが既存ノードに誤帰属している
+
+### 状況
+- メカニズムデザイン（VCG, GSP, 収益同値定理）、Bayesian persuasion、rational inattentionのevidence 20件を投入
+- evidence_minerが14件のevidenceから46件のnew claimを抽出
+- しかし **全claimが既存ノードに帰属** → node_factoryのunresolved=0 → 新ノード生成ゼロ
+- 特にK-0007（RCT/Fisher 1935、ランダム化比較試験）に64件のclaimが集中
+  - K-0007に帰属されたclaim例:
+    - "Freeze-out mergers increase the raider's expected profit"
+    - "The rational inattention model implies that only a subset of alternatives will be considered"
+    - "Scoring method tie probability decreases as number of voters increases"
+  - これらはK-0007（RCT）とは無関係
+
+### 現在のnode_attribution手法
+- キーワードベースのJaccard類似度（双方向 + subject重視）
+- 閾値 0.20 以上でマッチ
+- JP-EN bilingual対応（JA_EN_MAP, TITLE_EN_MAP）
+- ストップワード除去なし
+
+### 既に適用した暫定修正
+- confidence < 0.30 の帰属はunresolved扱いにした
+
+### 質問
+
+1. **node_attribution精度向上のために最も効果的な修正は何か？** キーワード手法の改善、embedding導入、LLM再分類、その他の選択肢を比較してください。
+2. **K-0007に誤帰属された64件のclaimをどう扱うべきか？** 全削除→再抽出、再帰属のみ、手動レビュー、その他。
+3. **新ドメインのノードが存在しない状態でevidence投入する場合、evidence_miner → node_factory のパイプラインはどう改善すべきか？** 「ノードが先かevidenceが先か」の鶏と卵問題への対処。
+4. **致命的な設計上の問題はあるか？**
+
+### 制約
+- 19ノード→100ノードへの成長過程にある
+- LLMコスト最小化（Haikuで済むならHaiku）
+- evidence-backed原則は維持（LLM直感はHYP隔離）
+
+簡潔に、根拠付きで回答してください。

@@ -1,0 +1,65 @@
+知識OS（根拠追跡可能な世界モデル）にgap detectorを設計したい。以下の現状と要件を踏まえて、具体的な設計を提案せよ。
+
+## 現状
+
+### MVPストア
+- 19ノード / 19エッジ / 9エビデンス（2ドメイン: 第二価格オークション + 情報理論）
+- 5層構造: foundation → science → universe → object → practice
+- policy engine: stale伝播、承認前チェック、独自証明保護
+- 契約テスト9本全通過
+
+### 知識増幅器 (knowledge_amplifier.py) — 実装済み
+- LLMにトピックを投げてclaim+DOI付き出典を抽出
+- 4層検証パイプライン:
+  1. CrossRef — DOI実在確認
+  2. OpenAlex — フォールバック + 引用数
+  3. Semantic Scholar — abstract取得 + claim意味一致判定
+  4. Unpaywall — OA PDF URL
+- 芋づる展開（depth制御で関連トピックを再帰的に探索）
+- 検証通過したevidenceをMVPストアに自動登録
+
+### 検索→根拠追跡→回答 (ask_knowledge.py) — 実装済み
+- 質問 → BM25検索 → MVPノード解決 → claim@revision → evidence locator → LLM回答
+
+### スキーマ (mvp_store.py)
+- node (id, revision, layer, type, subtype, status, data)
+- claim (claim_id, node_id, node_revision, statement, kind, epistemic_status)
+- edge (edge_id, type, from_node, from_revision, to_node, to_revision, ...)
+- evidence (evidence_id, kind, source_uri, locator, content_hash, reliability_grade)
+- support_assessment (evidence_id → target_node, target_claim, support_role)
+- event (append-only audit log)
+
+### エッジ型
+- 構造的: ABSTRACTS_FROM, DERIVES_FROM, FORMALIZED_BY
+- 参照的: HAS_SCOPED_INSTANCE, GUIDES_TEST_DESIGN, REFINES, SIMILAR_TO
+- ワークフロー: ABOUT, PLANS, EXECUTES_ON, PRODUCES, ANSWERS
+
+## ユーザーの意図
+
+「MITは知識のきっかけに過ぎない。餌をやらなくても知識を勝手に増やし、クラスを増やし、インスタンスを突き合わせて、知識を抜く」
+
+つまり:
+1. 既存グラフの「穴」を自動検出する
+2. 穴を埋めるためにknowledge_amplifierに自動でトピックを投げる
+3. 返ってきた検証済みevidenceでノード/エッジを自動追加
+4. 新しいノードからさらに穴が見えて、ループが回る
+
+## 質問
+
+1. gap detectorが検出すべき「穴」の種類を列挙し、優先順位をつけよ
+2. 各種類の穴をどうやって検出するか（SQLクエリ、グラフ走査、LLM判定のどれが適切か）
+3. 検出した穴からknowledge_amplifierへの入力（トピック文字列）をどう生成するか
+4. 自律ループの暴走防止（品質劣化、無限展開、コスト爆発）をどう制御するか
+5. 穴の検出→充填→再検出のサイクルを1回まわすMVPとして、最小の実装は何か
+6. OOP的な視点：「クラスを増やし、インスタンスを突き合わせる」はこの設計でどう表現されるか
+
+出力形式:
+```yaml
+gap_detector_design:
+  gap_types: [...]
+  detection_methods: [...]
+  amplifier_integration: ...
+  safety_controls: [...]
+  mvp_implementation: ...
+  oop_mapping: ...
+```

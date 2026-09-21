@@ -1,0 +1,105 @@
+# Edge Schema — v1.0
+# An edge is a directed, typed, cited relationship between any two artifacts.
+# Edges are the connective tissue of the knowledge graph. Every edge is a claim
+# in itself and must be verifiable or explicitly flagged as a hypothesis.
+#
+# Edges are NEVER implied — they must be explicitly created. The absence of an edge
+# does not mean the relationship does not exist; it means it has not been asserted yet.
+#
+# Design note (from Fable 5 and GPT-6 review):
+# Edge separation from concept cards prevents concept cards from becoming tangled.
+# A concept card should be understandable in isolation; edges provide the graph layer.
+
+$schema: edge/v1.0
+
+# ---------------------------------------------------------------------------
+# Identity
+# ---------------------------------------------------------------------------
+
+edge_id: ""              # (required) E-NNNN — read from _meta/counters.yaml before writing
+
+# ---------------------------------------------------------------------------
+# Graph Structure
+# ---------------------------------------------------------------------------
+
+from_node: ""            # (required) ID of the source artifact.
+                         # Any valid artifact ID: K-*, P-*, CL-*, D-*, F-*, C-*, E-*
+                         # Edges can connect edges to form meta-assertions.
+
+to_node: ""              # (required) ID of the target artifact.
+                         # Same ID space as from_node.
+
+relation_type: ""        # (required) The semantic type of this connection.
+                         # Allowed values:
+                         #   "supports"          — from_node provides evidence for to_node
+                         #   "constrains"        — from_node limits the validity of to_node
+                         #   "contradicts"       — from_node conflicts with to_node
+                         #   "operationalizes"   — from_node gives concrete form to to_node
+                         #                         (e.g., an algorithm operationalizes a principle)
+                         #   "analogy"           — from_node and to_node are structurally similar
+                         #                         in a useful but non-identical way
+                         #   "gap"               — from_node reveals a missing piece in to_node
+                         #   "example"           — from_node is a concrete instance of to_node
+                         # Do not invent new relation types without updating this schema.
+
+# ---------------------------------------------------------------------------
+# Claim Content
+# ---------------------------------------------------------------------------
+
+claim: ""                # (required) The specific assertion this edge makes, in one sentence.
+                         # Do not just restate the relation_type — say WHAT the relationship is.
+                         # Good: "Exploration bonus in EECS 6.034 lecture 9 directly supports
+                         #        the boundary condition that epsilon-greedy breaks in non-stationary
+                         #        environments (K-0012 boundary_conditions[2])."
+                         # Bad:  "This supports that."
+
+# ---------------------------------------------------------------------------
+# Evidence
+# ---------------------------------------------------------------------------
+
+source_locator: ""       # (required) Where in the source artifact the evidence lives.
+                         # Format: "{artifact_id}#{section}" or "{artifact_id}:chunk_{n}"
+                         # E.g. "D-EFg3wF_GUX8:chunk_7" or "K-0012#boundary_conditions"
+
+quote: ""                # (optional but strongly recommended) Verbatim text from the source
+                         # that justifies this edge. Max 4 sentences. Use "..." to abbreviate.
+                         # If the edge is between two concepts (no text source), explain the
+                         # logical basis in 1–2 sentences instead and leave quote empty.
+
+confidence: ""           # (required) How certain is this edge's claim?
+                         # Allowed values:
+                         #   "high"   — directly supported by verbatim source evidence
+                         #   "medium" — inferred from source; a reasonable reader would agree
+                         #   "low"    — speculative or synthesized; the connection is plausible
+                         #             but not textually grounded
+                         # Confidence does not depend on review status — a low-confidence edge
+                         # that has been reviewed is still low-confidence.
+
+# ---------------------------------------------------------------------------
+# Review Status and Authorship
+# ---------------------------------------------------------------------------
+
+review_status: "generated"   # (required) Lifecycle stage of this edge assertion.
+                             # Allowed values (in order):
+                             #   "generated" — created by AI, not yet read by a human
+                             #   "reviewed"  — human has read it; may have commented
+                             #   "accepted"  — human has confirmed it is correct
+                             #   "rejected"  — human has determined it is wrong or misleading
+                             #                 Keep rejected edges — they prevent regeneration.
+
+generated_by: ""         # (required) Model name that created this edge.
+generated_at: ""         # (required) ISO 8601 datetime in UTC.
+
+reviewed_by: null        # (optional) Identifier of the reviewer (model or human).
+reviewed_at: null        # (optional) ISO 8601 datetime in UTC.
+
+rejection_reason: null   # (optional) If review_status is "rejected", explain why in one sentence.
+
+# ---------------------------------------------------------------------------
+# Directionality Note
+# ---------------------------------------------------------------------------
+
+# All edges are directed: from_node → to_node.
+# If a bidirectional relationship exists, create two edges with swapped from/to nodes.
+# Example: if A contradicts B and B contradicts A, create E-0001 (A→B) and E-0002 (B→A).
+# They may have different claims and confidence levels.

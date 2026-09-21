@@ -1,0 +1,112 @@
+{
+  "negation_and_scope": [
+    {
+      "text": "X was correlated with Y in an observational sample of 120 adults.",
+      "source_quote": "In an observational sample of 120 adults, X was correlated with Y.",
+      "claim_type": "empirical",
+      "polarity": "supports",
+      "confidence": "strong",
+      "attribution": "own_result",
+      "subjects": [
+        "X",
+        "Y"
+      ]
+    },
+    {
+      "text": "The study does not establish that X causes Y.",
+      "source_quote": "This study does not establish that X causes Y.",
+      "claim_type": "theoretical",
+      "polarity": "conditions",
+      "confidence": "hedged",
+      "attribution": "own_result",
+      "subjects": [
+        "X",
+        "Y"
+      ]
+    },
+    {
+      "text": "No statistically significant association was found among children.",
+      "source_quote": "No statistically significant association was found among children.",
+      "claim_type": "empirical",
+      "polarity": "refutes",
+      "confidence": "strong",
+      "attribution": "own_result",
+      "subjects": [
+        "children"
+      ],
+      "review_required": true
+    },
+    {
+      "text": "The results apply only to the sampled population.",
+      "source_quote": "The results apply only to the sampled population.",
+      "claim_type": "theoretical",
+      "polarity": "conditions",
+      "confidence": "hedged",
+      "attribution": "own_result",
+      "subjects": [
+        "sampled population"
+      ]
+    }
+  ],
+  "hypothesis": [
+    {
+      "text": "adding a memory module may improve task completion",
+      "source_quote": "We hypothesize that adding a memory module may improve task completion.",
+      "claim_type": "theoretical",
+      "polarity": "supports",
+      "confidence": "speculative",
+      "attribution": "hypothesis",
+      "subjects": []
+    }
+  ],
+  "classification": {
+    "decision": "absorb",
+    "absorb_into": "K-0017",
+    "absorb_reason": "The claim defines Shannon entropy as a measure of uncertainty in a discrete probability distribution, which directly elaborates on the concept of entropy within the existing theory node.",
+    "new_node": null
+  },
+  "unrelated_nodes": {
+    "exists": false,
+    "edge_type": null,
+    "direction": null,
+    "justification": "There is no meaningful or specific relationship between Huffman coding and plant growth measurement claims, and no co-evidence supports a connection.",
+    "confidence": "hypothesis",
+    "justification_claims": []
+  },
+  "real_source": {
+    "evidence_id": "E-AUTO-10_1002-j_1538-7305_1948_tb013",
+    "source_excerpt": "The recent development of various methods of modulation such as PCM and PPM which exchange bandwidth for signal-to-noise ratio has intensified the interest in a general theory of communication. A basis for such a theory is contained in the important papers of Nyquist1and Hartley2on this subject. In the present paper we will extend the theory to include a number of new factors, in particular the effect of noise in the channel, and the savings possible due to the statistical structure of the origi",
+    "claims": [
+      {
+        "text": "The development of modulation methods such as PCM and PPM has intensified interest in a general theory of communication.",
+        "source_quote": "The recent development of various methods of modulation such as PCM and PPM which exchange bandwidth for signal-to-noise ratio has intensified the interest in a general theory of communication.",
+        "claim_type": "empirical",
+        "polarity": "supports",
+        "confidence": "strong",
+        "attribution": "own_result",
+        "subjects": [
+          "communication theory"
+        ]
+      },
+      {
+        "text": "A basis for a general theory of communication is contained in the important papers of Nyquist and Hartley.",
+        "source_quote": "A basis for such a theory is contained in the important papers of Nyquist1and Hartley2on this subject.",
+        "claim_type": "theoretical",
+        "polarity": "supports",
+        "confidence": "strong",
+        "attribution": "background",
+        "subjects": [
+          "communication theory"
+        ]
+      }
+    ]
+  },
+  "usage": {
+    "model": "gpt-4.1-nano-2025-04-14",
+    "calls": 0,
+    "cache_hits": 5,
+    "errors": 0,
+    "estimated_usd": 0.0,
+    "reserved_usd": 0.0
+  }
+}

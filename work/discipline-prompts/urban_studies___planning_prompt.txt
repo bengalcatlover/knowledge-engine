@@ -1,0 +1,88 @@
+You are creating a discipline knowledge index for: Urban Studies & Planning
+Broad category: Social Sciences
+Total courses: 9
+Total lecture units: 106
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 11.309J Sensing Place： Photography as Inquiry (6 lectures)
+- Lec 5 | MIT 11.309J Sensing Place: Photography as Inquiry
+- Lec 7 | MIT 11.309J Sensing Place: Photography as Inquiry
+- Lec 8 | MIT 11.309J Sensing Place: Photography as Inquiry
+
+### MIT 11.350 Sustainable Real Estate, Spring 2023 (9 lectures)
+- 11.350 Lecture 11: Policy as a Game Changer for Sustainable Real Estate
+- 11.350 Lecture 14: Financing Sustainable Real Estate at the Portfolio Level
+- ** 11.350 Lecture 14: Financing Sustainable Real Estate at the Portfolio Level
+- 11.350 Lecture 8: Climate Risk and Real Estate Markets
+
+### MIT 11.382 Water Diplomacy, Spring 2021 (18 lectures)
+- Enabling Conditions for Transboundary Water Agreements
+- Ganges Water Conflicts between India and Bangladesh
+- Integrated Water Resources Management / The Water-Energy-Food Nexus
+- Singapore-Malaysia Water Conflict
+- The Confederated Salish-Kootenai Tribes - State of Montana Water Compact
+- ** The Confederated Salish-Kootenai Tribes - State of Montana Water Compact
+- The Past, Present and Future of the Columbia River Treaty: A Case for Modernization
+- ** The Past, Present and Future of the Columbia River Treaty: A Case for Modernization
+
+### MIT 11.601 Introduction to Environmental Policy and Planning (51 lectures)
+- Scenario 10: Societal Risk Assessment
+- Scenario 11: Ecosystem Services Analysis
+- Scenario 12: Public Participation Techniques and Strategies
+- Scenario 13: Building an Informed Consensus
+- Scenario 14: Relying on Effective Dispute Resolution
+- Scenario 1: Federal Environmental Policy-Making
+- ** Scenario 1: Federal Environmental Policy-Making
+- Scenario 2: The Policy-Making Process
+- Scenario 3: Policy Evaluation
+- Scenario 4: Comparative Policy Analysis
+- Scenario 5: Environmental Ethics & the Precautionary Principle
+- Scenario 6: Sustainable Development
+- Scenario 7: Local Knowledge vs. Expert Knowledge - Cold Call
+- Scenario 7: Local vs. Expert Knowledge - Student Presentation
+- Scenario 8: Environmental Impact Assessment
+- Scenario 9: Cost-Benefit Analysis - Class Discussion
+- Scenario 9: Cost-Benefit Analysis - Cold Call
+- Scenario 9: Cost-Benefit Analysis - Student Presentation
+
+### MIT 11.945 Springfield Studio, Fall 2005 (2 lectures)
+- Lec 4 | MIT 11.945 Springfield Studio, Fall 2005
+
+### MIT 11.949 City Visions： Past and Future, Spring 2004 (4 lectures)
+- Lec 11 | MIT 11.949 11.949 City Visions: Past and Future
+- ** Lec 11 | MIT 11.949 11.949 City Visions: Past and Future
+- Lec 13 | MIT 11.949 11.949 City Visions: Past and Future
+
+### MIT 11.954 Community-Owned Enterprise & Civic Participation (4 lectures)
+- Lec 6 | Community-Owned Enterprise and Civic Participation
+- Lec 8 | Community-Owned Enterprise and Civic Participation
+
+### MIT 11.965 Reflective Practice, IAP 2007 (4 lectures)
+- 5. Virtual Worlds and Their Role in Creative Work
+- 6. Frames, Perceptions and Interpretations
+
+### MIT RES.11-004 Facilitative Leadership in the Public Sector, Fall 2024 (8 lectures)
+- Session 1: Concepts and Theories of Facilitative Leadership in the Public Sector
+- Session 2: Hypotheticals
+- Session 3: Microskills for Facilitative Leaders
+- Session 4: Do You Really See Yourself as a Facilitative Leader?
+

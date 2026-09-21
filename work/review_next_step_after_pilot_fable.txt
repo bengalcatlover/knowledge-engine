@@ -1,0 +1,4 @@
+next: A
+action: K-0003 v4の版メタデータ整合を機械チェック（Gemini Flash Lite/Haiku）で確認後、Fable 5とGPT-6 Astraの二者再レビューにかけて承認判定を得る。
+reason: K-0010は承認済みのため、K-0003が承認されればE-03が初のaccepted_readyになり、承認済みカードで答えられる問が0→1になる。K-0007は原典取得という不確実な外部作業を伴うが、K-0003は再レビュー待ちで最も低コスト・確実に前進できる。
+success_check: 次回カバレッジ計測でK-0003のstatusがacceptedとなり、E-03のresultがaccepted_readyに変わりcounts.accepted_readyが1以上になる。

@@ -1,0 +1,64 @@
+You are creating a discipline knowledge index for: Linguistics & Philosophy
+Broad category: Arts & Humanities
+Total courses: 3
+Total lecture units: 62
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 24.08J Philosophical Issues in Brain Science, Spring 09 (10 lectures)
+- 12. The Imagery Debate: The Role of the Brain
+- 17. Theories of Consciousness that Neuroscientists Take Seriously
+- 19. Theories of Consciousness that Neuroscientists Take Seriously
+- 5. Are Infants Little Scientists?
+- 8. Addressing Molyneux's Query
+
+### MIT 24.908 Creole Language and Caribbean Identities, Spring 2017 (4 lectures)
+- Facilitating Meaningful Classroom Discussions
+- ** Facilitating Meaningful Classroom Discussions
+- Inspiration for the Course
+
+### MIT 24.912 Introduction to Black Studies, Spring 2017 (48 lectures)
+- 25. Neoliberalism and the End of History - Part 1: Introduction
+- 25. Neoliberalism and the End of History - Part 2: Immigration
+- 25. Neoliberalism and the End of History - Part 3: Enlightenment, Neoliberalism and Racism
+- 25. Neoliberalism and the End of History - Part 4: Polarized Politics
+- 25. Neoliberalism and the End of History - Part 5: Neoliberalism to Populism
+- 25. Neoliberalism and the End of History - Part 6: Populism & Big Data, Facebook Dark Posts
+- 25. Neoliberalism and the End of History - Part 7: Human Rights and Voting Rights
+- 25. Neoliberalism and the End of History - Part 8: What Can We Do?
+- 26. Part 1: Student Presentation 'Language, Resistance and Liberation'
+- 26. Part 2: Student Perspectives on the Course
+- Advancing Social Justice
+- An Interdisciplinary Approach
+- Anchoring the Course with #StayWoke
+- Building on the Personal
+- Course Materials that Develop Understanding
+- Critical Computational Empowerment
+- Framing Cultural Phenomena as Technologies
+- Important Language Issues Today
+- Lecture 26, Part 1: Student Presentation "Language, Resistance and Liberation"
+- Lecture 26, Part 2: Student Perspectives on the Course
+- Leveraging the Humanities to Break Walls and Build Bridges
+- Political Context for the Course
+- Teaching a Wider Audience
+- ** Teaching a Wider Audience
+- Unlocking Knowledge
+

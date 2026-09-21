@@ -1,0 +1,261 @@
+You are creating a discipline knowledge index for: Chemistry
+Broad category: Natural Sciences
+Total courses: 19
+Total lecture units: 445
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### ChemLab Boot Camp (30 lectures)
+- 1. Great Expectations | ChemLab Boot Camp
+- 10. The Killing Curve | MIT ChemLab Boot Camp
+- 11. Pass/Fail | MIT ChemLab Boot Camp
+- 2. Overwhelmed | ChemLab Boot Camp
+- 3. Rotovap Mishap | ChemLab Boot Camp
+- 4. Crystal Clear | ChemLab Boot Camp
+- 5. The Alliances | MIT ChemLab Boot Camp
+- 6. Crystal Cloudy | MIT ChemLab Boot Camp
+- 7. Chinese Wedding | MIT ChemLab Boot Camp
+- 8. Serious Business | MIT ChemLab Boot Camp
+- 9. Roses and Death | MIT ChemLab Boot Camp
+- Bonus Video 1: War Stories | MIT ChemLab Boot Camp
+- Bonus Video 2: The Spill | MIT ChemLab Boot Camp
+- Bonus Video 3: It's Complicated | MIT ChemLab Boot Camp
+- Bonus Video 4: Phil-osophy | MIT ChemLab Boot Camp
+
+### Drennan Research and Education Laboratory： Diversity Training (6 lectures)
+- Diversity Training: Addressing Stereotype Threat in the Classroom
+- Diversity Training: Introduction Video
+
+### How We Teach： 5.07SC Biological Chemistry I, Fall 2013 (29 lectures)
+- Advice for Next Teaching Generation: Focus Curricula on the Microbial World
+- Becoming a Toxicologist
+- Focusing on the Morphological Unit of Life
+- How Can You Not Think Enzymes are Cool?
+- Motivating Students to Study Metabolic Biochemistry with Oncology Applications
+- Research Focus: Genetic Change
+- Research Focus: Ribonucleotide Reductases (RNRs)
+- Teaching Central Pathways to Help Students Understand Metabolism
+- Using a Vitamin Bottle as a Teaching Tool
+- Why Students Should Memorize Amino Acid Side Chains
+
+### How We Teach： 5.111SC Principles of Chemical Science (27 lectures)
+- 5.111: A Space to Discover Your Passion for Chemistry
+- Building a Team of Teaching Assistants
+- Clicker Competitions
+- Meet the Educator
+- Pizza Forums: Connecting with Students
+- Preparing for Lectures
+- Promoting Active Participation During Lectures
+- Spotlighting Contemporary Chemists
+- Using Humor to Engage Students
+
+### How We Teach： MIT 5.95J Teaching College-Level Science and Engineering, Fall 2015 (9 lectures)
+- Active Learning Overview
+- Debate
+- Jigsaw
+
+### MIT 5.07SC Biological Chemistry I, Fall 2013 (68 lectures)
+- 5. Enzymes and Catalysis
+- Blood Sugar Fluctuations and Gluconeogenesis
+- Carbohydrate Biosynthesis I: Glycogen Synthesis
+- Carbohydrate Biosynthesis II: Gluconeogenesis
+- ** Carbohydrate Biosynthesis II: Gluconeogenesis
+- Carbonyl Chemistry
+- Fatty Acids and Lipid Biosynthesis
+- Glycolysis and Early Stages of Respiration
+- Introduction to Carbohydrate Catabolism
+- Ketogenesis, Diabetes, and Starvation
+- Lexicon of Biochemical Reactions: Cofactors Formed from Vitamin B12
+- Lexicon of Biochemical Reactions: Introduction
+- Lexicon of Biochemical Reactions: Redox Cofactors
+- Lexicon of Biochemical Reactions: Vitamin B6 / PLP
+- Lipod Catabolism: Fatty Acid Beta-Oxidation
+- Maintenance of Redox Neutrality
+- Pentose Phosphate Pathway
+- PLP (Pyridoxal Phosphate) Reactions
+- Problem Set 1, Problem 1: Sizes and Equilibria
+- ** Problem Set 1, Problem 1: Sizes and Equilibria
+- Problem Set 10, Problem 3: Gluconeogenesis
+- Problem Set 2, Problem 1: Primary Structure
+- Problem Set 3, Problem 2: Proteases: Mechanisms of Inhibition
+- Problem Set 4, Problem 2: The Mechanism of HMG-CoA Synthase
+- Problem Set 5, Problem 5: How Mannose, an Isomer of Glucose, Enters Glycolysis
+- Problem Set 6, Problem 2: Mechanism of Phosphoglycerate Mutase
+- Problem Set 7, Problem 1: Tracing Labels through Pathways
+- Problem Set 8, Problem 2: Bioenergetics of the Electron  Transport Chain
+- Problem Set 9, Problem 1: Catabolism of Triacylglycerols
+- Regulation of Metabolism
+- ... and 7 more
+
+### MIT 5.08J Biological Chemistry II, Spring 2016 (2 lectures)
+- 28. Metal Ion Homeostasis 4
+
+### MIT 5.111 Principles of Chemical Science, Fall 2005 (4 lectures)
+- Lec 11 | MIT 5.111 Principles of Chemical Science, Fall 2005
+- ** Lec 11 | MIT 5.111 Principles of Chemical Science, Fall 2005
+- Lec 26 | MIT 5.111 Principles of Chemical Science, Fall 2005
+
+### MIT 5.111 Principles of Chemical Science, Fall 2008 (72 lectures)
+- 1. The importance of chemical principles
+- 10. Periodic trends continued; Covalent bonds
+- 11. Lewis structures
+- 12. Exceptions to Lewis structure rules; Ionic bonds
+- 13. Polar covalent bonds; VSEPR theory
+- 14. Molecular orbital theory
+- 15. Valence bond theory and hybridization
+- 16. Determining hybridization in complex molecules; Thermochemistry, bond energies/bond enthalpies
+- ** 16. Determining hybridization in complex molecules; Thermochemistry, bond energies/bond enthalpies
+- 17. Entropy and disorder
+- 18. Free energy and control of spontaneity
+- 19. Chemical equilibrium
+- 2. Discovery of electron and nucleus, need for quantum mechanics
+- 20. Le Chatelier's principle and applications to blood-oxygen levels
+- 21. Acid-base equilibrium: Is MIT water safe to drink?
+- ** 21. Acid-base equilibrium: Is MIT water safe to drink?
+- 22. Chemical and biological buffers
+- 23. Acid-base titrations
+- 24. Balancing oxidation/reduction equations
+- 25. Electrochemical cells
+- 26. Chemical and biological oxidation/reduction reactions
+- 27. Transition metals and the treatment of lead poisoning
+- ** 27. Transition metals and the treatment of lead poisoning
+- 28. Crystal field theory
+- 29. Metals in biology
+- 3. Wave-particle duality of light
+- 30. Magnetism and spectrochemical theory
+- 31. Rate laws
+- 32. Nuclear chemistry and elementary reactions
+- 33. Reaction mechanism
+- ... and 11 more
+
+### MIT 5.111 Principles of Chemical Science, Fall 2014 (8 lectures)
+- 10. Lewis Structures
+- 12. The Shapes of Molecules: VSEPR Theory
+- 4. Wave-Particle Duality of Matter; Schrödinger Equation
+- 5. Hydrogen Atom Energy Levels
+
+### MIT 5.112 Principles of Chemical Science, Fall 2005 (2 lectures)
+- Lec 13 | MIT 5.112 Principles of Chemical Science, Fall 2005
+
+### MIT 5.310 Laboratory Chemistry, Fall 2019 (30 lectures)
+- 1. Introductory Lecture to 5.310
+- 10. Fischer Esterification Part 1
+- 11. Catalase Part 1
+- 12. Catalase Acid Part 2
+- 14. Mass Spectroscopy Esterification Lecture Part 2
+- 15. NMR Spectroscopy Esterification Lecture Part 3
+- 2. The Ferrocene Lecture
+- 3. Writing Up the Lab Report
+- 4. What's Significant in Laboratory Measurement? Error Analysis Lecture
+- 5. Ellen Swallow Richards, Part 1
+- 6. Ellen Swallow Richards, Part 2
+- 7. Ellen Swallow Richards, Part 3
+- 8. Essential Oils Lecture Part 1
+- 9. Essential Oils Lecture Part 2
+- Elephant Toothpaste Reaction
+
+### MIT 5.60 Thermodynamics & Kinetics, Spring 2008 (18 lectures)
+- Lec 10 | MIT 5.60 Thermodynamics & Kinetics, Spring 2008
+- Lec 2 | MIT 5.60 Thermodynamics & Kinetics, Spring 2008
+- Lec 21 | MIT 5.60 Thermodynamics & Kinetics, Spring 2008
+- Lec 22 | MIT 5.60 Thermodynamics & Kinetics, Spring 2008
+- Lec 23 | MIT 5.60 Thermodynamics & Kinetics, Spring 2008
+- Lec 25 | MIT 5.60 Thermodynamics & Kinetics, Spring 2008
+- ** Lec 25 | MIT 5.60 Thermodynamics & Kinetics, Spring 2008
+- Lec 30 | MIT 5.60 Thermodynamics & Kinetics, Spring 2008
+- Lec 4 | MIT 5.60 Thermodynamics & Kinetics, Spring 2008
+- Lec 5 | MIT 5.60 Thermodynamics & Kinetics, Spring 2008
+
+### MIT 5.61 Physical Chemistry, Fall 2017 (4 lectures)
+- 24. Molecular Orbital Theory I; Variational Principle and Matrix Mechanics
+- 35. Delta-Functions, Eigen-Functions of X, Discrete Variable Representation
+
+### MIT 5.74 Introductory Quantum Mechanics II, Spring 2009 (2 lectures)
+- Lec 15 | MIT 5.74 Introductory Quantum Mechanics II, Spring 2009
+
+### MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008 (76 lectures)
+- Lec 1 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 10 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 11 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 12 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 13 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 14 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 15 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 16 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 17 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 18 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 19 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 2 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 20 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 21 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 22 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 23 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 24 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 25 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- ** Lec 25 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 26 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 27 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 28 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 29 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 3 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 30 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 31 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 33 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 34 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 35 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- Lec 36 | MIT 5.80 Small-Molecule Spectroscopy and Dynamics, Fall 2008
+- ... and 9 more
+
+### MIT 5.95J Teaching College-Level Science and Engineering (22 lectures)
+- Faculty Introduction for MIT 5.95J, Spring 2009
+- Lec 1 | MIT 5.95J Teaching College-Level Science and Engineering, Spring 2009
+- Lec 10 | MIT 5.95J Teaching College-Level Science and Engineering, Spring 2009
+- Lec 2 | MIT 5.95J Teaching College-Level Science and Engineering, Spring 2009
+- Lec 3 | MIT 5.95J Teaching College-Level Science and Engineering, Spring 2009
+- Lec 4 | MIT 5.95J Teaching College-Level Science and Engineering, Spring 2009
+- Lec 5 | MIT 5.95J Teaching College-Level Science and Engineering, Spring 2009
+- Lec 6 | MIT 5.95J Teaching College-Level Science and Engineering, Spring 2009
+- Lec 7 | MIT 5.95J Teaching College-Level Science and Engineering, Spring 2009
+- Lec 8 | MIT 5.95J Teaching College-Level Science and Engineering, Spring 2009
+- Lec 9 | MIT 5.95J Teaching College-Level Science and Engineering, Spring 2009
+
+### MIT Chemistry Behind the Magic (2 lectures)
+- Let It Snow | MIT Chemistry Behind the Magic
+
+### MIT Digital Lab Techniques Manual (34 lectures)
+- Automatic Pipet | MIT Digital Lab Techniques Manual
+- Buffers and pH Meter | MIT Digital Lab Techniques Manual
+- Column Chromatography | MIT Digital Lab Techniques Manual
+- Distillation I | MIT Digital Lab Techniques Manual
+- Distillation II | MIT Digital Lab Techniques Manual
+- Filtration | MIT Digital Lab Techniques Manual
+- Melting Point | MIT Digital Lab Techniques Manual
+- Reaction Work-Up I | MIT Digital Lab Techniques Manual
+- Reaction Work-Up II | MIT Digital Lab Techniques Manual
+- Recrystallization | MIT Digital Lab Techniques Manual
+- Refluxing a Reaction | MIT Digital Lab Techniques Manual
+- Sublimation | MIT Digital Lab Techniques Manual
+- Titration | MIT Digital Lab Techniques Manual
+- TLC-Advanced | MIT Digital Lab Techniques Manual
+- TLC-The Basics | MIT Digital Lab Techniques Manual
+- Using a Balance | MIT Digital Lab Techniques Manual
+- Volumetric Techniques | MIT Digital Lab Techniques Manual
+

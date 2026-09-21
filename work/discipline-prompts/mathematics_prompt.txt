@@ -1,0 +1,569 @@
+You are creating a discipline knowledge index for: Mathematics
+Broad category: Mathematics & Statistics
+Total courses: 32
+Total lecture units: 1002
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### A Vision of Linear Algebra (30 lectures)
+- Elimination and Factorization A = CR
+- ** Elimination and Factorization A = CR
+- Five Factorizations of a Matrix
+- Intro: A New Way to Start Linear Algebra
+- Part 1: The Column Space of a Matrix
+- Part 2: The Big Picture of Linear Algebra
+- Part 3: Orthogonal Vectors
+- ** Part 3: Orthogonal Vectors
+- Part 4: Eigenvalues and Eigenvectors
+- Part 5: Singular Values and Singular Vectors
+- Part 6: Finding the Nullspace: Solving Ax = 0 by Elimination
+- The Four Fundamental Subspaces and Least Squares
+- ** The Four Fundamental Subspaces and Least Squares
+
+### Highlights of Calculus (36 lectures)
+- Big Picture of Calculus
+- Big Picture: Derivatives
+- ** Big Picture: Derivatives
+- Big Picture: Integrals
+- Chains f(g(x)) and the Chain Rule
+- Derivative of sin x and cos x
+- Derivatives of ln y and sin ^-1 (y)
+- Differential Equations of Growth
+- Differential Equations of Motion
+- Gil Strang's Introduction to Calculus for Highlights for High School
+- Growth Rate and Log Graphs
+- ** Growth Rate and Log Graphs
+- Inverse Functions f ^-1 (y) and the Logarithm x = ln y
+- Limits and Continuous Functions
+- Linear Approximation/Newton's Method
+- Max and Min and Second Derivative
+- Power Series/Euler's Great Formula
+- Product Rule and Quotient Rule
+- Six Functions, Six Rules, and Six Theorems
+- ** Six Functions, Six Rules, and Six Theorems
+- The Exponential Function
+
+### MIT 18.01 Single Variable Calculus, Fall 2006 (20 lectures)
+- Lec 11 | MIT 18.01 Single Variable Calculus, Fall 2007
+- Lec 13 | MIT 18.01 Single Variable Calculus, Fall 2007
+- Lec 15 | MIT 18.01 Single Variable Calculus, Fall 2007
+- Lec 16 | MIT 18.01 Single Variable Calculus, Fall 2007
+- Lec 18 | MIT 18.01 Single Variable Calculus, Fall 2007
+- Lec 20 | MIT 18.01 Single Variable Calculus, Fall 2007
+- Lec 3 | MIT 18.01 Single Variable Calculus, Fall 2007
+- Lec 38 | MIT 18.01 Single Variable Calculus, Fall 2007
+- ** Lec 38 | MIT 18.01 Single Variable Calculus, Fall 2007
+- Lec 5 | MIT 18.01 Single Variable Calculus, Fall 2007
+- Lec 7: Exam 1 review | MIT 18.01 Single Variable Calculus, Fall 2007
+
+### MIT 18.01SC： Homework Help for Single Variable Calculus (28 lectures)
+- 4J3, Diffusion of a Chemical | MIT 18.01SC Single Variable Calculus, Fall 2010
+- Derivatives of Sine and Cosine | MIT 18.01SC Single Variable Calculus, Fall 2010
+- Finding u and v' When Integrating by Parts | MIT 18.01SC Single Variable Calculus, Fall 2010
+- Graphing the Arctan Function | MIT 18.01SC Single Variable Calculus, Fall 2010
+- Implicit Differentiation | MIT 18.01SC Single Variable Calculus, Fall 2010
+- Integral of tan^4 (theta) | MIT 18.01SC Single Variable Calculus, Fall 2010
+- Integral Test | MIT 18.01SC Single Variable Calculus, Fall 2010
+- Integration of Taylor's Series | MIT 18.01SC Single Variable Calculus, Fall 2010
+- Integration Practice III | MIT 18.01SC Single Variable Calculus, Fall 2010
+- l'Hospital Practice | MIT 18.01SC Single Variable Calculus, Fall 2010
+- Limit of a Series | MIT 18.01SC Single Variable Calculus, Fall 2010
+- Parametric Arclength | MIT 18.01SC Single Variable Calculus, Fall 2010
+- Product Rule | MIT 18.01SC Single Variable Calculus, Fall 2010
+- Surface Area of a Torus | MIT 18.01SC Single Variable Calculus, Fall 2010
+
+### MIT 18.02 Multivariable Calculus, Fall 2007 (62 lectures)
+- Lec 10: Second derivative test; boundaries & infinity | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 11: Differentials; chain rule | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 12: Gradient; directional derivative; tangent plane | MIT 18.02 Multivariable Calculus, Fall 07
+- Lec 13: Lagrange multipliers | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 14: Non-independent variables | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 15: Partial differential equations; review | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 16: Double integrals | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 17: Double integrals in polar coords; applications | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 18: Change of variables | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 19: Vector fields and line integrals in the plane | MIT 18.02 Multivariable Calculus, Fall 2007
+- ** Lec 19: Vector fields and line integrals in the plane | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 1: Dot product | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 20: Path independence and conservative fields | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 21: Gradient fields and potential functions | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 22: Green's theorem | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 23: Flux; normal form of Green's theorem | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 24: Simply connected regions; review | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 26: Spherical coordinates; surface area | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 27: Vector fields in 3D; surface integrals & flux | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 28: Divergence theorem | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 29: Divergence theorem (cont.): applications & proof | MIT 18.02 Multivariable Calculus, Fall 07
+- Lec 2: Determinants; cross product | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 30: Line integrals in space, curl, exactness... | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 32: Stokes' theorem (cont.); review | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 33: Topological considerations; Maxwell's equations | MIT 18.02 Multivariable Calculus, Fall 07
+- Lec 3: Matrices; inverse matrices | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 4: Square systems; equations of planes | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 5: Parametric equations for lines and curves | MIT 18.02 Multivariable Calculus, Fall 2007
+- Lec 6: Velocity, acceleration; Kepler's second law | MIT 18.02 Multivariable Calculus, Fall 2007
+- ** Lec 6: Velocity, acceleration; Kepler's second law | MIT 18.02 Multivariable Calculus, Fall 2007
+- ... and 4 more
+
+### MIT 18.02SC： Homework Help for Multivariable Calculus (24 lectures)
+- Flux and the divergence theorem | MIT 18.02SC Multivariable Calculus, Fall 2010
+- Gradients - composition | MIT 18.02SC Multivariable Calculus, Fall 2010
+- Gravity and a half-sphere | MIT 18.02SC Multivariable Calculus, Fall 2010
+- Green's Theorem in normal form | MIT 18.02SC Multivariable Calculus, Fall 2010
+- Green's Theorem: an off center circle | MIT 18.02SC Multivariable Calculus, Fall 2010
+- Green's Theorem: area under an arch | MIT 18.02SC Multivariable Calculus, Fall 2010
+- Integrals with density | MIT 18.02SC Multivariable Calculus, Fall 2010
+- Integration in polar coordinates | MIT 18.02SC Multivariable Calculus, Fall 2010
+- Lagrange multipliers (3 variables) | MIT 18.02SC Multivariable Calculus, Fall 2010
+- Moment of inertia of a cylinder | MIT 18.02SC Multivariable Calculus, Fall 2010
+- Regions of integration | MIT 18.02SC Multivariable Calculus, Fall 2010
+- Volume in cylindrical coordinates | MIT 18.02SC Multivariable Calculus, Fall 2010
+
+### MIT 18.03 Differential Equations,  Spring 2006 (4 lectures)
+- Lec 10 | MIT 18.03 Differential Equations, Spring 2006
+- Lec 28 | MIT 18.03 Differential Equations, Spring 2006
+
+### MIT 18.03SC Differential Equations, Fall 2011 (32 lectures)
+- Direction Fields | MIT 18.03SC Differential Equations, Fall 2011
+- Euler's Method | MIT 18.03SC Differential Equations, Fall 2011
+- Exploration of the Amplitude and Phase: First Order Applet
+- Exploration of the Fourier Coefficient Applet
+- Exploration of the Phase Lines Applet
+- Homogeneous Constant Coefficient Equations: Any Roots | MIT 18.03SC Differential Equations
+- Homogeneous Constant Coefficient Equations: Real Roots | MIT 18.03SC Differential Equations
+- Lec 11 | MIT 18.03 Differential Equations, Spring 2006
+- Lec 25 | MIT 18.03 Differential Equations, Spring 2006
+- ** Lec 25 | MIT 18.03 Differential Equations, Spring 2006
+- Lec 7 | MIT 18.03 Differential Equations, Spring 2006
+- Linear Equations | MIT 18.03SC Differential Equations, Fall 2011
+- Linear Systems: Matrix Methods | MIT 18.03SC Differential Equations, Fall 2011
+- Manipulating Fourier Series | MIT 18.03SC Differential Equations, Fall 2011
+- Partial Fractions and Laplace Inverse | MIT 18.03SC Differential Equations, Fall 2011
+- Step and Delta Functions | MIT 18.03SC Differential Equations, Fall 2011
+- Trace-Determinant Diagram | MIT 18.03SC Differential Equations, Fall 2011
+
+### MIT 18.03SC Mathlet Videos, Fall 2011 (14 lectures)
+- Exploration of the Amplitude and Phase: Second Order II Applet
+- Exploration of the Convolution Accumulation Applet
+- Exploration of the Damped Vibrations Applet
+- Exploration of the Euler's Method Applet
+- Exploration of the Fourier Coefficient Applet
+- Exploration of the Isoclines Applet
+- Exploration of the Phase Lines Applet
+
+### MIT 18.06 Linear Algebra, Spring 2005 (18 lectures)
+- 17. Orthogonal Matrices and Gram-Schmidt
+- 19. Determinant Formulas and Cofactors
+- 24. Markov Matrices; Fourier Series
+- 29. Singular Value Decomposition
+- 30. Linear Transformations and Their Matrices
+- 31. Change of Basis; Image Compression
+- 32. Quiz 3 Review
+- 33. Left and Right Inverses; Pseudoinverse
+- 34. Final Course Review
+
+### MIT 18.065 Matrix Methods in Data Analysis, Signal Processing, and Machine Learning, Spring 2018 (74 lectures)
+- 12. Computing Eigenvalues and Singular Values
+- 14. Low Rank Changes in A and Its Inverse
+- 15. Matrices A(t) Depending on t, Derivative = dA/dt
+- 16. Derivatives of Inverse and Singular Values
+- 19. Saddle Points Continued, Maxmin Principle
+- 20. Definitions and Inequalities
+- 22. Gradient Descent: Downhill to a Minimum
+- 23. Accelerating Gradient Descent (Use Momentum)
+- 24. Linear Programming and Two-Person Games
+- 25. Stochastic Gradient Descent
+- 26. Structure of Neural Nets for Deep Learning
+- 27. Backpropagation: Find Partial Derivatives
+- 3. Orthonormal Columns in Q Give Q'Q = I
+- ** 3. Orthonormal Columns in Q Give Q'Q = I
+- 31. Eigenvectors of Circulant Matrices: Fourier Matrix
+- 33. Neural Nets and the Learning Function
+- 34. Distance Matrices, Procrustes Problem
+- 35. Finding Clusters in Graphs
+- 4. Eigenvalues and Eigenvectors
+- 5. Positive Definite and Semidefinite Matrices
+- ** 5. Positive Definite and Semidefinite Matrices
+- 6. Singular Value Decomposition (SVD)
+- 7. Eckart-Young: The Closest Rank k Matrix to A
+- 9. Four Ways to Solve Least Squares Problems
+- An Interview with Gilbert Strang on Teaching Matrix Methods in Data Analysis, Signal Processing,...
+- Course Introduction of 18.065 by Professor Strang
+- Lecture 10: Survey of Difficulties with Ax = b
+- Lecture 11: Minimizing ‖x‖ Subject to Ax = b
+- Lecture 13: Randomized Matrix Multiplication
+- Lecture 17: Rapidly Decreasing Singular Values
+- ... and 9 more
+
+### MIT 18.06SC Linear Algebra, Fall 2011 (16 lectures)
+- 24. Markov Matrices; Fourier Series
+- 26. Complex Matrices; Fast Fourier Transform
+- 32. Quiz 3 Review
+- 8. Solving Ax = b: Row Reduced Form R
+- Computing the Four Fundamental Subspaces
+- Gram-Schmidt Orthogonalization
+- Matrix Spaces
+- ** Matrix Spaces
+- Projection into Subspaces
+
+### MIT 18.085 Computational Science & Engineering I, Fall 2007 (20 lectures)
+- Lec 1 | MIT 18.085 Computational Science and Engineering I
+- Lec 10 | MIT 18.085 Computational Science and Engineering I
+- Lec 12 | MIT 18.085 Computational Science and Engineering I
+- ** Lec 12 | MIT 18.085 Computational Science and Engineering I
+- Lec 14 | MIT 18.085 Computational Science and Engineering I
+- Lec 24 | MIT 18.085 Computational Science and Engineering I
+- Lec 25 | MIT 18.085 Computational Science and Engineering I
+- Lec 3 | MIT 18.085 Computational Science and Engineering I
+- Lec 30 | MIT 18.085 Computational Science and Engineering I
+- Lec 32 | MIT 18.085 Computational Science and Engineering I
+- Lec 5 | MIT 18.085 Computational Science and Engineering I
+
+### MIT 18.085 Computational Science & Engineering I, Fall 2008 (100 lectures)
+- Course Introduction | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 1 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 10 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- ** Lec 10 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 11 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 12 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 13 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- ** Lec 13 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 14 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 15 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 16 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 17 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 18 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 19 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 2 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 20 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- ** Lec 20 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 21 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 22 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 23 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 24 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 25 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 26 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 27 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 28 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 29 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 3 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 30 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 31 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- Lec 32 | MIT 18.085 Computational Science and Engineering I, Fall 2008
+- ... and 28 more
+
+### MIT 18.086 Mathematical Methods for Engineers II, Spring '06 (12 lectures)
+- 6. Wave Profiles, Heat Equation / point source
+- Lec 11 | MIT 18.086 Mathematical Methods for Engineers II
+- Lec 24 | MIT 18.086 Mathematical Methods for Engineers II
+- Lec 4 | MIT 18.086 Mathematical Methods for Engineers II
+- Lec 5 | MIT 18.086 Mathematical Methods for Engineers II
+- Lec 9 | MIT 18.086 Mathematical Methods for Engineers II
+
+### MIT 18.100A Real Analysis, Fall 2020 (53 lectures)
+- Lecture 10: The Completeness of the Real Numbers and Basic Properties of Infinite Series
+- Lecture 11: Absolute Convergence and the Comparison Test for Series
+- Lecture 12: The Ratio, Root, and Alternating Series Tests
+- Lecture 13: Limits of Functions
+- Lecture 14: Limits of Functions in Terms of Sequences and Continuity
+- Lecture 15: The Continuity of Sine and Cosine and the Many Discontinuities of Dirichlet's Function
+- Lecture 16: The Min/Max Theorem and Bolzano's Intermediate Value Theorem
+- Lecture 17: Uniform Continuity and the Definition of the Derivative
+- Lecture 18: Weierstrass's Example of a Continuous and Nowhere Differentiable Function
+- Lecture 19: Differentiation Rules, Rolle's Theorem, and the Mean Value Theorem
+- Lecture 1: Sets, Set Operations and Mathematical Induction
+- Lecture 20: Taylor's Theorem and the Definition of Riemann Sums
+- Lecture 21: The Riemann Integral of a Continuous Function
+- Lecture 22: Fundamental Theorem of Calculus, Integration by Parts, and Change of Variable Formula
+- Lecture 23: Pointwise and Uniform Convergence of Sequences of Functions
+- Lecture 24: Uniform Convergence, the Weierstrass M-Test, and Interchanging Limits
+- Lecture 25: Power Series and the Weierstrass Approximation Theorem
+- Lecture 2: Cantor's Theory of Cardinality (Size)
+- Lecture 3: Cantor's Remarkable Theorem and the Rationals' Lack of the Least Upper Bound Property
+- Lecture 4: The Characterization of the Real Numbers
+- Lecture 5: The Archimedian Property, Density of the Rationals, and Absolute Value
+- Lecture 6: The Uncountabality of the Real Numbers
+- Lecture 7: Convergent Sequences of Real Numbers
+- Lecture 8: The Squeeze Theorem and Operations Involving Convergent Sequences
+- Lecture 9: Limsup, Liminf, and the Bolzano-Weierstrass Theorem
+
+### MIT 18.100B Real Analysis, Spring 2025 (54 lectures)
+- Lecture 10: Continuous Functions; Exponential Function (cont.)
+- Lecture 11: Extreme and Intermediate Value Theorem; Metric Spaces
+- Lecture 12: Convergence in Metric Spaces; Operations on Sets
+- Lecture 13: Open and Closed Sets; Coverings; Compactness
+- Lecture 14: Sequential Compactness; Bolzano–Weierstrass Theorem in a Metric Space
+- Lecture 15: Derivatives; Laws for Differentiation
+- Lecture 16: Rolle’s Theorem; Mean Theorem; L’Hôpital’s Rule; Taylor Expansion
+- Lecture 17: Taylor Polynomials; Remainder Term; Riemann Integrals
+- Lecture 18: Integrable Functions
+- Lecture 19: Fundamental Theorem of Calculus
+- Lecture 1: Introduction to Real Numbers
+- Lecture 20: Pointwise Convergence; Uniform Convergence
+- Lecture 21: Integrals and Derivatives under Uniform Convergence
+- Lecture 22: Differentiating and Integrating Power Series; Ordinary Differential Equations (ODEs)
+- Lecture 23: Existence & Uniqueness for ODEs: Picard–Lindelöf Theorem
+- Lecture 2: Introduction to Real Numbers (cont.)
+- Lecture 3: How to Write a Proof; Archimedean Property
+- Lecture 4: Sequences; Convergence
+- Lecture 5: Monotone Convergence Theorem
+- ** Lecture 5: Monotone Convergence Theorem
+- Lecture 6: Cauchy Convergence Theorem
+- Lecture 7: Bolzano–Weierstrass Theorem; Cauchy Sequences; Series
+- Lecture 8: Convergence Tests for Series; Power Series
+- Lecture 9: Limsup and Liminf; Power Series; Continuous Functions; Exponential Function
+- Review for 18.100B Real Analysis Midterm
+- Review for the 18.100B Real Analysis Final Exam
+
+### MIT 18.102 Introduction to Functional Analysis, Spring 2021 (49 lectures)
+- Lecture 10: Simple Functions
+- Lecture 11: The Lebesgue Integral of a Nonnegative Function and Convergence Theorems
+- Lecture 12: Lebesgue Integrable Functions, the Lebesgue Integral and the Dominated Convergence...
+- Lecture 13: Lp Space Theory
+- Lecture 14: Basic Hilbert Space Theory
+- Lecture 15: Orthonormal Bases and Fourier Series
+- Lecture 16: Fejer’s Theorem and Convergence of Fourier Series
+- Lecture 17: Minimizers, Orthogonal Complements and the Riesz Representation Theorem
+- Lecture 18: The Adjoint of a Bounded Linear Operator on a Hilbert Space
+- Lecture 19: Compact Subsets of a Hilbert Space and Finite-Rank Operators
+- Lecture 1: Basic Banach Space Theory
+- Lecture 20: Compact Operators and the Spectrum of a Bounded Linear Operator on a Hilbert Space
+- Lecture 21: The Spectrum of Self-Adjoint Operators and the Eigenspaces of Compact Self-Adjoint...
+- Lecture 22: The Spectral Theorem for a Compact Self-Adjoint Operator
+- Lecture 23: The Dirichlet Problem on an Interval
+- Lecture 2: Bounded Linear Operators
+- Lecture 3: Quotient Spaces, the Baire Category Theorem and the Uniform Boundedness Theorem
+- Lecture 4: The Open Mapping Theorem and the Closed Graph Theorem
+- Lecture 5: Zorn’s Lemma and the Hahn-Banach Theorem
+- Lecture 6: The Double Dual and the Outer Measure of a Subset of Real Numbers
+- Lecture 7: Sigma Algebras
+- Lecture 8: Lebesgue Measurable Subsets and Measure
+- Lecture 9: Lebesgue Measurable Functions
+
+### MIT 18.156 Projection Theory, Spring 2025 (49 lectures)
+- Lecture 01: Introduction to Projection Theory
+- Lecture 02: Fundamental Methods of Projection Theory
+- Lecture 03: Projection Theory in Euclidean Space
+- Lecture 04: The Fourier Method in Euclidean Space
+- Lecture 05: The Large Sieve
+- Lecture 06: Projections and Smoothing
+- Lecture 07: Applications of the Large Sieve to Number Theory
+- Lecture 08: The Szemeredi-Trotter Theorem
+- Lecture 09: Reflections on the Szemeredi-Trotter Theorem
+- Lecture 10: Sum-Product Theory
+- Lecture 11: Contagious Structure in Projection Theory
+- Lecture 12: The Bourgain-Katz-Tao Projection Theorem
+- Lecture 13: The Balog-Szemeredi-Gowers Theorem
+- Lecture 14: The Bourgain Projection Theorem Part 1 (over the Real Numbers)
+- Lecture 15: The Bourgain Projection Theorem, Part 2
+- Lecture 16: The Bourgain Projection Theorem, Part 3
+- Lecture 17: Random Walks on Finite Groups, Part 1
+- Lecture 18: Random Walks on Finite Groups, Part 2
+- Lecture 19: Random Walks on Finite Groups, Part 3
+- Lecture 20: Homogeneous Dynamics, Part 1
+- Lecture 21: Homogeneous Dynamics, Part 2
+- Lecture 22: Sharp Projection Theorems, Part 1: Introduction and Beck's Theorem.
+- Lecture 23: Sharp Projection Theorems, Part 2: AD Regular Case
+- Lecture 24: Sharp Projection Theorems, Part 3: Combining Different Scales
+
+### MIT 18.200 Principles of Discrete Applied Mathematics, Spring 2024 (43 lectures)
+- Lecture 10: Modular Arithmetic
+- Lecture 11: Basic Group Theory
+- Lecture 12: Introduction to Linear Programming
+- Lecture 13: Duality in Linear Programming
+- Lecture 14: Zero-Sum Games
+- Lecture 15: Max-Flow Min-Cut Theorem
+- Lecture 16: Data Compression and Shannon’s Noiseless Coding Theorem
+- Lecture 17: Huffman Coding
+- Lecture 18: Transmitting Information Reliably over a Noisy Channel & Shannon’s Noisy Coding Theorem
+- Lecture 18: Transmitting Information Reliably over a Noisy Channel & Shannon's Noisy Coding Theorem
+- Lecture 19: Error-Correcting Codes—Hamming Codes
+- Lecture 1: Pigeonhole Principle
+- Lecture 20: Reed-Solomon Codes
+- Lecture 2: Independence and Conditioning
+- Lecture 3: Inclusion-Exclusion
+- Lecture 4: Counting
+- Lecture 5: More Counting and Generating Functions
+- Lecture 6: More on Generating Functions
+- Lecture 7: Generating Functions for Catalan Numbers
+- Lecture 8: Tail Bounds
+- Lecture 9: Chernoff Bounds
+
+### MIT 18.217 Graph Theory and Additive Combinatorics, Fall 2019 (57 lectures)
+- 1. A bridge between graph theory and additive combinatorics
+- ** 1. A bridge between graph theory and additive combinatorics
+- 10. Szemerédi's graph regularity lemma V: hypergraph removal and spectral proof
+- 11. Pseudorandom graphs I: quasirandomness
+- 12. Pseudorandom graphs II: second eigenvalue
+- 13. Sparse regularity and the Green-Tao theorem
+- 14. Graph limits I: introduction
+- 15. Graph limits II: regularity and counting
+- 16. Graph limits III: compactness and applications
+- 17. Graph limits IV: inequalities between subgraph densities
+- 18. Roth's theorem I: Fourier analytic proof over finite field
+- 19. Roth's theorem II: Fourier analytic proof in the integers
+- 2. Forbidding a subgraph I: Mantel's theorem and Turán's theorem
+- 20. Roth's theorem III: polynomial method and arithmetic regularity
+- 21. Structure of set addition I: introduction to Freiman's theorem
+- 22. Structure of set addition II: groups of bounded exponent and modeling lemma
+- 23. Structure of set addition III: Bogolyubov's lemma and the geometry of numbers
+- 24. Structure of set addition IV: proof of Freiman's theorem
+- 25. Structure of set addition V: additive energy and Balog-Szemerédi-Gowers theorem
+- ** 25. Structure of set addition V: additive energy and Balog-Szemerédi-Gowers theorem
+- 26. Sum-product problem and incidence geometry
+- 3. Forbidding a subgraph II: complete bipartite subgraph
+- 4. Forbidding a subgraph III: algebraic constructions
+- 5. Forbidding a subgraph IV: dependent random choice
+- 6. Szemerédi's graph regularity lemma I: statement and proof
+- 7. Szemerédi's graph regularity lemma II: triangle removal lemma
+- 8. Szemerédi's graph regularity lemma III: further applications
+- ** 8. Szemerédi's graph regularity lemma III: further applications
+- 9. Szemerédi's graph regularity lemma IV: induced removal lemma
+
+### MIT 18.226 Probabilistic Methods in Combinatorics, Fall 2024 (4 lectures)
+- Large Bipartite Subgraph
+- Linearity of Expectations
+
+### MIT 18.404J Theory of Computation, Fall 2020 (51 lectures)
+- 1. Introduction, Finite Automata, Regular Expressions
+- 10. Computation History Method
+- 11. Recursion Theorem and Logic
+- ** 11. Recursion Theorem and Logic
+- 12. Time Complexity
+- 14. P and NP, SAT, Poly-Time Reducibility
+- 15. NP-Completeness
+- 16. Cook-Levin Theorem
+- 17. Space Complexity, PSPACE, Savitch's Theorem
+- 18. PSPACE-Completeness
+- 19. Games, Generalized Geography
+- 2. Nondeterminism, Closure Properties, Conversion of Regular Expressions to FA
+- 20. L and NL, NL = coNL
+- 21. Hierarchy Theorems
+- 22. Provably Intractable Problems, Oracles
+- 23. Probabilistic Computation, BPP
+- 24. Probabilistic Computation (cont.)
+- 25. Interactive Proof Systems, IP
+- 26. coNP is a subset of IP
+- 3. Regular Pumping Lemma, Conversion of FA to Regular Expressions
+- 4. Pushdown Automata, Conversion of CFG to PDA and Reverse Conversion
+- 5. CF Pumping Lemma, Turing Machines
+- 6. TM Variants, Church-Turing Thesis
+- 7. Decision Problems for Automata and Grammars
+- 8. Undecidability
+- 9. Reducibility
+
+### MIT 18.642 Topics in Mathematics with Applications in Finance, Fall 2024 (46 lectures)
+- Lecture 1, Part I: Introduction of the Class
+- Lecture 1, Part II: Introduction of Financial Markets, Financial Terms and Concepts
+- Lecture 1, Part III: Bond “Mathematics”
+- Lecture 10: Counterparty Risk Optimization
+- Lecture 11: Regression Analysis (cont.)
+- Lecture 12: Time Series Analysis
+- ** Lecture 12: Time Series Analysis
+- Lecture 13: Portfolio Management
+- Lecture 14: Stochastic Processes II
+- Lecture 18: Applying Data Science and Artificial Intelligence to Managing Biomedical Portfolios
+- Lecture 19: Volatility Modeling
+- Lecture 20: Building the First Federally (CFTC) Regulated Exchange Dedicated to Trading on Events
+- Lecture 21: Black-Scholes Formula, Risk Neutral Valuation
+- Lecture 23: Introduction to Machine Learning
+- Lecture 24: Stochastic Calculus
+- Lecture 25: Stochastic Calculus (cont.); Stochastic Differential Equations
+- Lecture 2: Linear Algebra
+- Lecture 4: Linear Algebra (cont.); Probability Theory
+- Lecture 5: Probability Theory (cont.); Stochastic Processes I
+- Lecture 6: Stochastic Processes I (cont.); Regression Analysis
+- Lecture 7: Linear Rates, Products, and Models
+- Lecture 8: Regression Analysis (cont.)
+- Lecture 9: Principal Component Analysis in Finance
+
+### MIT 18.650 Statistics for Applications, Fall 2016 (44 lectures)
+- 1. Introduction to Statistics
+- 11. Parametric Hypothesis Testing (cont.) and Testing Goodness of Fit
+- 12. Testing Goodness of Fit (cont.)
+- 13. Regression
+- 14. Regression (cont.)
+- 15. Regression (cont.)
+- 17. Bayesian Statistics
+- 18. Bayesian Statistics (cont.)
+- 19. Principal Component Analysis
+- 2. Introduction to Statistics (cont.)
+- 20. Principal Component Analysis (cont.)
+- 21. Generalized Linear Models
+- 22. Generalized Linear Models (cont.)
+- 23. Generalized Linear Models (cont.)
+- 24. Generalized Linear Models (cont.)
+- 3. Parametric Inference
+- ** 3. Parametric Inference
+- 4. Parametric Inference (cont.) and Maximum Likelihood Estimation
+- 5. Maximum Likelihood Estimation (cont.)
+- 6. Maximum Likelihood Estimation (cont.) and the Method of Moments
+- 7. Parametric Hypothesis Testing
+- 8. Parametric Hypothesis Testing (cont.)
+- 9. Parametric Hypothesis Testing (cont.)
+
+### MIT 18.821 Project Laboratory in Mathematics, Spring 2013 (16 lectures)
+- Course Introduction
+- Debrief Session for First Draft of Sample Paper #1
+- Debrief Session for First Draft of Sample Paper #2
+- ** Debrief Session for First Draft of Sample Paper #2
+- Final Presentation for Sample Paper #1
+- Practice Presentation for Sample Paper #1
+- Presentation Workshop
+- ** Presentation Workshop
+- Project Laboratory in Mathematics: A Taste of Research
+- Writing Workshop
+
+### MIT 18.S096 Topics in Mathematics w Applications in Finance (8 lectures)
+- 15. Factor Modeling
+- 18. Itō Calculus
+- 19. Black-Scholes Formula, Risk-neutral Valuation
+- 9. Volatility Modeling
+
+### MIT 18.S997 Introduction to MATLAB Programming Fall 2011 (2 lectures)
+- 2. The Command Prompt
+
+### MIT Calculus Revisited： Calculus of Complex Variables (10 lectures)
+- Part I: Complex Variables, Lec 3: Conformal Mappings
+- Part I: Complex Variables, Lec 4: Sequences and Series
+- Part III: Linear Algebra, Lec 1: Vector Spaces
+- Part III: Linear Algebra, Lec 4: Linear Transformations
+- Part III: Linear Algebra, Lec 5: Determinants
+
+### MIT Calculus Revisited： Multivariable Calculus (6 lectures)
+- Part II: Vector Calculus, Lec 1 | MIT Calculus Revisited: Multivariable Calculus
+- Part III: Partial Derivatives, Lec 3 | MIT Calculus Revisited: Multivariable Calculus
+- Part V: Multiple Integration, Lec 3 | MIT Calculus Revisited: Multivariable Calculus
+
+### MIT Calculus Revisited： Single Variable Calculus (18 lectures)
+- Unit I: Lec 4 | MIT Calculus Revisited: Single Variable Calculus
+- Unit II: Lec 10 | MIT Calculus Revisited: Single Variable Calculus
+- Unit II: Lec 11 | MIT Calculus Revisited: Single Variable Calculus
+- Unit II: Lec 5 | MIT Calculus Revisited: Single Variable Calculus
+- Unit V: Lec 2 | MIT Calculus Revisited: Single Variable Calculus
+- Unit V: Lec 4 | MIT Calculus Revisited: Single Variable Calculus
+- Unit VI: Lec 3 | MIT Calculus Revisited: Single Variable Calculus
+- Unit VI: Lec 4 | MIT Calculus Revisited: Single Variable Calculus
+- Unit VII: Lec 6 | MIT Calculus Revisited: Single Variable Calculus
+
+### MIT Learn Differential Equations (2 lectures)
+- Second Order Equations with Damping
+

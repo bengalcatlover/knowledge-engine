@@ -1,0 +1,14 @@
+# ID Counters — do not edit manually
+# Agents must read, increment, and write this file before assigning any sequential ID.
+# Format: the value is the LAST assigned number. Increment before use.
+# Example: if concept_counter is 3, the next concept_id is K-0004.
+
+concept_counter: 36
+perspective_counter: 4
+claim_counter: 0
+edge_counter: 42
+
+# Schema version that owns these counters
+schema_version: "1.0"
+last_updated_at: "2026-09-10T00:00:00Z"
+last_updated_by: "claude-opus-4-6"

@@ -1,0 +1,88 @@
+# Field Index Schema — v1.0
+# One file per academic discipline (F-* ID). These index files live in
+# knowledge-engine/indexes/fields/ and are the top-level entry points into the
+# discipline taxonomy. They do NOT contain knowledge — they index it.
+#
+# Source of truth: discipline-final.json (in the MIT OCW pipeline data).
+# Field index files are generated automatically from that source and updated
+# whenever the source changes. Do not hand-edit field counts.
+
+$schema: field-index/v1.0
+
+# ---------------------------------------------------------------------------
+# Identity
+# ---------------------------------------------------------------------------
+
+field_id: ""             # (required) F-{SLUG} — from discipline-final.json
+
+discipline_name: ""      # (required) Full human-readable name of the discipline.
+                         # E.g. "Electrical Engineering and Computer Science"
+
+broad_category: ""       # (required) The higher-level grouping this discipline belongs to.
+                         # Typical values (from the MIT taxonomy):
+                         #   "Engineering", "Science", "Social Science", "Humanities",
+                         #   "Management", "Architecture", "Health Sciences"
+                         # Use exactly the category string from discipline-final.json.
+
+# ---------------------------------------------------------------------------
+# Coverage Statistics
+# ---------------------------------------------------------------------------
+
+courses:
+  count: 0               # (required) Number of MIT OCW courses indexed under this discipline.
+  course_ids: []         # (optional) List of C-* IDs. Populated during index build.
+
+lectures:
+  count: 0               # (required) Total number of lecture documents (D-*) under this discipline.
+  doc_ids: []            # (optional) List of D-* IDs. May be omitted in summary files for
+                         # large disciplines; a separate manifest file is preferred in that case.
+
+concepts:
+  count: 0               # (optional) Number of K-* concept cards tagged with this field_id.
+                         # Updated during concept extraction runs, not during OCW ingestion.
+
+# ---------------------------------------------------------------------------
+# Artifact Metadata
+# ---------------------------------------------------------------------------
+
+artifact_type: "field_index"   # (required) Always "field_index" for this schema.
+                               # This allows generic artifact processing pipelines to
+                               # identify and route these files correctly.
+
+review_status: "generated"     # (required) Lifecycle of this index file.
+                               # Allowed values:
+                               #   "generated" — auto-built from source data; not human-reviewed
+                               #   "reviewed"  — a human has spot-checked counts and structure
+                               # Note: review_status here refers to the index file itself,
+                               # not to any of the artifacts it points to.
+
+# ---------------------------------------------------------------------------
+# Generation Provenance
+# ---------------------------------------------------------------------------
+
+generated_by: ""         # (required) Model or script name that generated this file.
+                         # E.g. "mitocw_rag.py:build:v2.1" or "claude-sonnet-4-6"
+
+generated_at: ""         # (required) ISO 8601 datetime in UTC of last full regeneration.
+
+taxonomy_version: ""     # (required) Version of the discipline taxonomy used during generation.
+                         # Tie this to the version of discipline-final.json or the pipeline config.
+                         # E.g. "taxonomy-v1.0" or a git commit SHA of the taxonomy file.
+
+source_snapshot: ""      # (required) A stable reference to the input data this index was
+                         # built from. Use a hash (SHA-256 of discipline-final.json) or
+                         # an ISO 8601 timestamp of the input file's last modification.
+                         # E.g. "sha256:a3f4b2..." or "2026-08-15T09:00:00Z"
+                         # Purpose: lets you detect when the source has changed and the
+                         # index needs rebuilding.
+
+# ---------------------------------------------------------------------------
+# Sub-discipline Structure (optional)
+# ---------------------------------------------------------------------------
+
+sub_disciplines: []      # (optional) List of objects for tracked sub-fields within this discipline.
+                         # Each entry:
+                         #   name: string        (sub-discipline name)
+                         #   course_ids: []      (C-* IDs belonging to this sub-discipline)
+                         #   lecture_count: int
+                         # Use this for large disciplines (EECS, Physics) where sub-structure helps.

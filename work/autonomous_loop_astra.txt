@@ -1,0 +1,644 @@
+```yaml
+autonomous_loop_design:
+  evidence_to_claim:
+    design_principle: |
+      「穴を埋める処理」から「取得物が次の探索課題を生む処理」へ拡張する。
+      Evidence → Claim候補 → ノード配置 → 関係候補 → 新しいGap/探索Frontier
+      を、検証・予算・来歴管理付きのイベント処理として接続する。
+
+      ただし、書誌情報の実在確認、論文が主張している内容の確認、
+      その主張が科学的に正しいことの確認は別物として扱う。
+      既存の4層検証は維持するが、複数APIで同じ論文が確認できても
+      「独立した複数の根拠」には数えない。
+
+    module: "evidence_miner.py"
+
+    input:
+      - "検証済みEvidenceと、その書誌・本文リビジョン"
+      - "利用条件を満たすabstract。取得できる場合のみfull text"
+      - "既存のノード、claim@revision、語彙・型レジストリ"
+
+    content_acquisition:
+      order:
+        - "登録済みabstract"
+        - "OpenAlex等の利用可能なabstract"
+        - "公開・利用許諾された論文本文"
+      rules:
+        - "abstractがない場合、タイトルから結果claimを推測しない"
+        - "欠落はCONTENT_UNAVAILABLEとして記録し、別の取得経路へ回す"
+        - "本文の版、取得元、取得日時、content_hashを保存する"
+        - "論文本文は非信頼データとして扱い、本文中の命令を実行しない"
+
+    claim_candidate_schema:
+      candidate_id: "hash(evidence_revision, span, normalized_proposition)"
+      proposition:
+        subject: "対象・概念・実験対象"
+        predicate: "観測した／増加させた／関連した／定義した、など"
+        object: "結果・値・概念"
+        polarity: "positive | negative"
+        modality: "observed | estimated | possible | proposed"
+        quantifier: "some | typical | all | unspecified"
+      scope:
+        population: "対象集団・材料・システム"
+        conditions: "介入、比較条件、環境、前提"
+        time: "観測期間・適用時点"
+        method: "測定・推定方法"
+        units: "値の単位。該当する場合のみ"
+      attribution:
+        assertion_kind: "own_result | background | cited_result | hypothesis"
+        attributed_source: "当該論文または参照先。未解決なら明示"
+      support:
+        evidence_revision: "根拠にした文書の版"
+        quote: "抽出元の原文"
+        span: "文字位置または段落・文の識別子"
+        source_level: "abstract_only | full_text"
+        support_kind: "source_reports | direct_result | derived"
+      epistemic_status: "reported | corroborated | contested | hypothesis"
+      extraction:
+        extractor_version: "抽出器の版"
+        verifier_version: "検証器の版"
+        verification_result: "pass | fail | abstain"
+
+    extraction_pipeline:
+      - step: "原子的主張への分解"
+        action: |
+          一つのclaimは原則として一つの命題にする。
+          結果、解釈、将来提案を分離し、否定、条件、数値、留保を落とさない。
+          「関連した」を「原因である」へ強めない。
+      - step: "原文整合性検査"
+        action: |
+          quoteの実在とspanを機械検査し、別の検証パスで
+          命題全体が原文から支持されるか確認する。
+          主語、比較対象、否定、数量、適用範囲の不一致はrejectする。
+          検証器の不一致はabstainとし、公開しない。
+      - step: "帰属検査"
+        action: |
+          背景説明や引用先の結果を、当該論文の独立した実験結果にしない。
+          引用された結果は参照先取得タスクを作る。
+          著者の仮説はHYPへ隔離する。
+      - step: "正規化"
+        action: |
+          語彙・識別子・単位を正規化する。
+          原文表現も保持し、正規化によって条件や不確実性を消さない。
+      - step: "既存claim・ノードとの照合"
+        action: |
+          完全一致キー、識別子、全文検索、ANN検索の順で候補を絞る。
+          埋め込み類似度は候補検索にだけ使い、同一性の証明には使わない。
+
+    identity:
+      claim_key: |
+        hash(subject_id, predicate, object_normalized, polarity,
+             modality, quantifier, scope_normalized)
+      comparison_key: |
+        否定や結果の値を除いた「比較対象命題キー」も持つ。
+        同一性判定とは分離し、反対結果・異なる推定値の発見に使う。
+      node_identity: |
+        同じ語でも定義・型・スコープが違えば別ノード候補にする。
+        同じ概念に複数の結果claimが属することは許容する。
+
+    routing:
+      - condition: "既存claimと命題・範囲・留保が同じ"
+        action: |
+          claimを増やさず、新しい支持・反証・報告関係だけ追加する。
+          同一論文の別APIレコードや別版は独立根拠として加算しない。
+      - condition: "既存ノードの対象に関する新しい命題"
+        action: "そのノードへ新しいclaim@revisionを追加する"
+      - condition: "既存claimと比較可能だが結果が異なる"
+        action: |
+          上書きせず別claimとして保持する。
+          contradiction検査と条件差分の調査タスクを生成する。
+      - condition: "既存ノードに属する対象を確定できない"
+        action: "node_factoryへ候補を送る。曖昧な照合では自動統合しない"
+
+    activation_policy: |
+      初期段階の自動公開は、原文に明示された主張の忠実な登録に限定する。
+      abstractだけのclaimはabstract_onlyとsource_reportsを保持する。
+      公開状態ACTIVEは「真実確定」ではなく「登録・検証規約を満たした」の意味。
+
+      LLMの自己申告confidenceを公開条件にしない。
+      確率閾値を使う場合は評価データで校正する。
+      校正前の意味的同一性判定は保守的に保留し、完全一致や
+      明確な識別子一致を優先する。
+
+  auto_node_generation:
+    module: "node_factory.py"
+
+    schema_assumption: |
+      現行の層・typeの定義が提示されていないため、以下は論理スキーマ案。
+      既存MVPにはschema_adapterで写像し、層番号を直接仮定しない。
+      ノードの構造上の層と、知識の確実性・HYP区分は別軸にする。
+
+    proposed_layers:
+      DOMAIN:
+        types: ["Domain"]
+        role: "探索・分類の領域。domain_expansionだけが有効化する"
+      CONCEPT:
+        types: ["Concept", "Class", "Method", "Property", "Process"]
+        role: "概念、分類、方法、性質、過程"
+      INSTANCE:
+        types: ["EntityInstance", "ScopedInstance", "Observation"]
+        role: "個体、条件付き事例、実験・観測記録"
+      CLAIM:
+        representation: |
+          原則は現行のclaim@revisionを使う。
+          claim同士の関係が必要なら、claim_refをエッジ端点にできるようにする。
+          ストアがノード端点しか許さない場合だけAssertionノードで包む。
+      EVIDENCE:
+        representation: "既存Evidenceストアを利用し、意味ノードと二重登録しない"
+
+    flow:
+      - step: "対象候補の抽出"
+        action: |
+          claim中の主要対象を取り出す。
+          名詞をすべてノード化せず、claimの帰属先、比較対象、
+          または検証済み関係の端点として必要なものだけ候補にする。
+      - step: "生成前の再照合"
+        action: |
+          識別子、別名、定義、型、スコープで再照合する。
+          ドメインが違うだけで同じ概念を複製しない。
+          曖昧な重複候補はDRAFTに置き、後から非破壊的に統合する。
+      - step: "層とtypeの決定"
+        action: |
+          個別実験・条件付き事例ならINSTANCE。
+          複数事例を包摂する定義・制約があるならClass候補。
+          手順ならMethod、測定属性ならPropertyなど、型レジストリから選ぶ。
+          未知typeはその場で作らず、type追加提案として隔離する。
+      - step: "局所的な接続案の作成"
+        action: |
+          claimの帰属先、既存の関連概念、ドメインタグ、
+          ClassとScopedInstanceの関係を候補生成する。
+          意味的な接続を検証できない場合、無理にRELATED_TOを付けない。
+      - step: "検証と一括commit"
+        action: |
+          ノード、claim、根拠リンク、必要な型情報を一つのproposalにまとめる。
+          policy engineを通し、承認された差分をトランザクションで反映する。
+          確定直前にも重複・競合を再検査する。
+
+    class_creation:
+      explicit_class: |
+        文献にクラスの定義と適用条件が明示されていれば、
+        根拠付きのClass候補を生成できる。
+      induced_class: |
+        複数インスタンスの共通性から作る分類は、まずHYP/ClassProposalにする。
+        初期探索条件の例は「比較可能な3事例以上、独立した2出典群以上」。
+        この件数は候補生成の条件であり、分類の正しさを保証しない。
+      promotion: |
+        再現可能なmembership rule、適用範囲、既知の反例を持たせる。
+        文献上の分類なら出典を確認する。
+        OS独自分類なら「運用上の分類」と明示し、学術的定説へ昇格させない。
+
+    scoped_instance_creation:
+      required:
+        - "識別可能な対象・事例"
+        - "所属Classのmembership rule"
+        - "条件・期間・測定方法などのscope"
+        - "所属を支持する原文または検証可能な判定"
+      identity: "hash(class_id, entity_or_experiment_id, normalized_scope)"
+      restriction: |
+        G2を閉じるためだけに、単語や架空の例をインスタンス化しない。
+        実例を要求しない抽象クラスはG2の対象外に設定できるようにする。
+
+    lifecycle:
+      states: ["DRAFT", "VALIDATED", "ACTIVE", "QUARANTINED", "ARCHIVED"]
+      active_requirements:
+        - "対象の識別と型・層の制約を満たす"
+        - "少なくとも一つの検証済みclaimまたは定義・所属根拠がある"
+        - "承認前チェック、HYP隔離、独自証明保護を通過する"
+        - "新ドメインならdomain_expansionの有効化条件も満たす"
+      deletion_policy: |
+        自律処理による既存ノードの破壊的削除は禁止する。
+        統合はalias・redirectと変更履歴で表現し、claimと来歴を保持する。
+
+  edge_inference:
+    module: "relation_engine.py"
+
+    candidate_generation:
+      sources:
+        - "同じ文・段落に出現し、関係表現を伴う対象"
+        - "既存グラフの1〜2 hop近傍"
+        - "型とscopeで絞ったANN・全文検索の上位候補"
+        - "同一comparison_keyを持つclaim"
+        - "比較可能性キーが一致するScopedInstance"
+      default_limits:
+        semantic_neighbors_per_changed_node: 30
+        graph_hops: 2
+      rule: "全ノード対のLLM判定は行わない"
+
+    edge_schema:
+      identity: "hash(source_id, relation_type, target_id, normalized_scope)"
+      fields:
+        - "source_ref / target_ref"
+        - "relation_type / direction / scope"
+        - "basis: explicit | deductive | statistical | heuristic"
+        - "supporting_evidence_revisions"
+        - "premise_claim_revisions"
+        - "rule_or_model_version"
+        - "status / valid_time / created_at"
+
+    relation_rules:
+      - relation: "HAS_SCOPED_INSTANCE"
+        direction: "Class → ScopedInstance"
+        gate: "型整合、membership rule、scope、所属根拠をすべて確認"
+      - relation: "IS_A"
+        direction: "下位Class → 上位Class"
+        gate: |
+          定義上の包含を確認する。単なる語彙類似は不可。
+          Class階層への循環導入は拒否する。
+      - relation: "PART_OF"
+        direction: "部分 → 全体"
+        gate: "構成関係を原文で確認し、IS_Aと混同しない"
+      - relation: "MEASURED_BY / USES_METHOD"
+        direction: "性質・事例 → 方法"
+        gate: "具体的な測定・利用関係の明示"
+      - relation: "SUPPORTS / REFUTES"
+        direction: "Evidenceまたはclaim → claim"
+        gate: |
+          同じ対象命題と適用範囲に対する支持・反証を確認する。
+          話題が近いだけではSUPPORTSにしない。
+      - relation: "CONTRADICTS"
+        direction: "claim ↔ claim"
+        gate: |
+          scope、対象、比較条件、命題が整合し、結果が両立しないことを確認。
+          統計的非有意は反対効果の証明ではない。
+          条件差や不確実性で説明できる場合はCONFLICT_CANDIDATEに留める。
+      - relation: "GENERALIZES"
+        direction: "一般命題 → 個別命題・事例"
+        gate: |
+          包含範囲を確認する。事例からの帰納だけならHYP関係にする。
+      - relation: "RELATED_TO / BRIDGE_CANDIDATE"
+        direction: "対称"
+        gate: |
+          探索用インデックスに置く。
+          根拠としての利用、推移的な事実導出、回答の事実断定には使わない。
+
+    inference_channels:
+      explicit:
+        behavior: "原文の関係表現を検証して登録する"
+      deductive:
+        behavior: |
+          allowlist化したルールだけを適用する。
+          例として、同一の分類体系・scope内のIS_A推移を許可できる。
+          RELATED_TO、SUPPORTS、因果関係の一般的な推移は許可しない。
+          派生関係には前提claim@revisionとルール版を必須にする。
+      heuristic:
+        behavior: "探索候補またはHYPだけを生成し、事実グラフには直接書かない"
+
+    instance_comparison:
+      comparability_key:
+        - "対象・集団"
+        - "介入と比較条件"
+        - "測定する属性・アウトカム"
+        - "測定方法と時間窓"
+        - "変換可能な単位"
+      process: |
+        比較可能性キーで事例を集合化し、条件差分と結果差分を抽出する。
+        数値計算は型付きの決定的コードで行い、欠けた統計量をLLMで補わない。
+        共通パターン、適用境界、反例候補を新しいclaim候補として出力する。
+        前提から確定的に計算できる結果はderived、
+        観測から一般化したパターンはhypothesisとして扱う。
+      limit: "有限の一致事例を普遍法則や独自証明へ昇格させない"
+
+    freshness: |
+      前提revision、訂正、撤回、scope変更を逆引きし、依存する派生物を再検査する。
+      他の有効な独立根拠が残っている場合は、それも含めて状態を再計算する。
+      一つの根拠の失効だけで全関連ノードを無条件に無効化しない。
+
+  domain_expansion:
+    module: "frontier_manager.py"
+
+    objective: |
+      最大化するのはノード数ではなく、費用当たりの
+      「支持された新知識」「既存問題の解消」「有用な領域間接続」。
+      自律探索は無限増殖ではなく、設定された目的・権限・予算内で行う。
+
+    frontier_sources:
+      - source: "未解決の参照・概念"
+        example: "既存claimが使うが、定義・根拠・所属領域が未解決の概念"
+      - source: "引用ネットワークの境界"
+        example: "既存論文から参照される、未探索の関連文献群"
+      - source: "複数ドメインをつなぐ方法・性質"
+        example: "両ドメインで使われる共通測定法や理論"
+      - source: "矛盾・条件差"
+        example: "結果の不一致を説明し得る隣接分野や条件"
+      - source: "回答不能・低根拠の質問"
+        example: "ask_knowledgeの検索不足ログ。ログがなくても他経路で動作"
+
+    frontier_schema:
+      frontier_id: "正規化した概念群・探索意図の安定キー"
+      fields:
+        - "parent_domains / triggering_claims / external_seed_evidence"
+        - "search_queries / expected_resolved_gaps"
+        - "estimated_cost / novelty / overlap / risk"
+        - "probe_history / accepted_yield / independent_source_groups"
+        - "state / cooldown_until / lineage_root"
+
+    candidate_construction: |
+      境界概念を語彙・引用・埋め込みでクラスタ化し、
+      各クラスタに暫定名、既存領域との差分、探索理由を付ける。
+      LLMは名称と検索式を提案できるが、提案した名称だけではDomainを作らない。
+      自分で生成したHYPは探索動機にはできるが、外部裏付けには数えない。
+
+    ranking:
+      normalization: "gain、bridge、relevance、novelty、riskは比較窓内で0〜1に正規化"
+      formula: |
+        value = 0.35 * expected_gap_reduction
+              + 0.25 * expected_supported_novel_claims
+              + 0.20 * bridge_value
+              + 0.10 * task_relevance
+              + 0.10 * nonredundant_coverage
+        priority = conservative_yield_estimate * value / max(cost, cost_floor)
+                   - risk_penalty
+      estimation: |
+        初期は事前値と少数のprobe結果を使う。
+        データが少ない段階で学習済み精度を仮定しない。
+        収量は独立出典・重複除去・公開後の失効を反映して更新する。
+      exploration: |
+        frontier予算の90%を高優先度候補、10%を未探索の隣接候補に配る。
+        ノード数や引用数の多さだけで同じ領域を選び続けない。
+
+    lifecycle:
+      states: ["CANDIDATE", "PROBING", "INCUBATING", "ACTIVE", "PAUSED", "REJECTED"]
+      probe:
+        default_papers: 5
+        output: |
+          支持された新claim、独立出典数、既存領域との接続、
+          重複率、取得費用、残った不確実性を記録する。
+      activation_conditions:
+        - "既存Domainの別名ではなく、対象と境界を説明できる"
+        - "初期目安として独立した2出典群以上から、検証済みclaimが3件以上ある"
+        - "親領域との意味的接続に根拠がある"
+        - "暫定候補を超えて探索する期待効用が正で、予算内である"
+        - "policy engineを通過する"
+      restriction: |
+        上記の件数は運用上の初期値で、科学的妥当性の保証ではない。
+        活性化後も主張ごとの根拠強度は変えない。
+        新分野への事実ノード公開で、この審査を迂回しない。
+
+    domain_membership: |
+      Domainは排他的な木構造に限定しない。
+      同じConceptを複数Domainから参照し、領域ごとに複製しない。
+      境界の見直しは履歴付きの分類変更として扱う。
+
+  recursive_loop:
+    module: "autonomous_orchestrator.py"
+
+    architecture: |
+      永続タスクキュー + proposal staging + policy gate + transactional outbox。
+      各モジュールは直接グラフを変更せず、Proposalを返す。
+      Orchestratorだけが承認済み差分をcommitし、後続イベントを発行する。
+      「完全自律」は、人の入力なしで実行・保留・停止まで判断できること。
+      不確実な候補を無理に公開することではない。
+
+    integration:
+      knowledge_amplifier: "探索・Gap補修から再利用し、検証済みEvidence取得を担当"
+      gap_detector: "G1/G2に加え、構造・内容・矛盾・境界のGapを検出"
+      evidence_miner: "Evidenceから原文付きClaimProposalを生成"
+      node_factory: "ノード配置、生成、型・層・所属候補を生成"
+      relation_engine: "関係検証、インスタンス比較、派生claim候補を生成"
+      frontier_manager: "領域候補の評価、probe、活性化判断"
+      policy_engine: "既存の承認前チェック、stale、独自証明保護、HYP隔離を維持"
+      ask_knowledge: |
+        ACTIVEかつ有効なclaim@revisionを通常回答に使用する。
+        abstract_only、derived、contestedを表示し、根拠を追跡可能にする。
+        HYPは明示的な仮説回答モード以外では事実回答へ混入させない。
+
+    expanded_gaps:
+      G1_unsupported_claim: |
+        DOIが紐付いたかではなく、claimの範囲を支持する根拠があるかで閉じる。
+      G2_missing_instance: |
+        実例が必要なClassに限定し、検証済みHAS_SCOPED_INSTANCEで閉じる。
+      G3_unmined_evidence: "未抽出のabstract・本文revision"
+      G4_unresolved_structure: "未解決の対象、所属、明示的関係"
+      G5_conflict_or_scope_gap: "比較可能な主張間の不一致、条件情報の不足"
+      G6_frontier_opportunity: "有望だが未探索の境界候補"
+      G7_stale_dependency: "訂正・撤回・前提変更による再検証待ち"
+
+    event_flow:
+      - "EvidenceAccepted → G3 → ClaimExtractionRequested"
+      - "ClaimValidated → NodePlacementRequested"
+      - "NodeOrClaimCommitted → LocalRelationScanRequested"
+      - "RelationCommitted → InstanceComparisonRequested / LocalGapScanRequested"
+      - "BoundaryDetected → FrontierProbeRequested"
+      - "FrontierActivated → EvidenceSearchRequested"
+      - "SourceChanged → DependencyRevalidationRequested"
+
+    scheduler:
+      priority_order:
+        - "撤回・破損・staleなどの安全性回復"
+        - "既存claimと重要Gapの補修"
+        - "取得済みEvidenceからの構造化"
+        - "局所関係・インスタンス比較"
+        - "ドメイン拡大"
+      initial_budget_share:
+        repair: 0.60
+        structural_growth: 0.20
+        frontier: 0.20
+      note: "安全性回復は拡大予算より優先する。枠は生成目標ではなく上限"
+
+    cycle_pseudocode: |
+      recover_pending_transactions_and_leases()
+      ingest_due_source_updates()
+      enqueue_incremental_gaps_and_due_frontiers()
+
+      while budget.available() and not circuit_breaker.open():
+          task = lease_next_eligible_task()
+          if task is None:
+              break
+
+          if already_completed(task.idempotency_key):
+              acknowledge(task)
+              continue
+
+          reserve_budget(task.estimated_cost)
+          proposal = run_in_sandbox(task)
+          result = validate_schema_provenance_semantics_and_policy(proposal)
+
+          if result == PASS:
+              atomic_commit_and_outbox(proposal, task)
+          elif result == ABSTAIN:
+              quarantine_with_reason(proposal, task)
+          else:
+              reject_with_reason(proposal, task)
+
+          settle_budget(task.actual_cost)
+          update_yield_and_quality_metrics(task)
+          apply_pause_and_stop_rules()
+
+      persist_checkpoint_and_cycle_report()
+
+    idempotency_and_recursion:
+      task_key: "hash(action, target_id, target_revision, policy_version, algorithm_version)"
+      proposal_deduplication: "claim_key、node識別キー、edge識別キーに一意制約を付ける"
+      lineage: |
+        各タスクにroot、parent、depth、累積費用を持たせる。
+        同じ入力・同じ処理版の完了済みタスクは再生成しない。
+        新イベントがあるだけで深さ・累積予算をリセットしない。
+      repeated_runs: |
+        リトライは同じtask_keyを使い、指数バックオフ後に最大3回。
+        内容欠落・意味的な不確実性を、通信エラーのように即時リトライしない。
+        新しい本文版や外部根拠が得られたときにだけ再評価できる。
+      depth_control: |
+        初期の自律探索はrootから2段まで。
+        その先は次epochのFrontierとして評価し直す。
+        日次予算、cooldown、失敗履歴はepochをまたいで保持する。
+
+    initial_limits_for_current_store:
+      per_cycle:
+        wall_time_minutes: 30
+        newly_fetched_papers: 20
+        new_active_claims: 12
+        new_active_nodes: 5
+        new_active_edges: 15
+        external_requests: 200
+        llm_tokens: 50000
+        autonomous_frontier_depth: 2
+      per_day:
+        maximum_cycles: 4
+        new_active_domains: 1
+      pending_draft_limit: 30
+      monetary_budget: "運用側が金額上限を必須設定。未設定なら外部有料処理を開始しない"
+      note: |
+        現在の19ノード規模に合わせた保守的な開始値。
+        API制限と実測費用で調整し、並列実行でも予算予約により上限を守る。
+        件数上限を満たすために、proposalを途中までcommitしない。
+
+    stopping_conditions:
+      normal:
+        - "実行可能なキューが空"
+        - "時間・件数・token・金額のいずれかの上限到達"
+        - "probeが連続3回、有効な非重複claimを生まないFrontierをcooldown"
+        - "追加探索の期待効用が設定下限を下回る"
+      circuit_breaker:
+        - "来歴欠損、型制約破壊、HYP漏出など重大不変条件の違反"
+        - "独自証明や保護ノードへの禁止された変更"
+        - "再検証失敗が品質基準を超過"
+        - "保留候補の蓄積が上限を超過"
+      after_stop: |
+        未処理タスクと理由を保存する。
+        日次予算の回復、cooldown終了、新しい外部情報など、
+        明示的な再開条件なしに自動再起動を繰り返さない。
+
+    quality_assurance:
+      hard_invariants:
+        - "公開された主張・意味エッジは根拠または追跡可能な導出を持つ"
+        - "引用spanは保存済み文書revisionに実在する"
+        - "HYP由来の導出は独立検証なしに事実へ昇格しない"
+        - "登録済みの型、方向、scope制約を満たす"
+        - "自分の出力を新しい独立Evidenceとして数えない"
+      tests:
+        - "同一論文を複数APIから取得しても独立根拠が増えない"
+        - "否定・条件・単位が違うclaimを統合しない"
+        - "リトライ・並列commitでもノードとエッジが重複しない"
+        - "撤回・前提更新で派生claimを再検証できる"
+        - "矛盾結果や帰納的パターンが事実へ無条件昇格しない"
+      audit: |
+        新規公開物を別パスで抜き取り再検証し、不一致は隔離する。
+        これは原文整合性の監査であり、科学的真実性の保証ではない。
+        閾値の精度評価には固定したラベル付き評価集合を使い、
+        OS自身の採択結果だけを正解データにしない。
+      autonomy_boundary: |
+        既存policyが人の承認を要求する変更は待機させ、迂回しない。
+        通常運転は事前に許可された変更範囲で自律継続する。
+        自律処理によるpolicy、予算、型制約の自己緩和は禁止する。
+
+    security:
+      - "取得先とツールをallowlist化し、任意コード実行を許さない"
+      - "DOI等の外部URL解決では内部ネットワークへのアクセスを遮断する"
+      - "文書解析を隔離し、容量・時間制限と利用条件を守る"
+
+    bootstrap:
+      - "既存20Evidenceを、書誌検証済み／本文取得済み／内容支持確認済みに区別する"
+      - "既存claimと根拠リンクを再検査するが、履歴や独自証明は破壊しない"
+      - "最初は既存2ドメイン内で抽出・構造化を運転し、評価後にFrontierを解放する"
+
+  scaling:
+    core_strategy: |
+      全グラフを毎回LLMへ渡さない。
+      変更差分を起点に、検索で絞った局所集合だけを処理する。
+      重要なのはノード数だけでなく、claim数、根拠数、関係候補数、
+      版数、API待ち時間、LLM費用である。
+
+    storage:
+      entities:
+        - "nodes / node_aliases / node_domain_memberships"
+        - "claims / claim_revisions / claim_ownership"
+        - "evidence / evidence_revisions / source_families"
+        - "support_links / edges / derivation_dependencies"
+        - "gaps / frontiers / tasks / proposals / event_outbox"
+        - "budget_ledger / quality_metrics / audit_log"
+      indexes:
+        - "claim_key、comparison_key、外部識別子のB-tree・一意索引"
+        - "type、scope、domain、statusの絞り込み索引"
+        - "ノード定義・claimの全文検索とANN索引"
+        - "source_ref、target_ref、relation_typeの隣接索引"
+        - "evidence_revision・premise_revisionからの依存逆引き"
+        - "task状態、優先度、実行可能時刻のキュー索引"
+      representation: |
+        abstract・本文はcontent_hash付きの文書ストアへ置く。
+        本文全体をノードやエッジに複製しない。
+        根拠リンクと意味エッジ、探索用類似リンクを分離する。
+
+    by_size:
+      nodes_100:
+        architecture: "単一プロセスのschedulerと既存MVP、永続キュー、局所検索"
+        priorities:
+          - "抽出精度、claim同一性、型制約、冪等性を固める"
+          - "20Evidenceから何件の有効な構造化知識を得るか測定する"
+          - "分散基盤より観測性と回復性を優先する"
+      nodes_1000:
+        architecture: "PostgreSQL等の索引付きストア、全文検索・ANN、少数worker"
+        priorities:
+          - "抽出、検証、関係推論、外部取得を別キューにする"
+          - "API別rate limit、予算予約、backpressureを実装する"
+          - "ノード・claimのrevision競合を検知し、確定前に再照合する"
+          - "高次数ノードの近傍を型・scope・関係種別で絞る"
+      nodes_10000:
+        architecture: "索引付きRDBを主軸に維持可能。必要な処理だけ水平並列化"
+        priorities:
+          - "ドメイン単位のworker割当と、領域横断検索を両立する"
+          - "stale伝播を依存索引でバッチ処理し、待機中は回答側で除外する"
+          - "型付き推論の無制限な推移閉包を作らず、必要時導出とcacheを使う"
+          - "古いproposal、イベント、失敗履歴を保持規約に従って圧縮する"
+          - "実測で必要になるまでグラフ専用DBや物理shardingを導入しない"
+
+    complexity_control:
+      semantic_checks: |
+        変更claim数をΔC、変更ノード数をΔN、
+        比較候補上限をkc、keとすると、
+        高コストな意味判定件数を概ねΔC*kc + ΔN*keに制限する。
+        ANN検索や型階層検査の費用は別途計測する。
+      forbidden:
+        - "各cycleで全claimを再抽出する"
+        - "全ノード対O(N^2)の関係推論をLLMで行う"
+        - "すべての推移的な関係を物理エッジとして保存する"
+      incremental_processing: |
+        新規・更新revisionだけを処理する。
+        parser/model更新時の再処理は通常探索と別予算のmigration jobにする。
+
+    cost_control:
+      - "同じ本文hash・処理版の抽出結果をcacheする"
+      - "決定的ルールと識別子照合を先に実施し、難しい候補だけLLMへ送る"
+      - "候補生成は軽量、公開判定は厳格という二段構成にする"
+      - "検証キューが詰まったら探索・生成を減速する"
+      - "探索枠をノード件数だけで自動増額せず、実測収量と品質で調整する"
+
+    metrics:
+      useful_growth:
+        - "独立根拠付きの非重複claim増加数"
+        - "根拠付きClass・ScopedInstance・意味エッジの増加数"
+        - "既存Gap解消数と、新しく発生した未支持負債"
+        - "固定評価質問集合に対する根拠到達率・回答可能率"
+      quality:
+        - "原文整合性監査の失敗率"
+        - "誤統合率・誤った関係付与率"
+        - "HYP漏出件数・来歴欠損件数"
+        - "公開後の失効率・stale解消時間"
+      efficiency:
+        - "有効な非重複claim一件当たりの費用"
+        - "Frontier別の採択収量・重複率・取得不能率"
+        - "queue滞留時間・再試行率・p95検索時間"
+      success_definition: |
+        ノード数が増えるだけでは成功としない。
+        費用と未検証負債を制御しながら、説明可能な構造、
+        比較可能な事例、追跡可能な根拠、回答できる問いが増えることを成功とする。
+```

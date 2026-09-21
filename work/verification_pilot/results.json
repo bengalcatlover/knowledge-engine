@@ -1,0 +1,194 @@
+{
+  "policy": "boundary-v1",
+  "selected": 10,
+  "passed": 2,
+  "deferred": 8,
+  "results": [
+    {
+      "claim_id": "K-0003#c1",
+      "previous_state": "source_supported",
+      "scope": null,
+      "decision": "defer",
+      "assets": [],
+      "evidence_fingerprints": {},
+      "checker_sha256": "f08db803e37a464cb71627db220e5af62a227b75712e4f1456c5e9eef399b7c7",
+      "input_evidence_digest": "084cfe39e164f0ff9ba1b2f7de824aa5c7a3cc18a228c0d090c0ae4dcf1359b9",
+      "reason": "source_hash_pending; source_entailment_uncalibrated; definition_scope_requires_review",
+      "reused": true,
+      "newly_usable": false
+    },
+    {
+      "claim_id": "K-0010#c1",
+      "previous_state": "source_supported",
+      "scope": null,
+      "decision": "defer",
+      "assets": [],
+      "evidence_fingerprints": {},
+      "checker_sha256": "f08db803e37a464cb71627db220e5af62a227b75712e4f1456c5e9eef399b7c7",
+      "input_evidence_digest": "e849d848cd7d3d258cbb28304cb7c63d53541346f79675da32889a8c7d59fd85",
+      "reason": "source_hash_pending; source_entailment_uncalibrated; definition_scope_requires_review",
+      "reused": true,
+      "newly_usable": false
+    },
+    {
+      "claim_id": "B-0200#c1",
+      "previous_state": "formally_verified",
+      "scope": null,
+      "decision": "defer",
+      "assets": [],
+      "evidence_fingerprints": {},
+      "checker_sha256": "f08db803e37a464cb71627db220e5af62a227b75712e4f1456c5e9eef399b7c7",
+      "input_evidence_digest": "2353690c9768850bca2bf5df77304cb411f9f4653921a045b4d4cd826e89a89a",
+      "reason": "proof_sketch_is_not_machine_checked; source_hash_pending; scope_requires_review",
+      "reused": true,
+      "newly_usable": false
+    },
+    {
+      "claim_id": "S-0200#c1",
+      "previous_state": "formally_verified",
+      "scope": null,
+      "decision": "defer",
+      "assets": [],
+      "evidence_fingerprints": {},
+      "checker_sha256": "f08db803e37a464cb71627db220e5af62a227b75712e4f1456c5e9eef399b7c7",
+      "input_evidence_digest": "1c4fee3965b1f63fbc31a49ee87f652bbffd97fb74627675b205e11ef22345c2",
+      "reason": "proof_sketch_is_not_machine_checked; source_hash_pending; scope_requires_review",
+      "reused": true,
+      "newly_usable": false
+    },
+    {
+      "claim_id": "B-0100#c1",
+      "previous_state": "formally_verified",
+      "scope": "有限非空集合D、実数値関数f、a*∈D。C=max(f(a)-f(a*))。最大値の存在とargmaxの定義を前提とする。",
+      "decision": "passed",
+      "assets": [
+        {
+          "path": "work\\verification_pilot\\B-0100_c1.json",
+          "sha256": "899eaee3030845f02791e7bb1c8aee5be4dd1f13974f9f555a29dcb1466a20f3"
+        },
+        {
+          "path": "verify_pilot.py",
+          "sha256": "f08db803e37a464cb71627db220e5af62a227b75712e4f1456c5e9eef399b7c7"
+        }
+      ],
+      "evidence_fingerprints": {
+        "E-CHECK-B-0100-c1": "4de0f1d80de1a6a7cc0be146bf275d7e95a4434e6f879e8db57ac8168e04729e"
+      },
+      "checker_sha256": "f08db803e37a464cb71627db220e5af62a227b75712e4f1456c5e9eef399b7c7",
+      "input_evidence_digest": "aa071d03356802078e8e5b6fe3e9bb335c7460a08a44654d0a3c82d2a287934a",
+      "validated_state": "formally_verified",
+      "reason": "checker_passed",
+      "check": {
+        "passed": true,
+        "method": "symbolic_real_linear_arithmetic",
+        "obligations": {
+          "forward_counterexample": "False",
+          "reverse_counterexample": "False"
+        },
+        "negative_control_satisfiable": true,
+        "axioms": [
+          "Finite nonempty real-valued functions attain a maximum.",
+          "max(f-f(a*)) = max(f)-f(a*) by order-preserving translation.",
+          "argmax membership means f(x)<=f(a*) for all x in D."
+        ],
+        "limit": "Checker verifies linear obligations under the explicit maximum/argmax encoding; not arbitrary Japanese theorem understanding."
+      },
+      "reused": true,
+      "newly_usable": false
+    },
+    {
+      "claim_id": "S-0100#c1",
+      "previous_state": "formally_verified",
+      "scope": "単一財、入札者2人、私的価値、準線形効用、評価額と入札額はいずれも{0,1,2}、同額時は事前固定順位。人間行動や連続入札への一般化なし。",
+      "decision": "passed",
+      "assets": [
+        {
+          "path": "work\\verification_pilot\\S-0100_c1.json",
+          "sha256": "ab8a87518694ae1b1d6fad4c5db3e9a15b895f62f0de83f0f0f3b525d0c3aabc"
+        },
+        {
+          "path": "verify_pilot.py",
+          "sha256": "f08db803e37a464cb71627db220e5af62a227b75712e4f1456c5e9eef399b7c7"
+        }
+      ],
+      "evidence_fingerprints": {
+        "E-CHECK-S-0100-c1": "15bd5251e3d2135d010628acc6018735e94f7e9851013391b61ee4ea68c580fe"
+      },
+      "checker_sha256": "f08db803e37a464cb71627db220e5af62a227b75712e4f1456c5e9eef399b7c7",
+      "input_evidence_digest": "7a9cd7f7516302b7ec98bfb3e3a4d3810140a370788779371fe6070056c12e5c",
+      "validated_state": "formally_verified",
+      "reason": "checker_passed",
+      "check": {
+        "passed": true,
+        "method": "exhaustive_finite_model_check",
+        "dominance_cases": 108,
+        "nash_cases": 108,
+        "counterexamples": [],
+        "nash_counterexamples": [],
+        "domain": [
+          0,
+          1,
+          2
+        ],
+        "ties": "both fixed priority orders",
+        "first_price": false,
+        "negative_control_failed": true
+      },
+      "reused": true,
+      "newly_usable": false
+    },
+    {
+      "claim_id": "U-0100#c1",
+      "previous_state": "unverified",
+      "scope": null,
+      "decision": "defer",
+      "assets": [],
+      "evidence_fingerprints": {},
+      "checker_sha256": "f08db803e37a464cb71627db220e5af62a227b75712e4f1456c5e9eef399b7c7",
+      "input_evidence_digest": "0e1e97106e1d8383750ec770d17839fbe9070a663d22155c92970d33de3a2cbf",
+      "reason": "scope_or_definition_not_formally_encoded",
+      "reused": true,
+      "newly_usable": false
+    },
+    {
+      "claim_id": "U-0200#c1",
+      "previous_state": "unverified",
+      "scope": null,
+      "decision": "defer",
+      "assets": [],
+      "evidence_fingerprints": {},
+      "checker_sha256": "f08db803e37a464cb71627db220e5af62a227b75712e4f1456c5e9eef399b7c7",
+      "input_evidence_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "reason": "scope_or_definition_not_formally_encoded",
+      "reused": true,
+      "newly_usable": false
+    },
+    {
+      "claim_id": "E-AUTO-10_1145-1566374_1566402#factory-1",
+      "previous_state": "unverified",
+      "scope": null,
+      "decision": "defer",
+      "assets": [],
+      "evidence_fingerprints": {},
+      "checker_sha256": "f08db803e37a464cb71627db220e5af62a227b75712e4f1456c5e9eef399b7c7",
+      "input_evidence_digest": "0ea61363999dd78a9815c907b352a0f947c549cdc657ff205bc6abe72c678fa7",
+      "reason": "single_source_extraction; independent_entailment_not_validated",
+      "reused": true,
+      "newly_usable": false
+    },
+    {
+      "claim_id": "E-AUTO-10_1145-1566374_1566402#factory-2",
+      "previous_state": "unverified",
+      "scope": null,
+      "decision": "defer",
+      "assets": [],
+      "evidence_fingerprints": {},
+      "checker_sha256": "f08db803e37a464cb71627db220e5af62a227b75712e4f1456c5e9eef399b7c7",
+      "input_evidence_digest": "ee04add56747cd68cad6a5d2bd3bac4b4b3a15e809eb664760ba811abeea4396",
+      "reason": "single_source_extraction; independent_entailment_not_validated",
+      "reused": true,
+      "newly_usable": false
+    }
+  ],
+  "note": "Historical states retained; deferred records block ordinary use."
+}

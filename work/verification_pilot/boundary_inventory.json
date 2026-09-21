@@ -1,0 +1,1073 @@
+{
+  "claims": [
+    {
+      "claim_id": "B-0100#c1",
+      "node_id": "B-0100",
+      "historical_status": "formally_verified",
+      "usable": true,
+      "reason": "checker_passed"
+    },
+    {
+      "claim_id": "S-0100#c1",
+      "node_id": "S-0100",
+      "historical_status": "formally_verified",
+      "usable": true,
+      "reason": "checker_passed"
+    },
+    {
+      "claim_id": "K-0003#c1",
+      "node_id": "K-0003",
+      "historical_status": "source_supported",
+      "usable": false,
+      "reason": "source_hash_pending; source_entailment_uncalibrated; definition_scope_requires_review"
+    },
+    {
+      "claim_id": "K-0010#c1",
+      "node_id": "K-0010",
+      "historical_status": "source_supported",
+      "usable": false,
+      "reason": "source_hash_pending; source_entailment_uncalibrated; definition_scope_requires_review"
+    },
+    {
+      "claim_id": "K-0007#c1",
+      "node_id": "K-0007",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "U-0100#c1",
+      "node_id": "U-0100",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "scope_or_definition_not_formally_encoded"
+    },
+    {
+      "claim_id": "Q-0100#q1",
+      "node_id": "Q-0100",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "H-0100#h1",
+      "node_id": "H-0100",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "B-0200#c1",
+      "node_id": "B-0200",
+      "historical_status": "formally_verified",
+      "usable": false,
+      "reason": "proof_sketch_is_not_machine_checked; source_hash_pending; scope_requires_review"
+    },
+    {
+      "claim_id": "S-0200#c1",
+      "node_id": "S-0200",
+      "historical_status": "formally_verified",
+      "usable": false,
+      "reason": "proof_sketch_is_not_machine_checked; source_hash_pending; scope_requires_review"
+    },
+    {
+      "claim_id": "U-0200#c1",
+      "node_id": "U-0200",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "scope_or_definition_not_formally_encoded"
+    },
+    {
+      "claim_id": "E-AUTO-10_1037-h0037350#mined-0",
+      "node_id": "K-0007",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1037-h0037350#mined-1",
+      "node_id": "K-0007",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1093-rfs-hhy102#mined-3",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1109-TIT_1972_1054855#mined-0",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1109-TIT_1972_1054855#mined-1",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1111-j_1467-985X_2007_00527#mined-1",
+      "node_id": "K-0007",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1145-1566374_1566402#mined-3",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1146-annurev-economics-0802#mined-0",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1146-annurev-economics-0802#mined-1",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1146-annurev-economics-0802#mined-2",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1146-annurev-economics-0802#mined-3",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-0022051043004577#mined-1",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-0022051043004577#mined-2",
+      "node_id": "K-0007",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-aer_90_3_499#mined-1",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-aer_90_3_499#mined-2",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-aer_97_1_242#mined-0",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-aer_97_1_242#mined-1",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-aer_97_1_242#mined-2",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-aer_97_1_242#mined-3",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-app_1_4_200#mined-0",
+      "node_id": "K-0007",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-app_1_4_200#mined-1",
+      "node_id": "K-0007",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-app_1_4_200#mined-4",
+      "node_id": "K-0007",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-jel_47_1_5#mined-0",
+      "node_id": "K-0007",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-jel_47_1_5#mined-2",
+      "node_id": "K-0007",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1257-jel_47_1_5#mined-3",
+      "node_id": "K-0007",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1287-moor_6_1_58#mined-0",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1287-moor_6_1_58#mined-1",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1287-moor_6_1_58#mined-2",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1911865#mined-2",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1914083#mined-1",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1914083#mined-2",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1914085#mined-0",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1914085#mined-2",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1914085#mined-3",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-SHANNON-1948#mined-0",
+      "node_id": "U-0200",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-SHANNON-1948#mined-1",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-SHANNON-1948#mined-2",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-SHANNON-1948#mined-3",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0018#c1",
+      "node_id": "K-0018",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0019#c1",
+      "node_id": "K-0019",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0020#c1",
+      "node_id": "K-0020",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0021#c1",
+      "node_id": "K-0021",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0022#c1",
+      "node_id": "K-0022",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0023#c1",
+      "node_id": "K-0023",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0024#c1",
+      "node_id": "K-0024",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0025#c1",
+      "node_id": "K-0025",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0026#c1",
+      "node_id": "K-0026",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1016-j_geb_2011_07_004#mined-0",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1016-j_geb_2011_07_004#mined-1",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1016-j_geb_2011_07_004#mined-3",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0027#c1",
+      "node_id": "K-0027",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0028#c1",
+      "node_id": "K-0028",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0029#c1",
+      "node_id": "K-0029",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0030#c1",
+      "node_id": "K-0030",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0031#c1",
+      "node_id": "K-0031",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1002-j_1538-7305_1948_tb013#mined-1",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1002-j_1538-7305_1948_tb013#mined-2",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1109-JPROC_2004_839617#mined-0",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1109-JPROC_2004_839617#mined-2",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1287-mnsc_14_3_159#mined-0",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1287-mnsc_14_3_159#mined-2",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1287-mnsc_14_3_159#mined-3",
+      "node_id": "K-0025",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1879431#mined-1",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1879431#mined-3",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1882010#mined-0",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1882010#mined-1",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1882010#mined-2",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1882010#mined-3",
+      "node_id": "K-0017",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1911197#mined-0",
+      "node_id": "K-0027",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1911263#mined-1",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1911263#mined-2",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1911263#mined-3",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1912352#mined-1",
+      "node_id": "K-0007",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1912511#mined-0",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1912511#mined-1",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1912511#mined-3",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1912511#mined-4",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1912577#mined-0",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1912577#mined-1",
+      "node_id": "K-0020",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1912577#mined-2",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-1912773#mined-4",
+      "node_id": "K-0020",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-3003319#mined-0",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-3003319#mined-2",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_2307-3003319#mined-3",
+      "node_id": "K-0003",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-NASH-1950#mined-0",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-NASH-1950#mined-1",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0032#c1",
+      "node_id": "K-0032",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0033#c1",
+      "node_id": "K-0033",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0034#c1",
+      "node_id": "K-0034",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0035#c1",
+      "node_id": "K-0035",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0036#c1",
+      "node_id": "K-0036",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1006-jeth_2001_2949#mined-0",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0037#c1",
+      "node_id": "K-0037",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "K-0038#c1",
+      "node_id": "K-0038",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "no_current_validation_record"
+    },
+    {
+      "claim_id": "E-AUTO-10_1145-1566374_1566402#factory-1",
+      "node_id": "K-0010",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "single_source_extraction; independent_entailment_not_validated"
+    },
+    {
+      "claim_id": "E-AUTO-10_1145-1566374_1566402#factory-2",
+      "node_id": "U-0100",
+      "historical_status": "unverified",
+      "usable": false,
+      "reason": "single_source_extraction; independent_entailment_not_validated"
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "edge-04e7eebc",
+      "type": "ABSTRACTS_FROM",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-4f1d46bf",
+      "type": "ABSTRACTS_FROM",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-4963ea12",
+      "type": "ABSTRACTS_FROM",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-ddb92cde",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-24e0c072",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-b107b0af",
+      "type": "GUIDES_TEST_DESIGN",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-2c74dfbe",
+      "type": "ABOUT",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-92e94177",
+      "type": "PLANS",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-b7a04c04",
+      "type": "EXECUTES_ON",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-ec279e75",
+      "type": "PRODUCES",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-cbbaebd2",
+      "type": "ANSWERS",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-75810cbe",
+      "type": "ABSTRACTS_FROM",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-b447cf5c",
+      "type": "ABSTRACTS_FROM",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-b4832979",
+      "type": "ABSTRACTS_FROM",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-839f920f",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-6c4d2e44",
+      "type": "ABOUT",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-a89367f3",
+      "type": "PLANS",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-2596ef67",
+      "type": "EXECUTES_ON",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-b30b7223",
+      "type": "PRODUCES",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-a4ee8c17",
+      "type": "IS_A",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-19787675",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-c40ffcd9",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-edecbf8d",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-62f05a74",
+      "type": "IS_A",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-7cc0e32f",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-997aa6f4",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-5429d127",
+      "type": "IS_A",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-64ff2cb5",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-e7966ba2",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-795e1a8f",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-25b61a9f",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-cb87627e",
+      "type": "COMPLEMENTS",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-c117191b",
+      "type": "APPLIES_TO",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-d368c40c",
+      "type": "SPECIALIZES",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-0ad994c8",
+      "type": "DEPENDS_ON",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-b281a498",
+      "type": "GENERALIZES",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-0b0e4856",
+      "type": "GENERALIZES",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-6b267016",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-77f8b5b9",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-11b24489",
+      "type": "COMPLEMENTS",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-d80d4a12",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-a0739604",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-4f09c84a",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-7216bb47",
+      "type": "IS_A",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-badabc31",
+      "type": "DERIVES_FROM",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-c2098a8b",
+      "type": "COMPLEMENTS",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-2d9f878b",
+      "type": "IS_A",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-0af8a354",
+      "type": "HAS_SCOPED_INSTANCE",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-6ac9a9e7",
+      "type": "COMPLEMENTS",
+      "usable": false,
+      "status": "candidate"
+    },
+    {
+      "edge_id": "edge-c84a6215",
+      "type": "DEPENDS_ON",
+      "usable": false,
+      "status": "candidate"
+    }
+  ],
+  "claim_count": 107,
+  "usable_claim_count": 2,
+  "usable_edge_count": 0,
+  "status_changes": [
+    {
+      "claim_id": "B-0100#c1",
+      "before": "unverified",
+      "after": "formally_verified"
+    },
+    {
+      "claim_id": "S-0100#c1",
+      "before": "unverified",
+      "after": "formally_verified"
+    }
+  ],
+  "confirmed_independent_support_claims": 0,
+  "integrity": "ok",
+  "foreign_key_violations": []
+}

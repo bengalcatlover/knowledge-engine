@@ -1,0 +1,64 @@
+You are creating a discipline knowledge index for: Literature
+Broad category: Arts & Humanities
+Total courses: 4
+Total lecture units: 56
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 21L.011 The Film Experience, Fall 2007 (16 lectures)
+- 1. Introduction (21L.011 The Film Experience)
+- 15. Film in the 1970s, Part I
+- ** 15. Film in the 1970s, Part I
+- 16. Film in the 1970s, Part II
+- 19. Italian Neorealism, Part I
+- 2. Keaton
+- 20. Italian neorealism
+- ** 20. Italian neorealism
+- 3. Chaplin
+- 4. Chaplin, Part II (2007)
+
+### MIT 21L.011 The Film Experience, Fall 2013 (6 lectures)
+- 2. Keaton (2007)
+- 21. Truffaut, the Nouvelle Vague, The 400 Blows
+- Thematic Spines of the Course
+
+### MIT 21L.432 Understanding Television, Spring 2003 (12 lectures)
+- Class 10: TV Genres | MIT 21L.432 Understanding Television, Fall 2001
+- Class 16: TV Genres | MIT 21L.432 Understanding Television, Fall 2001
+- Class 18: TV Genres | MIT 21L.432 Understanding Television, Spring 2008
+- Class 1: Introduction | MIT 21L.432 Understanding Television, Spring 2008
+- Class 3: Television As A Cultural Form | MIT 21L.432 Understanding Television, Fall 2001
+- Class 5: The Broadcast Era | MIT 21L.432 Understanding Television, Fall 2001
+
+### MIT 21L.448J Darwin and Design, Fall 2010 (22 lectures)
+- Lec 10 | MIT 21L.448J Darwin and Design, Fall 2010
+- Lec 12 | MIT 21L.448J Darwin and Design, Fall 2010
+- Lec 16 | MIT 21L.448J Darwin and Design, Fall 2010
+- Lec 17 | MIT 21L.448J Darwin and Design, Fall 2010
+- Lec 2 | MIT 21L.448J Darwin and Design, Fall 2010
+- Lec 20 | MIT 21L.448J Darwin and Design, Fall 2010
+- Lec 22 | MIT 21L.448J Darwin and Design, Fall 2010
+- ** Lec 22 | MIT 21L.448J Darwin and Design, Fall 2010
+- Lec 4 | MIT 21L.448J Darwin and Design, Fall 2010
+- Lec 6 | MIT 21L.448J Darwin and Design, Fall 2010
+- Lec 7 | MIT 21L.448J Darwin and Design, Fall 2010
+- Lec 8 | MIT 21L.448J Darwin and Design, Fall 2010
+

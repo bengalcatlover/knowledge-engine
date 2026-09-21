@@ -1,0 +1,277 @@
+{
+  "passed": 10,
+  "total": 10,
+  "answered_expected": 5,
+  "abstained_expected": 5,
+  "usage": {
+    "model": "gpt-4.1-nano-2025-04-14",
+    "calls": 0,
+    "cache_hits": 5,
+    "errors": 0,
+    "estimated_usd": 0.0,
+    "reserved_usd": 0.0
+  },
+  "results": [
+    {
+      "case": {
+        "id": "Q1",
+        "query": "有限非空集合D、実数値関数f、a*∈Dで、最大改善量Cが0ならa*は最大元か？",
+        "expected": "answered",
+        "claim": "B-0100#c1"
+      },
+      "passed": true,
+      "result": {
+        "status": "answered",
+        "claim_ids": [
+          "B-0100#c1"
+        ],
+        "answer": "有限非空集合Dと a* in D に対し、C(f,a*,D)=0 ⟺ a* in argmax_{a in D} f(a)\n適用条件: 有限非空集合D、実数値関数f、a*∈D。C=max(f(a)-f(a*))。最大値の存在とargmaxの定義を前提とする。\n根拠: [B-0100#c1] → E-CHECK-B-0100-c1 (work\\verification_pilot\\B-0100_c1.json)",
+        "context": {
+          "query": "有限非空集合D、実数値関数f、a*∈Dで、最大改善量Cが0ならa*は最大元か？",
+          "claims": [
+            {
+              "claim_id": "B-0100#c1",
+              "node_id": "B-0100",
+              "revision": 1,
+              "statement": "有限非空集合Dと a* in D に対し、C(f,a*,D)=0 ⟺ a* in argmax_{a in D} f(a)",
+              "kind": "theorem",
+              "epistemic_status": "formally_verified",
+              "assumptions": "[]",
+              "scope": "有限非空集合D、実数値関数f、a*∈D。C=max(f(a)-f(a*))。最大値の存在とargmaxの定義を前提とする。",
+              "sources": [
+                {
+                  "evidence_id": "E-CHECK-B-0100-c1",
+                  "locator": "work\\verification_pilot\\B-0100_c1.json",
+                  "source_uri": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": {
+        "id": "Q2",
+        "query": "有限非空集合Dでa*がargmaxに属するとき、C=max(f(a)-f(a*))はどうなる？",
+        "expected": "answered",
+        "claim": "B-0100#c1"
+      },
+      "passed": true,
+      "result": {
+        "status": "answered",
+        "claim_ids": [
+          "B-0100#c1"
+        ],
+        "answer": "有限非空集合Dと a* in D に対し、C(f,a*,D)=0 ⟺ a* in argmax_{a in D} f(a)\n適用条件: 有限非空集合D、実数値関数f、a*∈D。C=max(f(a)-f(a*))。最大値の存在とargmaxの定義を前提とする。\n根拠: [B-0100#c1] → E-CHECK-B-0100-c1 (work\\verification_pilot\\B-0100_c1.json)",
+        "context": {
+          "query": "有限非空集合Dでa*がargmaxに属するとき、C=max(f(a)-f(a*))はどうなる？",
+          "claims": [
+            {
+              "claim_id": "B-0100#c1",
+              "node_id": "B-0100",
+              "revision": 1,
+              "statement": "有限非空集合Dと a* in D に対し、C(f,a*,D)=0 ⟺ a* in argmax_{a in D} f(a)",
+              "kind": "theorem",
+              "epistemic_status": "formally_verified",
+              "assumptions": "[]",
+              "scope": "有限非空集合D、実数値関数f、a*∈D。C=max(f(a)-f(a*))。最大値の存在とargmaxの定義を前提とする。",
+              "sources": [
+                {
+                  "evidence_id": "E-CHECK-B-0100-c1",
+                  "locator": "work\\verification_pilot\\B-0100_c1.json",
+                  "source_uri": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": {
+        "id": "Q3",
+        "query": "単一財・私的価値・準線形効用、2人で評価額も入札額も{0,1,2}、同額順位固定の第二価格封印入札では正直入札は弱支配戦略か？",
+        "expected": "answered",
+        "claim": "S-0100#c1"
+      },
+      "passed": true,
+      "result": {
+        "status": "answered",
+        "claim_ids": [
+          "S-0100#c1"
+        ],
+        "answer": "入札者2人・評価額{0,1,2}の有限第二価格封印入札（同額時順位事前固定）では、正直入札が弱支配戦略であり、正直入札プロファイルがナッシュ均衡になる\n適用条件: 単一財、入札者2人、私的価値、準線形効用、評価額と入札額はいずれも{0,1,2}、同額時は事前固定順位。人間行動や連続入札への一般化なし。\n根拠: [S-0100#c1] → E-CHECK-S-0100-c1 (work\\verification_pilot\\S-0100_c1.json)",
+        "context": {
+          "query": "単一財・私的価値・準線形効用、2人で評価額も入札額も{0,1,2}、同額順位固定の第二価格封印入札では正直入札は弱支配戦略か？",
+          "claims": [
+            {
+              "claim_id": "S-0100#c1",
+              "node_id": "S-0100",
+              "revision": 1,
+              "statement": "入札者2人・評価額{0,1,2}の有限第二価格封印入札（同額時順位事前固定）では、正直入札が弱支配戦略であり、正直入札プロファイルがナッシュ均衡になる",
+              "kind": "empirical",
+              "epistemic_status": "formally_verified",
+              "assumptions": "[]",
+              "scope": "単一財、入札者2人、私的価値、準線形効用、評価額と入札額はいずれも{0,1,2}、同額時は事前固定順位。人間行動や連続入札への一般化なし。",
+              "sources": [
+                {
+                  "evidence_id": "E-CHECK-S-0100-c1",
+                  "locator": "work\\verification_pilot\\S-0100_c1.json",
+                  "source_uri": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": {
+        "id": "Q4",
+        "query": "単一財、2人、私的価値と準線形効用、評価額・入札額{0,1,2}、同額時順位固定の第二価格オークションで、正直入札プロファイルはナッシュ均衡になるか？",
+        "expected": "answered",
+        "claim": "S-0100#c1"
+      },
+      "passed": true,
+      "result": {
+        "status": "answered",
+        "claim_ids": [
+          "S-0100#c1"
+        ],
+        "answer": "入札者2人・評価額{0,1,2}の有限第二価格封印入札（同額時順位事前固定）では、正直入札が弱支配戦略であり、正直入札プロファイルがナッシュ均衡になる\n適用条件: 単一財、入札者2人、私的価値、準線形効用、評価額と入札額はいずれも{0,1,2}、同額時は事前固定順位。人間行動や連続入札への一般化なし。\n根拠: [S-0100#c1] → E-CHECK-S-0100-c1 (work\\verification_pilot\\S-0100_c1.json)",
+        "context": {
+          "query": "単一財、2人、私的価値と準線形効用、評価額・入札額{0,1,2}、同額時順位固定の第二価格オークションで、正直入札プロファイルはナッシュ均衡になるか？",
+          "claims": [
+            {
+              "claim_id": "S-0100#c1",
+              "node_id": "S-0100",
+              "revision": 1,
+              "statement": "入札者2人・評価額{0,1,2}の有限第二価格封印入札（同額時順位事前固定）では、正直入札が弱支配戦略であり、正直入札プロファイルがナッシュ均衡になる",
+              "kind": "empirical",
+              "epistemic_status": "formally_verified",
+              "assumptions": "[]",
+              "scope": "単一財、入札者2人、私的価値、準線形効用、評価額と入札額はいずれも{0,1,2}、同額時は事前固定順位。人間行動や連続入札への一般化なし。",
+              "sources": [
+                {
+                  "evidence_id": "E-CHECK-S-0100-c1",
+                  "locator": "work\\verification_pilot\\S-0100_c1.json",
+                  "source_uri": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": {
+        "id": "Q5",
+        "query": "単一財・2人・私的価値・準線形効用・評価額と入札額{0,1,2}・同額時順位固定の第二価格封印入札で、相手の入札を固定したまま正直入札から自分だけ変えて効用を増やせるか？",
+        "expected": "answered",
+        "claim": "S-0100#c1"
+      },
+      "passed": true,
+      "result": {
+        "status": "answered",
+        "claim_ids": [
+          "S-0100#c1"
+        ],
+        "answer": "入札者2人・評価額{0,1,2}の有限第二価格封印入札（同額時順位事前固定）では、正直入札が弱支配戦略であり、正直入札プロファイルがナッシュ均衡になる\n適用条件: 単一財、入札者2人、私的価値、準線形効用、評価額と入札額はいずれも{0,1,2}、同額時は事前固定順位。人間行動や連続入札への一般化なし。\n根拠: [S-0100#c1] → E-CHECK-S-0100-c1 (work\\verification_pilot\\S-0100_c1.json)",
+        "context": {
+          "query": "単一財・2人・私的価値・準線形効用・評価額と入札額{0,1,2}・同額時順位固定の第二価格封印入札で、相手の入札を固定したまま正直入札から自分だけ変えて効用を増やせるか？",
+          "claims": [
+            {
+              "claim_id": "S-0100#c1",
+              "node_id": "S-0100",
+              "revision": 1,
+              "statement": "入札者2人・評価額{0,1,2}の有限第二価格封印入札（同額時順位事前固定）では、正直入札が弱支配戦略であり、正直入札プロファイルがナッシュ均衡になる",
+              "kind": "empirical",
+              "epistemic_status": "formally_verified",
+              "assumptions": "[]",
+              "scope": "単一財、入札者2人、私的価値、準線形効用、評価額と入札額はいずれも{0,1,2}、同額時は事前固定順位。人間行動や連続入札への一般化なし。",
+              "sources": [
+                {
+                  "evidence_id": "E-CHECK-S-0100-c1",
+                  "locator": "work\\verification_pilot\\S-0100_c1.json",
+                  "source_uri": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": {
+        "id": "Q6",
+        "query": "人間を参加させた実験でも第二価格なら必ず正直に入札するか？",
+        "expected": "abstain"
+      },
+      "passed": true,
+      "result": {
+        "status": "abstain",
+        "reason": "no_currently_validated_evidence",
+        "claim_ids": [],
+        "answer": "この質問に使える検査済みの根拠がありません。"
+      }
+    },
+    {
+      "case": {
+        "id": "Q7",
+        "query": "共通価値で予算制約もある3人の第二価格オークションでも正直入札が最適か？",
+        "expected": "abstain"
+      },
+      "passed": true,
+      "result": {
+        "status": "abstain",
+        "reason": "no_currently_validated_evidence",
+        "claim_ids": [],
+        "answer": "この質問に使える検査済みの根拠がありません。"
+      }
+    },
+    {
+      "case": {
+        "id": "Q8",
+        "query": "空集合Dでも最大改善量Cとargmaxの同値性を使えるか？",
+        "expected": "abstain"
+      },
+      "passed": true,
+      "result": {
+        "status": "abstain",
+        "reason": "no_currently_validated_evidence",
+        "claim_ids": [],
+        "answer": "この質問に使える検査済みの根拠がありません。"
+      }
+    },
+    {
+      "case": {
+        "id": "Q9",
+        "query": "第一価格オークションで正直入札が常に弱支配戦略となるか？",
+        "expected": "abstain"
+      },
+      "passed": true,
+      "result": {
+        "status": "abstain",
+        "reason": "no_currently_validated_evidence",
+        "claim_ids": [],
+        "answer": "この質問に使える検査済みの根拠がありません。"
+      }
+    },
+    {
+      "case": {
+        "id": "Q10",
+        "query": "無限集合の任意の実数値関数について最大値は必ず存在するか？",
+        "expected": "abstain"
+      },
+      "passed": true,
+      "result": {
+        "status": "abstain",
+        "reason": "no_currently_validated_evidence",
+        "claim_ids": [],
+        "answer": "この質問に使える検査済みの根拠がありません。"
+      }
+    }
+  ],
+  "limit": "Two narrowly checked claims, five supported queries and five out-of-scope queries; not open-domain QA accuracy."
+}

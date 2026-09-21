@@ -1,0 +1,2 @@
+decision: revise
+reason: 主張台帳の2引用は誘因制約の中核性のみを支えるが、Definition・Mechanism内のAI適用記述（報酬・権限・検証設計）や真実申告の形式的定義は根拠未追跡のまま講義由来セクションに残っており、Source References自身も「AIの適用効果を講義由来としては支えない」と明記している。これらをApplication Hypothesesへ移すか対応する主張・根拠を台帳に追加すれば直せる具体的不備である。

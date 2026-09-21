@@ -1,0 +1,112 @@
+# Claim Schema — v1.0
+# A claim is a discrete, falsifiable assertion about the world (or about a source).
+# Claims are the atomic units of verified knowledge. A concept card may reference
+# multiple claims; a claim may appear in multiple concept cards.
+#
+# The distinction between a claim and a concept:
+#   - A CONCEPT describes a mechanism, pattern, or idea (what something IS and HOW it works).
+#   - A CLAIM asserts a specific fact or relationship that can be verified true or false.
+#   Examples:
+#     Concept: "Epsilon-greedy exploration"
+#     Claim:   "Epsilon-greedy exploration performs worse than UCB1 in non-stationary bandits."
+#
+# A claim that cannot in principle be verified is a perspective, not a claim.
+# Route such statements to perspective.yaml instead.
+
+$schema: claim/v1.0
+
+# ---------------------------------------------------------------------------
+# Identity
+# ---------------------------------------------------------------------------
+
+claim_id: ""             # (required) CL-NNNN — read from _meta/counters.yaml before writing
+
+# ---------------------------------------------------------------------------
+# Content
+# ---------------------------------------------------------------------------
+
+statement: ""            # (required) The claim in one declarative sentence.
+                         # Write in present tense. Be precise about scope.
+                         # Good: "Transformer attention complexity scales quadratically with
+                         #        sequence length in the standard (dense) formulation."
+                         # Bad:  "Transformers are slow."
+
+# ---------------------------------------------------------------------------
+# Scope and Limits
+# ---------------------------------------------------------------------------
+
+scope: ""                # (required) The domain, conditions, and time period in which this
+                         # claim is asserted to hold. Be as specific as the evidence allows.
+                         # E.g. "Dense transformer self-attention, as of 2024, when sequence
+                         #       length > 2,000 tokens on commodity hardware."
+
+limitations: []          # (required) List of strings. Known exceptions, edge cases, or
+                         # conditions under which the claim may not hold.
+                         # E.g.:
+                         #   - "Does not apply to sparse attention variants (Longformer, BigBird)."
+                         #   - "Hardware-specific: TPU implementations may differ."
+                         # At minimum, write "None identified" if truly none are known —
+                         # this forces the author to think about it.
+
+# ---------------------------------------------------------------------------
+# Evidence
+# ---------------------------------------------------------------------------
+
+source_refs: []          # (required) List of objects. At least one source required for
+                         # verification_status to be "accepted".
+                         # Each entry:
+                         #   doc_id: string      (D-*, K-*, or external citation key)
+                         #   locator: string     (chunk, section, page, timestamp)
+                         #   quote: string       (verbatim supporting text, max 3 sentences)
+                         #   supports_or_limits: string ("supports" | "limits" | "contradicts")
+                         # Example:
+                         #   - doc_id: "D-ABC123xyz"
+                         #     locator: "chunk_12"
+                         #     quote: "The self-attention mechanism has O(n^2) time and memory complexity..."
+                         #     supports_or_limits: "supports"
+
+# ---------------------------------------------------------------------------
+# Verification
+# ---------------------------------------------------------------------------
+
+verification_status: "candidate"   # (required) Current epistemic state of the claim.
+                                   # Allowed values:
+                                   #   "candidate" — proposed but not yet verified
+                                   #   "accepted"  — verified against source(s); user or
+                                   #                 designated reviewer has confirmed
+                                   #   "rejected"  — found to be false, misleading, or
+                                   #                 out of scope; keep for audit trail
+                                   # AI generates claims as "candidate".
+                                   # Only explicit human review promotes to "accepted".
+
+verified_by: null        # (optional) Who performed the verification — model or human identifier.
+                         # Required if verification_status is "accepted" or "rejected".
+verified_at: null        # (optional) ISO 8601 datetime in UTC.
+
+rejection_reason: null   # (optional) Required if verification_status is "rejected".
+                         # One sentence explaining why it was rejected.
+
+# ---------------------------------------------------------------------------
+# Links
+# ---------------------------------------------------------------------------
+
+related_concepts: []     # (optional) List of K-* concept_ids that this claim informs or constrains.
+
+related_perspectives: [] # (optional) List of P-* perspective_ids that assert or contradict this claim.
+
+# ---------------------------------------------------------------------------
+# Provenance
+# ---------------------------------------------------------------------------
+
+generated_by: ""         # (required) Model name that created this claim record.
+generated_at: ""         # (required) ISO 8601 datetime in UTC.
+prompt_version: ""       # (required) Version of the extraction or analysis prompt used.
+
+# ---------------------------------------------------------------------------
+# Change Log
+# ---------------------------------------------------------------------------
+
+changelog: []            # (optional) List of objects.
+                         #   at: ISO 8601 datetime
+                         #   by: identifier
+                         #   note: what changed

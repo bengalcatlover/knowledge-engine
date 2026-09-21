@@ -1,0 +1,19 @@
+{
+  "new_claims": [
+    {
+      "id": "E-AUTO-10_1145-1566374_1566402#factory-1",
+      "statement": "Random sampling is a popular approach for auctions that aims to maximize the seller's revenue.",
+      "status": "unverified"
+    },
+    {
+      "id": "E-AUTO-10_1145-1566374_1566402#factory-2",
+      "statement": "The analysis shows that the random sampling approach is 15-competitive in the worst case.",
+      "status": "unverified"
+    }
+  ],
+  "api_calls": 23,
+  "input_tokens": 22216,
+  "output_tokens": 3655,
+  "estimated_total_usd": 0.0036836,
+  "integrity_check": "ok"
+}

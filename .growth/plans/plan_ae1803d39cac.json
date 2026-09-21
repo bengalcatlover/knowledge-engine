@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T09:14:16.242136+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_518ec9e02f1cfc4f",
+      "question_id": "q_e92a84f9a36bd20a",
+      "question": "待ち行列が長くなるほど処理を急がせても遅延が悪化する業務で、どの指標から詰まりを見つけるか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_e92a84f9a36bd20a",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "queueing bottleneck utilization"
+    },
+    {
+      "gap_id": "gap_9668daa50ff51bb6",
+      "question_id": "q_05171f640800ff7f",
+      "question": "需要予測が外れる前提で発注・人員・予算を決めるとき、どの不確実性を残して設計すべきか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_05171f640800ff7f",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "robust optimization uncertainty"
+    },
+    {
+      "gap_id": "gap_cc3b3ae43f87e43f",
+      "question_id": "q_20d00d4a4171815d",
+      "question": "利用者が増えるほど価値が上がるサービスで、初期の参加者不足をどう扱うべきか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_20d00d4a4171815d",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "network effects platforms"
+    }
+  ],
+  "plan_id": "plan_ae1803d39cac",
+  "input_hash": "ae1803d39cacfc27c89555543b2b66449b92887374178f353b73cf60aeee2a2a"
+}

@@ -1,0 +1,69 @@
+You are creating a discipline knowledge index for: Languages
+Broad category: Arts & Humanities
+Total courses: 6
+Total lecture units: 80
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### How We Teach： MIT 21G.027 Asia in the Modern World, Fall 2016 (24 lectures)
+- Instructor Interview: A Major Course Goal / Learning to Work in Teams
+- Instructor Interview: Collaborating with Guest Lecturers
+- Instructor Interview: Flipping the Classroom "Changing Everything"
+- Instructor Interview: Meet the Educator
+- Instructor Interview: MIT OpenCourseWare / A Bold Idea
+- Instructor Interview: On Visualizing Cultures
+- Instructor Interview: Transforming Residential Education with Open Digital Content
+- Instructor Interview: Using Visual Materials to Teach 21st Century Skills
+
+### How We Teach： MIT 21G.503 Japanese III, Fall 2016 (36 lectures)
+- Assessment Strategies
+- Developing Students' Language Skills
+- Grammar and Drill Sessions
+- Japanese Community Events
+- Meet the Educator
+- Teaching Japanese Culture through Language
+- アセスメントの対策 (Assessment Strategies)
+- 学生の語学力を育てる  (Developing Students’ Language Skills)
+- ** 学生の語学力を育てる (Developing Students' Language Skills)
+- 教育者に会う (Meet the Educator)
+- 文法とドリルセッション (Grammar and Drill Sessions)
+- 日本のコミュニティイベント (Japanese Community Events)
+- 言語を通しての日本文化の指導  (Teaching Japanese Culture though Language)
+- 言語を通しての日本文化の指導 (Teaching Japanese Culture though Language)
+
+### MIT 21F.223⧸21F.224 Listening, Speaking, and Pronunciation (4 lectures)
+- Session 2 | 21F.223 Listening, Speaking, and Pronunciation
+- Session 4 | 21F.223 Listening, Speaking, and Pronunciation
+
+### MIT 21G.111 Chinese Calligraphy, Spring 2024 (2 lectures)
+- Student Project 2: Ink and Thread: Incorporating Chinese Calligraphy in Fashion
+
+### MIT 21G.S56 Japanese VI, Spring 2023 (4 lectures)
+- Lesson 7 Part 1
+- Lesson 7 Part 2
+
+### MIT RES.21G-506 Kanji Learning Any Time, Any Place： Kanji Video Lectures for Japanese VI, Spring 2021 (10 lectures)
+- Lesson 10 Kanji
+- Lesson 6 Kanji
+- Lesson 7 Kanji
+- Lesson 8 Kanji
+- Lesson 9 Kanji
+

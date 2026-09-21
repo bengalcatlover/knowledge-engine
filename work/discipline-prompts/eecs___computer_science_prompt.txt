@@ -1,0 +1,869 @@
+You are creating a discipline knowledge index for: EECS / Computer Science
+Broad category: Computing & Engineering
+Total courses: 49
+Total lecture units: 2263
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### 6.0001 Introduction to Computer Science and Programming in Python. Fall 2016 (21 lectures)
+- 12. Searching and Sorting
+- 2. Branching and Iteration
+- 7. Testing, Debugging, Exceptions, and Assertions
+- ** 7. Testing, Debugging, Exceptions, and Assertions
+- Black Box and Glass Box Testing
+- Class Instance
+- For Loops With Strings
+- For Loops
+- String Manipulations
+
+### 6.041 Probabilistic Systems Analysis and Applied Probability (50 lectures)
+- 1. Probability Models and Axioms
+- 10. Continuous Bayes' Rule; Derived Distributions
+- 11. Derived Distributions (ctd.); Covariance
+- 12. Iterated Expectations
+- 13. Bernoulli Process
+- 14. Poisson Process I
+- 15. Poisson Process II
+- 16. Markov Chains I
+- 17. Markov Chains II
+- 18. Markov Chains III
+- 19. Weak Law of Large Numbers
+- 2. Conditioning and Bayes' Rule
+- 20. Central Limit Theorem
+- 21. Bayesian Statistical Inference I
+- 22. Bayesian Statistical Inference II
+- 23. Classical Statistical Inference I
+- 24. Classical Inference II
+- ** 24. Classical Inference II
+- 25. Classical Inference III
+- 3. Independence
+- 4. Counting
+- 5. Discrete Random Variables I
+- 6. Discrete Random Variables II
+- 7. Discrete Random Variables III
+- ** 7. Discrete Random Variables III
+- 8. Continuous Random Variables
+- 9. Multiple Continuous Random Variables
+
+### AI 101 with Brandon Leshchinskiy (3 lectures)
+- AI 101 with Brandon Leshchinskiy
+
+### Electromagnetic Fields & Energy, Textbook Components w Video (98 lectures)
+- Chapter 1.4.1 (demo only): Magnetic Field of a Line Current
+- ** Chapter 1.4.1 (demo only): Magnetic Field of a Line Current
+- Chapter 1.4.1: Magnetic Field of a Line Current
+- Chapter 1.6.1 (demo only): Voltmeter Reading Induced by Magnetic Induction
+- Chapter 1.6.1: Voltmeter reading induced by magnetic induction
+- Chapter 10.0.1 (demo only): Non Uniqueness of Voltage in an Magnetoquasistatic System
+- Chapter 10.0.1: Non Uniqueness of Voltage in a Magnetoquasistatic System
+- Chapter 10.2.1 (demo only): Edgerton's Boomer
+- ** Chapter 10.2.1 (demo only): Edgerton's Boomer
+- Chapter 10.2.1: Edgerton's boomer
+- Chapter 10.4.1 (demo only): Currents Induced in a Conducting Shell
+- Chapter 10.4.1: Currents induced in a conducting shell
+- Chapter 10.7.1 (demo only): Skin Effect
+- Chapter 10.7.1: Skin effect
+- Chapter 11.6.2 (demo only): Force on a Liquid Dielectric
+- Chapter 11.6.2: Force on a liquid dielectric
+- Chapter 11.7.1 (demo only): Steady State Magnetic Levitation
+- Chapter 11.7.1: Steady state magnetic levitation
+- Chapter 13.1.1 (demo only): Visualization of Standing Waves
+- Chapter 13.1.1: Visualization of standing waves
+- Chapter 4.7.1 (demo only): Charge Induced in Ground Plane by Overhead Conductor
+- ** Chapter 4.7.1 (demo only): Charge Induced in Ground Plane by Overhead Conductor
+- Chapter 4.7.1: Charge induced in ground plane by overhead conductor
+- Chapter 5.5.1 (demo only): Capacitance Attenuator
+- Chapter 5.5.1: Capacitance attenuator
+- Chapter 6.6.1 (demo only): An Artificial Dielectric
+- Chapter 6.6.1: An artificial dielectric
+- Chapter 7.5.1 (demo only): Distribution of Unpaired Charge
+- Chapter 7.5.1: Distribution of unpaired charge
+- Chapter 7.5.2 (demo only): Rotation of an Insulating Rod in a Steady Current
+- ... and 23 more
+
+### How To Speak by Patrick Winston (3 lectures)
+- How to Speak
+
+### MIT 6.00 Intro to Computer Science & Programming, Fall 2008 (48 lectures)
+- Lec 1 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 10 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 11 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 12 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 13 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- ** Lec 13 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 14 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 15 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 16 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 17 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 18 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 19 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 2 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 20 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 21 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 22 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 23 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 24 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 3 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 4 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 5 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 6 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 7 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 8 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+- Lec 9 | MIT 6.00 Introduction to Computer Science and Programming, Fall 2008
+
+### MIT 6.0002 Introduction to Computational Thinking and Data Science, Fall 2016 (30 lectures)
+- 1. Introduction, Optimization Problems (MIT 6.0002 Intro to Computational Thinking and Data Science)
+- 10. Understanding Experimental Data (cont.)
+- 11. Introduction to Machine Learning
+- 12. Clustering
+- 13. Classification
+- ** 13. Classification
+- 14. Classification and Statistical Sins
+- 15. Statistical Sins and Wrap Up
+- 2. Optimization Problems
+- 3. Graph-theoretic Models
+- 4. Stochastic Thinking
+- 5. Random Walks
+- 6. Monte Carlo Simulation
+- 7. Confidence Intervals
+- 8. Sampling and Standard Error
+- 9. Understanding Experimental Data
+
+### MIT 6.001 Structure and Interpretation, 1986 (80 lectures)
+- Lecture 10A | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 10A: Compilation
+- Lecture 10B | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 10B: Storage Allocation and Garbage Collection
+- Lecture 1A | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 1A: Overview and Introduction to Lisp
+- Lecture 1B | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 1B: Procedures and Processes; Substitution Model
+- Lecture 2A | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 2A: Higher-order Procedures
+- Lecture 2B | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 2B: Compound Data
+- Lecture 3A | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 3A: Henderson Escher Example
+- Lecture 3B | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 3B: Symbolic Differentiation; Quotation
+- Lecture 4A | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 4A: Pattern Matching and Rule-based Substitution
+- Lecture 4B | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 4B: Generic Operators
+- Lecture 5A | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 5A: Assignment, State, and Side-effects
+- Lecture 5B | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 5B: Computational Objects
+- Lecture 6A | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 6A: Streams, Part 1
+- Lecture 6B | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 6B: Streams, Part 2
+- Lecture 7A | MIT 6.001 Structure and Interpretation, 1986
+- Lecture 7A: Metacircular Evaluator, Part 1
+- ... and 10 more
+
+### MIT 6.003 Signals and Systems, Fall 2011 (6 lectures)
+- 11. Continuous-Time (CT) Frequency Response and Bode Plot
+- 13. Continuous-Time (CT) Feedback and Control, Part 2
+- 3. Feedback, Poles, and Fundamental Modes
+
+### MIT 6.004 Computation Structures, Spring 2017 (171 lectures)
+- 1.2.1 What is Information?
+- ** 1.2.1 What is Information?
+- 1.2.10 Error Detection and Correction
+- 1.2.11 Error Correction
+- 1.2.12 Worked Examples: Error Correction
+- ** 1.2.12 Worked Examples: Error Correction
+- 1.2.12 Worked Examples: Huffman Encoding
+- 1.2.12 Worked Examples: Quantifying Information
+- 1.2.12 Worked Examples: Two's Complement Addition
+- 1.2.12 Worked Examples: Two's Complement Representation
+- 1.2.2 Quantifying Information
+- 1.2.3 Entropy
+- 1.2.4 Encoding
+- 1.2.5 Fixed-length Encodings
+- 1.2.6 Signed Integers: 2's complement
+- 1.2.7 Variable-length Encoding
+- ** 1.2.7 Variable-length Encoding
+- 1.2.8 Huffman's Algorithm
+- 1.2.9 Huffman Code
+- 10.2.7 Uncomputable Functions
+- ** 10.2.7 Uncomputable Functions
+- 10.2.8 Worked Examples: Beta Assembly
+- 11.2.1 Iterpretation and Compilation
+- 11.2.3 Compiling Statements
+- 11.2.6 Worked Examples
+- 12.2.1 Procedures
+- 13.2.3 Load and Store
+- 14.2.2 SRAM
+- 14.2.3 DRAM
+- 14.2.6 Caches
+- ... and 65 more
+
+### MIT 6.006 Introduction to Algorithms, Fall 2011 (90 lectures)
+- Lecture 10: Open Addressing, Cryptographic Hashing
+- Lecture 11: Integer Arithmetic, Karatsuba Multiplication
+- Lecture 12: Square Roots, Newton's Method
+- Lecture 13: Breadth-First Search (BFS)
+- ** Lecture 13: Breadth-First Search (BFS)
+- Lecture 14: Depth-First Search (DFS), Topological Sort
+- Lecture 15: Single-Source Shortest Paths Problem
+- Lecture 16: Dijkstra
+- Lecture 17: Bellman-Ford
+- Lecture 18: Speeding up Dijkstra
+- Lecture 19: Dynamic Programming I: Fibonacci, Shortest Paths
+- Lecture 20: Dynamic Programming II: Text Justification, Blackjack
+- Lecture 21: Dynamic Programming III: Parenthesization, Edit Distance, Knapsack
+- Lecture 22: Dynamic Programming IV: Guitar Fingering, Tetris, Super Mario Bros.
+- Lecture 23: Computational Complexity
+- Lecture 24: Topics in Algorithms Research
+- Lecture 3: Insertion Sort, Merge Sort
+- Lecture 4: Heaps and Heap Sort
+- Lecture 5: Binary Search Trees, BST Sort
+- Lecture 6: AVL Trees, AVL Sort
+- Lecture 7: Counting Sort, Radix Sort, Lower Bounds for Sorting
+- Lecture 8: Hashing with Chaining
+- Lecture 9: Table Doubling, Karp-Rabin
+- ** Lecture 9: Table Doubling, Karp-Rabin
+- R15. Shortest Paths
+- Recitation 10: Quiz 1 Review
+- Recitation 11: Principles of Algorithm Design
+- Recitation 12: Karatsuba Multiplication, Newton's Method
+- Recitation 13: Breadth-First Search (BFS)
+- Recitation 14: Depth-First Search (DFS)
+- ... and 19 more
+
+### MIT 6.006 Introduction to Algorithms, Spring 2020 (65 lectures)
+- 1. Algorithms and Computation
+- 10. Depth-First Search
+- 11. Weighted Shortest Paths
+- 12. Bellman-Ford
+- 13. Dijkstra
+- 14. APSP and Johnson
+- 15. Dynamic Programming, Part 1: SRTBOT, Fib, DAGs, Bowling
+- 16. Dynamic Programming, Part 2: LCS, LIS, Coins
+- 17. Dynamic Programming, Part 3: APSP, Parens, Piano
+- 18. Dynamic Programming, Part 4: Rods, Subset Sum, Pseudopolynomial
+- 19. Complexity
+- 2. Data Structures and Dynamic Arrays
+- 20. Course Review
+- 21. Algorithms—Next Steps
+- 3. Sets and Sorting
+- 4. Hashing
+- 5. Linear Sorting
+- ** 5. Linear Sorting
+- 6. Binary Trees, Part 1
+- 7. Binary Trees, Part 2: AVL
+- 8. Binary Heaps
+- 9. Breadth-First Search
+- Introduction to Algorithms - Problem Session 1: Asymptotic Behavior of Functions and Double-ended...
+- Problem Session 2 (MIT 6.006 Introduction to Algorithms, Spring 2020)
+- Problem Session 3
+- Problem Session 4
+- Problem Session 5
+- Problem Session 7
+- Problem Session 8
+- Problem Session 9
+- ... and 4 more
+
+### MIT 6.00SC Introduction to Computer Science and Programming (22 lectures)
+- Lec 12 | MIT 6.00SC Introduction to Computer Science and Programming, Spring 2011
+- Lec 17 | MIT 6.00SC Introduction to Computer Science and Programming, Spring 2011
+- Lec 18 | MIT 6.00SC Introduction to Computer Science and Programming, Spring 2011
+- ** Lec 18 | MIT 6.00SC Introduction to Computer Science and Programming, Spring 2011
+- Lec 20 | MIT 6.00SC Introduction to Computer Science and Programming, Spring 2011
+- Lec 23 | MIT 6.00SC Introduction to Computer Science and Programming, Spring 2011
+- Lec 26 | MIT 6.00SC Introduction to Computer Science and Programming, Spring 2011
+- Lec 8 | MIT 6.00SC Introduction to Computer Science and Programming, Spring 2011
+- Lec 9 | MIT 6.00SC Introduction to Computer Science and Programming, Spring 2011
+- Quiz 2 Review Session | MIT 6.00SC Introduction to Computer Science and Programming, Spring 2011
+- Rec 2 | MIT 6.00SC Introduction to Computer Science and Programming, Spring 2011
+- Rec 9 | MIT 6.00SC Introduction to Computer Science and Programming, Spring 2011
+
+### MIT 6.013 Electromagnetics and Applications, Fall 2005 (12 lectures)
+- Lec 10 | MIT 6.013 Electromagnetics and Applications, Fall 2
+- Lec 14 | MIT 6.013 Electromagnetics and Applications, Fall 2
+- Lec 3 | MIT 6.013 Electromagnetics and Applications, Fall 20
+- Lec 4 | MIT 6.013 Electromagnetics and Applications, Fall 20
+- Lec 5 | MIT 6.013 Electromagnetics and Applications, Fall 20
+- Lec 7 | MIT 6.013 Electromagnetics and Applications, Fall 20
+
+### MIT 6.01SC Introduction to EECS I (8 lectures)
+- Lec 5 | MIT 6.01SC Introduction to Electrical Engineering and Computer Science I, Spring 2011
+- Lec 6 | MIT 6.01SC Introduction to Electrical Engineering and Computer Science I, Spring 2011
+- Lec 8 | MIT 6.01SC Introduction to Electrical Engineering and Computer Science I, Spring 2011
+- Rec 13 | MIT 6.01SC Introduction to Electrical Engineering and Computer Science I, Spring 2011
+- ** Rec 13 | MIT 6.01SC Introduction to Electrical Engineering and Computer Science I, Spring 2011
+
+### MIT 6.02 Introduction to EECS II： Digital Communication Systems, Fall 2012 (48 lectures)
+- 1. Overview: information and entropy
+- 10. Linear time-invariant (LTI) systems
+- 11. LTI channel and intersymbol interference
+- 12. Filters and composition
+- 13. Frequency response of LTI systems
+- 14. Spectral representation of signals
+- 15. Modulation/demodulation
+- 16. More on modulation/demodulation
+- 17. Packet switching
+- 18. MAC protocols
+- 19. Network routing (without failures)
+- 2. Compression: Huffman and LZW
+- 20. Network routing (with failures)
+- 21. Reliable transport
+- 22. Sliding window analysis, Little's law
+- 23. A brief history of the Internet
+- 24.  History of the Internet cont'd, course summary
+- 3. Errors, channel codes
+- 4. Linear block codes, parity relations
+- 5. Error correction, syndrome decoding
+- 6. Convolutional codes
+- 7. Viterbi decoding
+- 8. Noise
+- 9. Transmitting on a physical channel
+
+### MIT 6.033 Computer System Engineering, Spring 2005 (2 lectures)
+- Lec 24 | MIT 6.033 Computer System Engineering, Spring 2005
+
+### MIT 6.034 Artificial Intelligence, Fall 2010 (60 lectures)
+- 1. Introduction and Scope
+- 10. Introduction to Learning, Nearest Neighbors
+- 11. Learning: Identification Trees, Disorder
+- 12a: Neural Nets
+- 12b: Deep Neural Nets
+- ** 12b: Deep Neural Nets
+- 13. Learning: Genetic Algorithms
+- 14. Learning: Sparse Spaces, Phonology
+- 15. Learning: Near Misses, Felicity Conditions
+- 16. Learning: Support Vector Machines
+- 17. Learning: Boosting
+- 18. Representations: Classes, Trajectories, Transitions
+- 19. Architectures: GPS, SOAR, Subsumption, Society of Mind
+- 2. Reasoning: Goal Trees and Problem Solving
+- 21. Probabilistic Inference I
+- 22. Probabilistic Inference II
+- 23. Model Merging, Cross-Modal Coupling, Course Summary
+- 3. Reasoning: Goal Trees and Rule-Based Expert Systems
+- 4. Search: Depth-First, Hill Climbing, Beam
+- 5. Search: Optimal, Branch and Bound, A*
+- 6. Search: Games, Minimax, and Alpha-Beta
+- 7. Constraints: Interpreting Line Drawings
+- 8. Constraints: Search, Domain Reduction
+- 9. Constraints: Visual Object Recognition
+- Mega-R1. Rule-Based Systems
+- Mega-R2. Basic Search, Optimal Search
+- Mega-R3. Games, Minimax, Alpha-Beta
+- Mega-R4. Neural Nets
+- Mega-R5. Support Vector Machines
+- Mega-R6. Boosting
+- ... and 1 more
+
+### MIT 6.041SC Probabilistic Systems Analysis and Applied Probability, Fall 2013 (152 lectures)
+- 1. Probability Models and Axioms
+- 10. Continuous Bayes' Rule; Derived Distributions
+- ** 10. Continuous Bayes' Rule; Derived Distributions
+- 11. Derived Distributions (ctd.); Covariance
+- 12. Iterated Expectations
+- 13. Bernoulli Process
+- 14. Poisson Process I
+- 15. Poisson Process II
+- 16. Markov Chains I
+- 17. Markov Chains II
+- 18. Markov Chains III
+- 19. Weak Law of Large Numbers
+- 2. Conditioning and Bayes' Rule
+- 20. Central Limit Theorem
+- 21. Bayesian Statistical Inference I
+- 22. Bayesian Statistical Inference II
+- 23. Classical Statistical Inference I
+- 24. Classical Inference II
+- 25. Classical Inference III
+- 3. Independence
+- 4. Counting
+- ** 4. Counting
+- 5. Discrete Random Variables I
+- 6. Discrete Random Variables II
+- 7. Discrete Random Variables III
+- ** 7. Discrete Random Variables III
+- 8. Continuous Random Variables
+- 9. Multiple Continuous Random Variables
+- A Chess Tournament Problem
+- A Coin Tossing Puzzle
+- ... and 54 more
+
+### MIT 6.042J Mathematics for Computer Science, Fall 2010 (8 lectures)
+- Lec 16 | MIT 6.042J Mathematics for Computer Science, Fall 2010
+- Lec 21 | MIT 6.042J Mathematics for Computer Science, Fall 2010
+- Lec 3 | MIT 6.042J Mathematics for Computer Science, Fall 2010
+- Lec 5 | MIT 6.042J Mathematics for Computer Science, Fall 2010
+
+### MIT 6.042J Mathematics for Computer Science, Spring 2015 (6 lectures)
+- 2.8.3 Isomorphism: Video
+- 3.1.5 Book Stacking: Video
+- 4.4.2 Random Variables: Independence: Video
+
+### MIT 6.046J Design and Analysis of Algorithms, Spring 2015 (2 lectures)
+- 10. Dynamic Programming: Advanced DP
+
+### MIT 6.046J ⧸ 18.410J Introduction to Algorithms (SMA 5503), (14 lectures)
+- Lec 11 | MIT 6.046J / 18.410J Introduction to Algorithms (SMA 5503), Fall 2005
+- Lec 14 | MIT 6.046J / 18.410J Introduction to Algorithms (SMA 5503), Fall 2005
+- Lec 18 | MIT 6.046J / 18.410J Introduction to Algorithms (SMA 5503), Fall 2005
+- Lec 19 | MIT 6.046J / 18.410J Introduction to Algorithms (SMA 5503), Fall 2005
+- Lec 22 | MIT 6.046J / 18.410J Introduction to Algorithms (SMA 5503), Fall 2005
+- Lec 3 | MIT 6.046J / 18.410J Introduction to Algorithms (SMA 5503), Fall 2005
+- Lec 9 | MIT 6.046J / 18.410J Introduction to Algorithms (SMA 5503), Fall 2005
+
+### MIT 6.100L Introduction to CS and Programming using Python, Fall 2022 (13 lectures)
+- Lecture 11: Aliasing and Cloning
+- ** Lecture 11: Aliasing and Cloning
+- Lecture 23: Complexity Classes Examples
+- Lecture 25: Plotting
+- Lecture 26: List Access, Hashing, Simulations, and Wrap-Up
+- Lecture 5: Floats and Approximation Methods
+- Lecture 9: Lambda Functions, Tuples, and Lists
+
+### MIT 6.1200J Mathematics for Computer Science,  Spring 2024 (49 lectures)
+- Lecture 10: Cryptography
+- Lecture 11: Graphs and Coloring
+- ** Lecture 11: Graphs and Coloring
+- Lecture 12: Matching
+- Lecture 13: Connectivity and Trees
+- Lecture 14: Digraphs and DAGs
+- Lecture 15: Relations and Counting
+- Lecture 16: Counting Techniques
+- Lecture 17: More Counting Techniques
+- Lecture 18: Probability
+- Lecture 19: Conditional Probability
+- Lecture 1: Predicates, Sets, and Proofs
+- Lecture 20: Independence
+- Lecture 21: Random Variables
+- Lecture 22: Expectation
+- Lecture 23: Expectation and Variance
+- Lecture 24: Large Deviations: Chebyshev and Chernov Bound, Wrap Up
+- Lecture 2: Contradiction and Induction
+- Lecture 3: Casework and Strong Induction
+- ** Lecture 3: Casework and Strong Induction
+- Lecture 4: State Machines
+- Lecture 5: Sums
+- Lecture 6: Asymptotics
+- Lecture 7: Recurrences
+- Lecture 8: Divisibility
+- Lecture 9: Modular Arithmetic
+
+### MIT 6.172 Performance Engineering of Software Systems (8 lectures)
+- Industry mentor overview | MIT 6.172 Performance Engineering of Software Systems, Fall 2010
+- Lec 1 | MIT 6.172 Performance Engineering of Software Systems, Fall 2010
+- Lec 14 | MIT 6.172 Performance Engineering of Software Systems, Fall 2010
+- Lec 5 | MIT 6.172 Performance Engineering of Software Systems, Fall 2010
+
+### MIT 6.172 Performance Engineering of Software Systems, Fall 2018 (47 lectures)
+- 1. Introduction and Matrix Multiplication
+- 10. Measurement and Timing
+- 11. Storage Allocation
+- 12. Parallel Storage Allocation
+- 13. The Cilk Runtime System
+- 14. Caching and Cache-Efficient Algorithms
+- 15. Cache-Oblivious Algorithms
+- 16. Nondeterministic Parallel Programming
+- 17. Synchronization Without Locks
+- 18. Domain Specific Languages and Autotuning
+- 19. Leiserchess Codewalk
+- 2. Bentley Rules for Optimizing Work
+- 20. Speculative Parallelism & Leiserchess
+- 21. Tuning a TSP Algorithm
+- 22. Graph Optimization
+- 23. High Performance in Dynamic Languages
+- 3. Bit Hacks
+- 4. Assembly Language & Computer Architecture
+- 5. C to Assembly
+- 6. Multicore Programming
+- 7. Races and Parallelism
+- 8. Analysis of Multithreaded Algorithms
+- 9. What Compilers Can and Cannot Do
+
+### MIT 6.189 Multicore Programming Primer, January (IAP) 2007 (62 lectures)
+- Lec 1 (cont.) | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 1 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 10 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 11 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 12 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 14 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 15 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 16 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 17 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 18 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 2 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 3 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 4 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 5 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 6 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 7 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 8 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Lec 9 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Project: Backgammon tutor | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Project: Battery simulation | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Project: Blue-steel ray tracer | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Project: Global illumination | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Project: Molecular dynamics | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Project: Software radio | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Project: Speech synthesis | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Projects award ceremony | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Projects Closing | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Projects Introduction | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Rec 5 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- Rec 6 | MIT 6.189 Multicore Programming Primer, IAP 2007
+- ... and 1 more
+
+### MIT 6.262 Discrete Stochastic Processes, Spring 2011 (42 lectures)
+- 1. Introduction and Probability Review
+- 10. Renewals and the Strong Law of Large Numbers
+- 11. Renewals: Strong Law and Rewards
+- 12. Renewal Rewards, Stopping Trials, and Wald's Inequality
+- 13. Little, M/G/1, Ensemble Averages
+- 14. Review
+- 15. The Last Renewal
+- 16. Renewals and Countable-state Markov
+- 17. Countable-state Markov Chains
+- 18. Countable-state Markov Chains and Processes
+- 19. Countable-state Markov Processes
+- 2. More Review; The Bernoulli Process
+- ** 2. More Review; The Bernoulli Process
+- 20. Markov Processes and Random Walks
+- 25. Putting It All Together
+- 3. Law of Large Numbers, Convergence
+- 4. Poisson (the Perfect Arrival Process)
+- 5. Poisson Combining and Splitting
+- 6. From Poisson to Markov
+- 7. Finite-state Markov Chains; The Matrix Approach
+- 8. Markov Eigenvalues and Eigenvectors
+- 9. Markov Rewards and Dynamic Programming
+
+### MIT 6.450 Principles of Digital Communications, I Fall 2006 (48 lectures)
+- Lec 1 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 10 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 11 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 12 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 13 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 14 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 15 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 16 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 17 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 18 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 19 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 2 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 20 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 21 | MIT 6.450 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 22 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 23 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 24 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 3 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 4 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 5 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 6 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 7 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 8 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+- Lec 9 | MIT 6.450 Principles of Digital Communications I, Fall 2006
+
+### MIT 6.451 Principles of Digital Communication II (2 lectures)
+- Lec 1 | MIT 6.451 Principles of Digital Communication II
+
+### MIT 6.5630 Advanced Topics in Cryptography, Fall 2023 (19 lectures)
+- Lecture 1: Interactive Proofs and the Sum-Check Protocol, Part 1
+- Lecture 1: Interactive Proofs and the Sum-Check Protocol, Part 2
+- Lecture 3: Continuation of the GKR Protocol and Corollaries
+- Lecture 5: The Kilian-Micali Protocol, Part 1
+- Lecture 7: Soundness of the Fiat-Shamir Paradigm in the Standard Model, Part 1
+- Lecture 7: Soundness of the Fiat-Shamir Paradigm in the Standard Model, Part 2
+- Lecture 8: Succinct Non-Interactive Arguments for Batch NP (BARGs) from LWE, Part 1
+- Lecture 8: Succinct Non-Interactive Arguments for Batch NP (BARGs) from LWE, Part 2
+- Lecture 9: BARGs Implies SNARGs and Connection to Non-Signaling PCPs, Part 2
+
+### MIT 6.622 Power Electronics, Spring 2023 (18 lectures)
+- Lecture 14: Isolated DC/DC Converters, Part 2
+- Lecture 15: Switching Losses and Snubbers
+- Lecture 16: Thermal Modeling and Heat Sinking
+- Lecture 20: Switched-Mode Rectifiers
+- Lecture 24: Control, Part 1
+- Lecture 32: Switched-Capacitor Convertors, Part 2
+- Lecture 36: Resonant Power Conversion, Part 2
+- Lecture 3: Load Regulation
+- Lecture 6: DC/DC, Part 2
+
+### MIT 6.7960 Deep Learning, Fall 2024 (50 lectures)
+- Lec 01. Introduction to Deep Learning
+- Lec 02. How to Train a Neural Net
+- Lec 03. Approximation Theory
+- Lec 04. Architectures: Grids
+- Lec 05. Architectures: Graphs
+- Lec 06. Generalization Theory
+- Lec 07. Scaling Rules for Optimization
+- ** Lec 07. Scaling Rules for Optimization
+- Lec 08. Architectures: Transformers
+- Lec 09. Hacker's Guide to Deep Learning
+- Lec 10. Architectures: Memory
+- Lec 11. Representation Learning: Reconstruction-Based
+- Lec 12. Representation Learning: Similarity-Based
+- Lec 13. Representation Learning: Theory
+- Lec 14. Generative Models: Basics
+- Lec 15. Generative Models: Representation Learning Meets Generative Modeling
+- Lec 16. Generative Models: Conditional Models
+- Lec 17. Generalization: Out-of-Distribution (OOD)
+- Lec 18. Transfer Learning: Models
+- Lec 19. Transfer Learning: Data
+- Lec 20. Scaling Laws
+- ** Lec 20. Scaling Laws
+- Lec 21. Language Models
+- Lec 23. Metrized Deep Learning
+- Lec 24. Inference Methods for Deep Learning
+- PyTorch Tutorial
+
+### MIT 6.801 Machine Vision, Fall 2020 (47 lectures)
+- Lecture 10: Characteristic Strip Expansion, Shape from Shading, Iterative Solutions
+- Lecture 11: Edge Detection, Subpixel Position, CORDIC, Line Detection (US 6,408,109)
+- Lecture 12: Blob Analysis, Binary Image Processing, Green's Theorem, Derivative and Integral
+- Lecture 13: Object Detection, Recognition and Pose Determination, PatQuick (US 7,016,539)
+- Lecture 14: Inspection in PatQuick, Hough Transform, Homography, Position Determination, Multi-Scale
+- Lecture 15: Alignment, PatMax, Distance Field, Filtering and Sub-Sampling (US 7,065,262)
+- Lecture 16: Fast Convolution, Low Pass Filter Approximations, Integral Images (US 6,457,032)
+- Lecture 17: Photogrammetry, Orientation, Axes of Inertia, Symmetry, Orientation
+- Lecture 18: Rotation and How to Represent It, Unit Quaternions, the Space of Rotations
+- Lecture 19: Absolute Orientation in Closed Form, Outliers and Robustness, RANSAC
+- Lecture 1: Introduction to Machine Vision
+- Lecture 20: Space of Rotations, Regular Tessellations, Critical Surfaces, Binocular Stereo
+- Lecture 21: Relative Orientation, Binocular Stereo, Structure, Quadrics, Calibration, Reprojection
+- Lecture 22: Exterior Orientation, Recovering Position & Orientation, Bundle Adjustment, Object Shape
+- Lecture 23: Gaussian Image, Solids of Revolution, Direction Histograms, Regular Polyhedra
+- Lecture 2: Image Formation, Perspective Projection, Time Derivative, Motion Field
+- Lecture 3: Time to Contact, Focus of Expansion, Direct Motion Vision Methods, Noise Gain
+- Lecture 4: Fixed Optical Flow, Optical Mouse, Constant Brightness Assumption, Closed Form Solution
+- Lecture 5: TCC and FOR MontiVision Demos, Vanishing Point, Use of VPs in Camera Calibration
+- Lecture 6: Photometric Stereo, Noise Gain, Error Amplification, Eigenvalues and Eigenvectors Review
+- Lecture 7: Gradient Space, Reflectance Map, Image Irradiance Equation, Gnomonic Projection
+- Lecture 8: Shading, Special Cases, Lunar Surface, Scanning Electron Microscope, Green's Theorem
+- Lecture 9: Shape from Shading, General Case - From First Order Nonlinear PDE to Five ODEs
+
+### MIT 6.832 Underactuated Robotics, Spring 2009 (46 lectures)
+- Lecture 1 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 10 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 11 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 12 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 13 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 14 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 15 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 16 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 17 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 18 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 19 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 2 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 20 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 21 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 22 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 23 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 3 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 4 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 5 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 6 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 7 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 8 | MIT 6.832 Underactuated Robotics, Spring 2009
+- Lecture 9 | MIT 6.832 Underactuated Robotics, Spring 2009
+
+### MIT 6.849 Geometric Folding Algorithms, Fall 2012 (2 lectures)
+- Class 13: Locked Linkages
+
+### MIT 6.851 Advanced Data Structures, Spring 2012 (44 lectures)
+- 1. Persistent Data Structures
+- 10. Dictionaries
+- 11. Integer Models
+- 12. Fusion Trees
+- ** 12. Fusion Trees
+- 13. Integer Lower Bounds
+- 14. Sorting in Linear Time
+- 15. Static Trees
+- 16. Strings
+- 17. Succinct Structures I
+- 18. Succinct Structures II
+- 19. Dynamic Graphs I
+- 2. Retroactive Data Structures
+- 20. Dynamic Graphs II
+- 21. Dynamic Connectivity Lower Bound
+- 22. History of Memory Models
+- 3. Geometric Structures I
+- 4. Geometric Structures II
+- 5. Dynamic Optimality I
+- 6. Dynamic Optimality II
+- 7. Memory Hierarchy Models
+- 8. Cache-Oblivious Structures I
+- 9. Cache-Oblivious Structures II
+
+### MIT 6.858 Computer Systems Security, Fall 2014 (2 lectures)
+- 12. Network Security
+
+### MIT 6.868J The Society of Mind, Fall 2011 (26 lectures)
+- 1. Introduction to 'The Society of Mind'
+- 10. Question and Answer Session 3
+- 11. Mind vs. Brain: Confessions of a Defector
+- 12. Question and Answer Session 4
+- 13. Closing Thoughts
+- 2. Falling In Love
+- 3. Cognitive Architectures
+- 4. Question and Answer Session 1
+- 5. From Panic to Suffering
+- 6. Layers of Mental Activities
+- 7. Layered Knowledge Representations
+- 8. Question and Answer Session 2
+- 9. Common Sense
+
+### MIT 6.890 Algorithmic Lower Bounds, Fall 2014 (2 lectures)
+- 9. Graph Problems
+
+### MIT 6.S079 Nanomaker, Spring 2013 (18 lectures)
+- Lab 11: Silicon Photovoltaics
+- Lab 1: CD Spectrometer
+- Lab 2: Holography
+- Lab 3: ZnS:Cu LED
+- Lab 5: Paper Microfluidics
+- Lab 6A: PDMS Microfluidics: O2 Plasma Treatment
+- Lab 6B: PDMS Microfluidics: Preparing a Test Pattern
+- Lab 8: Doping
+- Lab 9: Piezoelectricity
+
+### MIT 6.S897 Machine Learning for Healthcare, Spring 2019 (53 lectures)
+- 1. What Makes Healthcare Unique?
+- 10. Application of Machine Learning to Cardiac Imaging
+- 11. Differential Diagnosis
+- 12. Machine Learning for Pathology
+- 13. Machine Learning for Mammography
+- 14. Causal Inference, Part 1
+- 15. Causal Inference, Part 2
+- 16. Reinforcement Learning, Part 1
+- 17. Reinforcement Learning, Part 2
+- 18. Disease Progression Modeling and Subtyping, Part 1
+- 19. Disease Progression Modeling and Subtyping, Part 2
+- 2. Overview of Clinical Care
+- 20. Precision Medicine
+- 21. Automating Clinical Work Flows
+- 22. Regulation of Machine Learning / Artificial Intelligence in the US
+- 23. Fairness
+- 24. Robustness to Dataset Shift
+- 25. Interpretability
+- 3. Deep Dive Into Clinical Data
+- 4. Risk Stratification, Part 1
+- 5. Risk Stratification, Part 2
+- 6. Physiological Time-Series
+- 7. Natural Language Processing (NLP), Part 1
+- 8. Natural Language Processing (NLP), Part 2
+- ** 8. Natural Language Processing (NLP), Part 2
+- 9. Translating Technology Into the Clinic
+
+### MIT Electronic Feedback Systems (1985) (4 lectures)
+- 17. Conditional Stability
+- 20. Model Train Speed Control
+
+### MIT RES.6-006 Video Demonstrations in Lasers and Optics (98 lectures)
+- Laser fundamentals I: Light amplifier | MIT Video Demonstrations in Lasers and Optics
+- Laser fundamentals I: Light inside and light outside laser
+- Laser fundamentals I: Polarization of laser light | MIT Video Demonstrations in Lasers and Optics
+- Laser fundamentals I: Simple laser | MIT Video Demonstrations in Lasers and Optics
+- Laser fundamentals I: Spectrum of laser light | MIT Video Demonstrations in Lasers and Optics
+- Laser fundamentals II: Laser linewidth | MIT Video Demonstrations in Lasers and Optics
+- Laser fundamentals II: Laser transverse modes | MIT Video Demonstrations in Lasers and Optics
+- Laser fundamentals II: Optics of laser beams | MIT Video Demonstrations in Lasers and Optics
+- Laser fundamentals III: Dye laser excitation of sodium
+- Laser fundamentals III: Dye laser induced fluorescence in iodine
+- Laser fundamentals III: High power argon laser | MIT Video Demonstrations in Lasers and Optics
+- Laser fundamentals III: Multi-wavelength argon laser | MIT Video Demonstrations in Lasers and Optics
+- Laser fundamentals III: Reflection back into laser | MIT Video Demonstrations in Lasers and Optics
+- Laser fundamentals III: Single-frequency argon laser | MIT Video Demonstrations in Lasers and Optics
+- Laser fundamentals III: Tunable dye laser | MIT Video Demonstrations in Lasers and Optics
+- Optics: Coherence length and source spectrum | MIT Video Demonstrations in Lasers and Optics
+- Optics: Curved mirror cavity - radial modes | MIT Video Demonstrations in Lasers and Optics
+- Optics: Destructive interference - Where does the light go?
+- Optics: Fraunhofer diffraction - adjustable slit | MIT Video Demonstrations in Lasers and Optics
+- Optics: Fraunhofer diffraction - circular apertures | MIT Video Demonstrations in Lasers and Optics
+- Optics: Fraunhofer diffraction - crossed multiple slits
+- Optics: Fraunhofer diffraction - multiple slits | MIT Video Demonstrations in Lasers and Optics
+- Optics: Fraunhofer diffraction - rectangular aperture
+- Optics: Fraunhofer diffraction - thin wires | MIT Video Demonstrations in Lasers and Optics
+- Optics: Fraunhofer diffraction - two slits | MIT Video Demonstrations in Lasers and Optics
+- Optics: Fresnel diffraction - adjustable slit | MIT Video Demonstrations in Lasers and Optics
+- Optics: Fresnel diffraction - circular apertures | MIT Video Demonstrations in Lasers and Optics
+- Optics: Fringe contrast - intensity ratio | MIT Video Demonstrations in Lasers and Optics
+- Optics: Fringe contrast - path difference | MIT Video Demonstrations in Lasers and Optics
+- Optics: Fringe contrast - polarization difference | MIT Video Demonstrations in Lasers and Optics
+- ... and 19 more
+
+### MIT RES.6-008 Digital Signal Processing, 1975 (8 lectures)
+- Lec 1 | MIT RES.6-008 Digital Signal Processing, 1975
+- Lec 10 | MIT RES.6-008 Digital Signal Processing, 1975
+- Lec 19 | MIT RES.6-008 Digital Signal Processing, 1975
+- Lec 6 | MIT RES.6-008 Digital Signal Processing, 1975
+
+### MIT RES.6-012 Introduction to Probability, Spring 2018 (532 lectures)
+- L01.1 Lecture Overview
+- L01.10 Interpretations & Uses of Probabilities
+- L01.2 Sample Space
+- L01.3 Sample Space Examples
+- L01.4 Probability Axioms
+- L01.5 Simple Properties of Probabilities
+- L01.6 More Properties of Probabilities
+- L01.7 A Discrete Example
+- L01.8 A Continuous Example
+- L01.9 Countable Additivity
+- L02.1 Lecture Overview
+- L02.2 Conditional Probabilities
+- L02.3 A Die Roll Example
+- L02.4 Conditional Probabilities Obey the Same Axioms
+- L02.5 A Radar Example and Three Basic Tools
+- L02.6 The Multiplication Rule
+- L02.7 Total Probability Theorem
+- L02.8 Bayes' Rule
+- L03.1 Lecture Overview
+- L03.10 The King's Sibling
+- L03.2 A Coin Tossing Example
+- L03.3 Independence of Two Events
+- L03.4 Independence of Event Complements
+- L03.5 Conditional Independence
+- L03.6 Independence Versus Conditional Independence
+- L03.7 Independence of a Collection of Events
+- L03.8 Independence Versus Pairwise Independence
+- L03.9 Reliability
+- L04.1 Lecture Overview
+- L04.2 The Counting Principle
+- ... and 284 more
+
+### MIT RES.6.007 Signals and Systems, 1987 (14 lectures)
+- Lecture 12, Filtering | MIT RES.6.007 Signals and Systems, Spring 2011
+- Lecture 14, Demonstration of Amplitude Modulation | MIT RES.6.007 Signals and Systems, Spring 2011
+- Lecture 16, Sampling | MIT RES.6.007 Signals and Systems, Spring 2011
+- Lecture 26, Feedback Example: The Inverted Pendulum | MIT RES.6.007 Signals and Systems, Spring 2011
+- Lecture 4, Convolution | MIT RES.6.007 Signals and Systems, Spring 2011
+- Lecture 6, Systems Represented by Differential Equations | MIT RES.6.007 Signals and Systems
+- Lecture 9, Fourier Transform Properties | MIT RES.6.007 Signals and Systems, Spring 2011
+
+### MIT Understanding Lasers and Fiberoptics (10 lectures)
+- Fiberoptics Fundamentals | MIT Understanding Lasers and Fiberoptics
+- Laser Fundamentals I | MIT Understanding Lasers and Fiberoptics
+- ** Laser Fundamentals I | MIT Understanding Lasers and Fiberoptics
+- Laser Fundamentals II | MIT Understanding Lasers and Fiberoptics
+- Laser Fundamentals III (cont.) | MIT Understanding Lasers and Fiberoptics
+- Laser Fundamentals III | MIT Understanding Lasers and Fiberoptics
+- ** Laser Fundamentals III | MIT Understanding Lasers and Fiberoptics
+

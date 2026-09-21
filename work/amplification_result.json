@@ -1,0 +1,58 @@
+[
+  {
+    "topic": "social learning theory Bandura observational learning self-efficacy",
+    "depth": 0,
+    "claims": 6,
+    "dois_checked": 2,
+    "stats": {
+      "A": 0,
+      "B": 2,
+      "C": 0,
+      "D": 0,
+      "REJECTED": 0
+    },
+    "crosscheck": null
+  },
+  {
+    "topic": "behavioral psychology",
+    "depth": 1,
+    "claims": 7,
+    "dois_checked": 0,
+    "stats": {
+      "A": 0,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "REJECTED": 0
+    },
+    "crosscheck": null
+  },
+  {
+    "topic": "motivation theories",
+    "depth": 1,
+    "claims": 7,
+    "dois_checked": 3,
+    "stats": {
+      "A": 0,
+      "B": 3,
+      "C": 0,
+      "D": 0,
+      "REJECTED": 0
+    },
+    "crosscheck": null
+  },
+  {
+    "topic": "learning processes",
+    "depth": 1,
+    "claims": 6,
+    "dois_checked": 3,
+    "stats": {
+      "A": 0,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "REJECTED": 3
+    },
+    "crosscheck": null
+  }
+]

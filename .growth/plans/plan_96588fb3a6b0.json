@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T08:59:46.364385+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_78350ab49c8f5b36",
+      "question_id": "q_d8ea2f14506fb02e",
+      "question": "ナッシュ均衡と戦略的相互作用が成り立つために必要な前提は何か",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_d8ea2f14506fb02e",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0003"
+      ],
+      "external_query": null
+    },
+    {
+      "gap_id": "gap_7605187749c8dfb9",
+      "question_id": "q_08af8c450e80636c",
+      "question": "ナッシュ均衡と戦略的相互作用が壊れる境界条件と観測できる失敗は何か",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_08af8c450e80636c",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0003"
+      ],
+      "external_query": null
+    },
+    {
+      "gap_id": "gap_30ee8bc5eaf8d483",
+      "question_id": "q_fdeeb219aed8613b",
+      "question": "ナッシュ均衡と戦略的相互作用に見えるが実際には別物である反例は何か",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_fdeeb219aed8613b",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0003"
+      ],
+      "external_query": null
+    }
+  ],
+  "plan_id": "plan_96588fb3a6b0",
+  "input_hash": "96588fb3a6b07448bdc3f32857ed46cab242f08d7dbad25969d913ffc9747dc0"
+}

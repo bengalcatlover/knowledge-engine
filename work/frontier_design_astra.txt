@@ -1,0 +1,1045 @@
+# 設計方針
+
+`frontier_manager.py` は、知識を直接生成・登録するモジュールではなく、**「次に調べる問い」を選び、予算内で探索し、合格した成果だけを既存パイプラインに渡す制御器**とする。
+
+重要な前提は次の3つ。
+
+1. **DOIの実在確認と、主張の科学的裏付けは別。**  
+   CrossRef/OpenAlex/S2/Unpaywallを通っても、論文が主張を支持しているとは限らない。
+2. **ドメイン分類と5層構造は別軸。**  
+   `domain_id`を追加するが、第6層は作らない。
+3. **20コール・$0.05は全フェーズ共有。**  
+   EXPANDが独自に20コール使ってはいけない。
+
+現状は `science=67` に対して `object+practice=12`。これだけで不足とは断定できないが、当面は**新理論の追加より「既存理論の条件・限界・教育への接続」をやや優先**する。
+
+---
+
+# 1. 公開インターフェースとデータモデル
+
+```python
+from dataclasses import dataclass
+from enum import StrEnum
+from typing import Literal, Protocol
+import sqlite3
+
+
+class Mode(StrEnum):
+    DEEPEN = "deepen"
+    EXPAND = "expand"
+
+
+class Facet(StrEnum):
+    MECHANISM = "mechanism"          # なぜ起きるか
+    MODERATOR = "moderator"          # 誰に・いつ効くか
+    BOUNDARY = "boundary"            # 効かない条件
+    MEASUREMENT = "measurement"      # どう測るか
+    CONTRADICTION = "contradiction"  # 反証・不一致
+    APPLICATION = "application"      # 教育場面への翻訳条件
+
+
+@dataclass(frozen=True)
+class FrontierCandidate:
+    id: str
+    mode: Mode
+    domain_id: str
+    target_node_id: int | None
+    facet: Facet | None
+
+    question: str
+    search_queries: tuple[str, ...]
+    seed_evidence_ids: tuple[int, ...]
+    anchor_node_ids: tuple[int, ...]
+    use_case_ids: tuple[str, ...]
+
+    population: str | None
+    risk_level: Literal["low", "moderate", "high"]
+    features: dict[str, float]
+    score: float
+
+
+@dataclass(frozen=True)
+class GateResult:
+    decision: Literal["accept", "stage", "reject"]
+    reasons: tuple[str, ...]
+    accepted_claim_ids: tuple[str, ...]
+    verified_bridge_ids: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class FrontierConfig:
+    max_tasks_per_cycle: int = 3
+    max_expansion_tasks_per_cycle: int = 1
+    max_new_domains_per_cycle: int = 1
+    max_new_nodes_per_cycle: int = 3
+    max_claims_per_task: int = 5
+
+    planning_call_cap: int = 1
+    default_task_call_cap: int = 3
+    reserve_phase7_calls: int = 2
+
+    min_candidate_score: float = 0.60
+    node_cooldown_cycles: int = 10
+    domain_trial_call_cap: int = 6
+    domain_trial_ttl_cycles: int = 3
+```
+
+主要関数：
+
+```python
+def run_frontier(
+    conn: sqlite3.Connection,
+    *,
+    cycle_id: int,
+    budget: "CycleBudget",
+    pipeline: "PipelineAdapter",
+    config: FrontierConfig,
+) -> "FrontierReport": ...
+
+
+def rank_deepening_nodes(
+    conn: sqlite3.Connection,
+    *,
+    cycle_id: int,
+    limit: int = 10,
+) -> list["NodePriority"]: ...
+
+
+def generate_deepening_candidates(
+    conn: sqlite3.Connection,
+    nodes: list["NodePriority"],
+    *,
+    limit: int = 12,
+) -> list[FrontierCandidate]: ...
+
+
+def generate_expansion_candidates(
+    conn: sqlite3.Connection,
+    *,
+    max_seed_papers: int = 20,
+    max_candidates: int = 10,
+) -> list[FrontierCandidate]: ...
+
+
+def allocate_frontier_budget(
+    health: "GraphHealth",
+    candidates: list[FrontierCandidate],
+    budget: "CycleBudget",
+    history: "FrontierHistory",
+) -> "FrontierPlan": ...
+
+
+def evaluate_staged_result(
+    candidate: FrontierCandidate,
+    staged: "StagedResult",
+    *,
+    grant: "BudgetGrant",
+) -> GateResult: ...
+
+
+def should_suspend_target(
+    conn: sqlite3.Connection,
+    candidate: FrontierCandidate,
+    *,
+    cycle_id: int,
+) -> tuple[bool, str | None]: ...
+```
+
+## 必要な追加テーブル
+
+既存スキーマに依存するため、以下は追加部分のみ。
+
+```sql
+CREATE TABLE domain_registry (
+    domain_id TEXT PRIMARY KEY,
+    canonical_name TEXT NOT NULL,
+    aliases_json TEXT NOT NULL,
+    parent_domain_id TEXT,
+    status TEXT NOT NULL
+        CHECK(status IN ('candidate', 'trial', 'active', 'paused')),
+    created_cycle INTEGER NOT NULL
+);
+
+CREATE TABLE node_domain (
+    node_id INTEGER NOT NULL,
+    domain_id TEXT NOT NULL,
+    PRIMARY KEY(node_id, domain_id)
+);
+
+CREATE TABLE frontier_candidate (
+    candidate_id TEXT PRIMARY KEY,
+    dedupe_key TEXT NOT NULL UNIQUE,
+    mode TEXT NOT NULL,
+    domain_id TEXT NOT NULL,
+    target_node_id INTEGER,
+    facet TEXT,
+    payload_json TEXT NOT NULL,
+    features_json TEXT NOT NULL,
+    score REAL NOT NULL,
+    status TEXT NOT NULL,
+    created_cycle INTEGER NOT NULL,
+    next_eligible_cycle INTEGER NOT NULL
+);
+
+CREATE TABLE frontier_run (
+    run_id TEXT PRIMARY KEY,
+    candidate_id TEXT NOT NULL,
+    cycle_id INTEGER NOT NULL,
+    outcome TEXT NOT NULL,
+    calls_used INTEGER NOT NULL,
+    cost_usd REAL NOT NULL,
+    metrics_json TEXT NOT NULL,
+    failure_reason TEXT
+);
+
+CREATE TABLE frontier_artifact (
+    artifact_id TEXT PRIMARY KEY,
+    candidate_id TEXT NOT NULL,
+    kind TEXT NOT NULL,             -- source / claim / node / edge
+    payload_json TEXT NOT NULL,
+    gate_status TEXT NOT NULL,
+    source_spans_json TEXT NOT NULL,
+    UNIQUE(candidate_id, kind, artifact_id)
+);
+```
+
+`dedupe_key` は最低限、次を含める。
+
+```python
+dedupe_key = hash_canonical({
+    "mode": mode,
+    "domain": canonical_domain_id,
+    "target": target_node_id,
+    "facet": facet,
+    "population": population,
+    "question_intent": normalized_question_intent,
+})
+```
+
+表現違いだけの再探索を防ぐ。一方、対象年齢・比較条件・肯定／否定が違う主張は安易に同一視しない。
+
+---
+
+# 2. A：深掘り対象の選定
+
+## 2.1 「ノード数」ではなく「説明の欠落」を掘る
+
+各ノードに6つのfacetを持たせる。
+
+```text
+mechanism / moderator / boundary /
+measurement / contradiction / application
+```
+
+facetの充足度：
+
+\[
+c_{n,f} \in \{0,\ 0.5,\ 1\}
+\]
+
+- `0`：内容を確認できた根拠がない
+- `0.5`：少なくとも1つの研究系列から、範囲を限定した主張がある
+- `1`：独立した複数の研究系列で検討され、対象・条件・不一致が記録されている
+
+「反証が存在すること」は充足条件にしない。反証探索を行い、結果と探索範囲を記録した場合も評価する。ただし「反証が見つからなかった＝理論が正しい」とは登録しない。
+
+レビューと、そのレビューに含まれる一次研究は、独立した2系列として数えない。
+
+## 2.2 深掘りスコア
+
+全特徴量は `[0, 1]` に正規化する。
+
+\[
+S_D(n)=
+0.30R_n+
+0.25G_n+
+0.20A_n+
+0.15B_n+
+0.10Y_n
+-0.15T_n
+\]
+
+| 記号 | 定義 |
+|---|---|
+| \(R_n\) | 塾の用途との関連度 |
+| \(G_n\) | facet欠落度 |
+| \(A_n\) | 教育への翻訳条件の不足 |
+| \(B_n\) | 既存知識をつなぐ、未検証の有望な接続候補 |
+| \(Y_n\) | 過去の探索で得た有用な成果の割合 |
+| \(T_n\) | 直近の探索回数による反復ペナルティ |
+
+facet欠落度は用途に応じて重み付けする。
+
+\[
+G_n =
+1-
+\left(
+0.15c_{mechanism}
++0.20c_{moderator}
++0.20c_{boundary}
++0.10c_{measurement}
++0.15c_{contradiction}
++0.20c_{application}
+\right)
+\]
+
+塾では「効く理論」だけでなく、**誰に・どの条件で・どう使えるか**が重要なので、moderator・boundary・applicationを重くする。
+
+```python
+def score_deepening_node(s: "NodeStats") -> float:
+    gap = 1.0 - (
+        0.15 * s.facets["mechanism"]
+        + 0.20 * s.facets["moderator"]
+        + 0.20 * s.facets["boundary"]
+        + 0.10 * s.facets["measurement"]
+        + 0.15 * s.facets["contradiction"]
+        + 0.20 * s.facets["application"]
+    )
+
+    return (
+        0.30 * s.use_case_relevance
+        + 0.25 * gap
+        + 0.20 * s.application_gap
+        + 0.15 * s.bridge_opportunity
+        + 0.10 * s.smoothed_yield
+        - 0.15 * min(1.0, s.attempts_last_5_cycles / 2)
+    )
+```
+
+### 対象から除外する条件
+
+```python
+def eligible_for_deepening(s: "NodeStats", cycle_id: int) -> bool:
+    return (
+        s.has_content_checked_core_claim
+        and not s.has_unresolved_critical_integrity_error
+        and s.cooldown_until <= cycle_id
+    )
+```
+
+**中核主張が未支持のノードは深掘りではなく、G1修復へ送る。**  
+未支持の土台から関連理論を増殖させない。
+
+---
+
+# 3. A：投入トピックの生成と停止条件
+
+## 3.1 まずテンプレート、必要な場合だけLLM
+
+```python
+QUESTION_TEMPLATES = {
+    Facet.MECHANISM:
+        "{concept}の効果を説明する機序は何か。競合理論は何か。",
+    Facet.MODERATOR:
+        "{concept}の効果は、年齢・事前知識・課題難度でどう変わるか。",
+    Facet.BOUNDARY:
+        "{concept}が有効でない、または逆効果になる条件は何か。",
+    Facet.MEASUREMENT:
+        "{concept}はどう測定され、測定の妥当性には何が必要か。",
+    Facet.CONTRADICTION:
+        "{concept}について、追試・メタ分析・反証は何を示しているか。",
+    Facet.APPLICATION:
+        "{concept}を{use_case}に適用する根拠と、適用できない条件は何か。",
+}
+```
+
+```python
+def generate_deepening_candidates(conn, nodes, *, limit=12):
+    candidates = []
+
+    for node in nodes:
+        facets = least_covered_facets(node, limit=2)
+
+        for facet in facets:
+            use_case = best_matching_use_case(node)
+            question = QUESTION_TEMPLATES[facet].format(
+                concept=node.canonical_name,
+                use_case=use_case.label,
+            )
+
+            candidate = build_grounded_candidate(
+                mode=Mode.DEEPEN,
+                node=node,
+                facet=facet,
+                question=question,
+                seed_evidence_ids=node.best_evidence_ids[:3],
+                use_case_ids=(use_case.id,),
+            )
+
+            if not duplicate_or_cooling_down(conn, candidate):
+                candidates.append(candidate)
+
+    return sorted(candidates, key=lambda x: x.score, reverse=True)[:limit]
+```
+
+例：
+
+```text
+悪い投入：
+「自己効力感について詳しく」
+
+良い投入：
+「中高生の数学学習において、自己効力感と成績の関係は
+事前成績を考慮しても残るか。介入研究では何が分かっているか」
+```
+
+具体的な年齢や教科を指定して根拠が見つからなかった場合、一般研究をそのまま中高生へ適用しない。`population_mismatch` を残す。
+
+## 3.2 深掘り停止条件
+
+```python
+def deepening_stop_reason(h: "TargetHistory") -> str | None:
+    if h.budget_exhausted:
+        return "budget"
+
+    if h.consecutive_integrity_failures >= 2:
+        return "quality_pause"
+
+    if h.attempts >= 3 and h.useful_outcomes_last_3 == 0:
+        return "no_marginal_gain"
+
+    if h.weighted_facet_coverage >= 0.85 and not h.high_priority_open_question:
+        return "locally_saturated"
+
+    if h.next_candidate_score < 0.60:
+        return "low_priority"
+
+    return None
+```
+
+`useful_outcome` は以下のいずれか。
+
+- 非重複かつ内容確認済みの主張
+- 既存主張を実質的に補強・修正する独立研究
+- 根拠付きの新しい接続
+- 適用条件・限界・反証の追加
+
+ノード数・主張数だけの増加は成果にしない。
+
+通常の停止は永久停止ではなく、10サイクルのクールダウン。新しい論文・反証・用途が見つかった場合は解除できる。
+
+---
+
+# 4. B：新ドメイン候補の生成
+
+## 4.1 候補の入口は3つ
+
+### 入口1：既存エビデンスの科学的隣接領域
+
+既存論文から取得する：
+
+- 参考文献
+- 被引用文献
+- 著者キーワード
+- 外部APIの分野タグ
+- abstract中の方法・理論名
+
+ただし、分野タグや引用関係だけで接続を確定しない。これは候補生成専用。
+
+### 入口2：用途から逆算した不足領域
+
+用途カタログを固定設定する。
+
+```python
+USE_CASES = {
+    "retention": "覚えた内容を維持したい",
+    "study_planning": "学習計画を立て実行したい",
+    "exam_anxiety": "試験場面の不安に対処したい",
+    "help_seeking": "質問や援助要請ができない",
+    "peer_relationships": "仲間との関係に困っている",
+    "learning_differences": "学習上の個人差に対応したい",
+    "intervention_evaluation": "指導方法の効果を確かめたい",
+}
+```
+
+用途ごとに、既存の説明・測定・介入・限界のカバー率を求め、不足部分について文献検索する。
+
+### 入口3：既存ノード間の説明ギャップ
+
+例：
+
+```text
+フィードバック → なぜ生徒によって受け止め方が違うか？
+自己効力感 → 行動につながる条件は何か？
+学習介入 → 観察された改善は介入によるものか？
+```
+
+この「間を埋める問い」から候補分野を探す。
+
+## 4.2 新規性をドメイン名だけで判断しない
+
+```python
+def classify_domain_novelty(
+    proposed_domain: str,
+    proposed_concepts: set[str],
+    registry: "DomainRegistry",
+) -> Literal["existing", "new", "uncertain"]:
+    canonical = registry.resolve_alias(proposed_domain)
+
+    if canonical is not None:
+        return "existing"
+
+    overlap = registry.max_concept_overlap(proposed_concepts)
+
+    if overlap >= 0.70:
+        return "existing"
+    if overlap <= 0.30 and registry.has_external_taxonomy_support(proposed_domain):
+        return "new"
+
+    return "uncertain"
+```
+
+これらの閾値は初期値であり、実データで調整する。`uncertain`は登録せずステージングに残す。
+
+特に、検索練習・間隔反復・自己調整学習などは、既存の記憶科学・メタ認知・学習科学との重複を確認する。名前が新しいだけなら深掘りへ振り替える。
+
+## 4.3 候補生成の擬似コード
+
+```python
+def generate_expansion_candidates(conn, *, max_seed_papers=20,
+                                  max_candidates=10):
+    seeds = select_useful_evidence(
+        conn,
+        limit=max_seed_papers,
+        require_content_access=True,
+    )
+
+    raw = []
+    raw += mine_reference_and_citation_topics(seeds, hop_limit=1)
+    raw += search_for_use_case_gaps(conn, USE_CASES)
+    raw += discover_bridge_questions(conn)
+
+    grouped = canonicalize_and_cluster(raw)
+
+    results = []
+    for group in grouped:
+        novelty = classify_domain_novelty(
+            group.domain_name,
+            group.concept_ids,
+            load_domain_registry(conn),
+        )
+
+        if novelty == "existing":
+            enqueue_as_deepening(group)
+            continue
+
+        if novelty == "uncertain":
+            stage_unresolved_domain(group)
+            continue
+
+        if not group.retrieved_source_ids:
+            continue  # LLMが名前を挙げただけの候補は採用しない
+
+        candidate = build_expansion_candidate(group)
+        results.append(candidate)
+
+    return sorted(results, key=lambda c: c.score, reverse=True)[:max_candidates]
+```
+
+---
+
+# 5. B：拡大の優先度と品質ゲート
+
+## 5.1 拡大スコア
+
+\[
+S_X(d)=
+0.30R_d+
+0.20B_d+
+0.20E_d+
+0.15N_d+
+0.15U_d
+-0.15H_d
+-0.10C_d
+\]
+
+| 記号 | 定義 |
+|---|---|
+| \(R_d\) | 用途との関連度 |
+| \(B_d\) | 既存ノードへの根拠付き接続の見込み |
+| \(E_d\) | 内容を取得できる文献と独立研究系列の充実度 |
+| \(N_d\) | 既存グラフに対する概念的新規性 |
+| \(U_d\) | 現在不足している用途をどれだけ埋めるか |
+| \(H_d\) | 医療・診断・強い一般化などのリスク |
+| \(C_d\) | 予想コール数・取得困難性による探索コスト |
+
+関連度は、自由記述のLLM自己採点だけに依存させない。
+
+```python
+USE_CASE_MATCH = {
+    "direct": 1.0,       # 用途に直接対応する研究・問い
+    "method": 0.7,       # 指導評価などを支える方法論
+    "one_step": 0.4,     # 根拠のある一段階の間接関係
+    "speculative": 0.0,  # 連想のみ
+}
+
+def relevance(matches: list["UseCaseMatch"]) -> float:
+    return max(
+        (USE_CASE_MATCH[m.kind] * m.use_case_weight for m in matches),
+        default=0.0,
+    )
+```
+
+`R < 0.4` は自動拡大対象から除外する。
+
+### 初期候補の例
+
+| 候補 | 用途 | 扱い |
+|---|---|---|
+| 教育介入評価・因果推論 | 指導方法の効果を確かめる | 有力な拡大候補 |
+| 発達心理学の年齢差・実行機能 | 年齢に合った指導条件 | 既存領域との重複確認後に拡大 |
+| 援助要請・学校所属感 | 質問できない、孤立する | 有力な拡大候補 |
+| 試験不安の教育的支援 | 悩み相談・試験対応 | 高めの安全ゲート |
+| 間隔反復・検索練習 | 記憶定着 | 原則、記憶科学の深掘り候補 |
+
+これは固定順序ではない。取得できた根拠と接続性によって並べ替える。
+
+## 5.2 登録前ゲート
+
+**現行`knowledge_amplifier.py`が即時登録するなら、`register=False`またはステージング出力を追加する必要がある。後から削除する方式では不十分。**
+
+```python
+class PipelineAdapter(Protocol):
+    def amplify_to_staging(
+        self,
+        candidate: FrontierCandidate,
+        *,
+        grant: "BudgetGrant",
+        max_claims: int,
+    ) -> "StagedResult": ...
+
+    def commit_approved(
+        self,
+        conn: sqlite3.Connection,
+        staged: "StagedResult",
+        gate: GateResult,
+    ) -> "CommitResult": ...
+```
+
+| ゲート | 合格条件 |
+|---|---|
+| G0：対象適合 | 用途関連度を満たし、臨床判断など禁止用途に入らない |
+| G1：書誌 | DOI/論文の同一性を確認。取得可能な撤回・訂正情報も確認 |
+| G2：内容 | abstractまたは本文の該当箇所が主張を支持する |
+| G3：範囲 | 年齢、課題、比較条件、相関／因果、効果量の条件を保持 |
+| G4：独立性 | 新ドメイン昇格には独立した2研究系列以上 |
+| G5：接続 | 深掘りは既存ノードへ1本、新ドメインは異なる既存ノードへ2本の検証済み接続 |
+| G6：構造 | 重複、型不整合、孤立ノード、根拠のない循環参照を防止 |
+
+追加ルール：
+
+```python
+def evidence_gate(claim, sources):
+    if not sources.have_supporting_span(claim):
+        return "stage"
+
+    if claim.is_causal and sources.only_observational_support(claim):
+        return "reject_or_rewrite"
+
+    if claim.has_numeric_effect and not sources.verify_numbers(claim):
+        return "stage"
+
+    if claim.population_exceeds_source_scope:
+        return "reject_or_narrow"
+
+    return "accept_with_evidence_status"
+```
+
+abstractだけで確認できない詳細は、本文未取得のまま「検証済み」にしない。
+
+また、新ドメインに2研究系列あっても、**そのドメイン内の全主張が2系列で支持されたことにはしない**。主張ごとに次を付ける。
+
+```text
+content_supported_single_family
+content_supported_multiple_families
+mixed
+insufficient
+```
+
+相反する研究は排除せず、`mixed`として条件付きで保持する。
+
+## 5.3 教育への翻訳を科学的主張と分離する
+
+```python
+@dataclass(frozen=True)
+class PracticeTranslation:
+    source_claim_ids: tuple[str, ...]
+    target_population: str
+    proposed_action: str
+    applicability_conditions: tuple[str, ...]
+    extrapolation_required: bool
+    status: Literal["hypothesis", "evidence_linked", "review_required"]
+```
+
+成人実験から中学生への指導案を作る場合、それは原則として`hypothesis`。
+
+塾で実際に使える手順として自動昇格させるには、対象・介入・評価条件の適合が必要。診断、治療、服薬判断などは自動運用対象外とする。
+
+---
+
+# 6. C：予算配分
+
+## 6.1 初期配分は深掘り：拡大＝2：1
+
+ただし、これは**探索に使う予算の長期配分**であり、毎サイクル必ず3件実行するという意味ではない。
+
+- 初期：深掘り67%、拡大33%
+- 深掘りが飽和：拡大を増やす
+- 接続性が悪化：深掘り・接続修復を優先
+- 品質劣化：両方を止めて修復へ戻す
+
+## 6.2 動的配分式
+
+\[
+p_D=
+\operatorname{clip}
+\left(
+0.67+
+0.15A+
+0.10F-
+0.25S+
+0.10(Y_D-Y_X),
+0.35,\ 0.85
+\right)
+\]
+
+- \(A\)：重要な既存知識の教育適用条件の不足
+- \(F\)：グラフの分断・孤立の程度
+- \(S\)：関連性の高い既存ノードのfacet飽和度
+- \(Y_D,Y_X\)：深掘り／拡大の平滑化済み成果率
+
+```python
+def deepening_share(h: "GraphHealth", hist: "FrontierHistory") -> float:
+    if h.quality_red:
+        return 0.0  # 配分ではなく、探索自体を停止
+
+    p = (
+        0.67
+        + 0.15 * h.application_gap
+        + 0.10 * h.fragmentation
+        - 0.25 * h.deepening_saturation
+        + 0.10 * (hist.deepening_yield - hist.expansion_yield)
+    )
+    return max(0.35, min(0.85, p))
+```
+
+成果率の初期値は両モード共通の事前分布を使い、少数試行で極端に振れないようにする。
+
+```python
+def smoothed_yield(successes: int, attempts: int) -> float:
+    return (successes + 2) / (attempts + 4)
+```
+
+## 6.3 20コール内の具体例
+
+仮にPhase 1〜5で8コール使い、Phase 7に2コール予約した場合：
+
+| 処理 | コール上限 |
+|---|---:|
+| Phase 1〜5 | 8 |
+| トピック整形・候補整理の一括LLM処理 | 1 |
+| 深掘りタスク1 | 3 |
+| 深掘りタスク2 | 3 |
+| 拡大タスク1 | 3 |
+| Phase 7予約 | 2 |
+| **合計** | **20** |
+
+1タスク3コールの想定：
+
+```text
+1. amplifierによる候補主張生成
+2. 取得文献との内容・範囲照合
+3. relation_engineによる接続検証
+```
+
+文献API検索、重複判定、スコア計算、SQL処理はLLM不要。
+
+これは上限設計であり、既存`amplifier`が複数LLMコールを必要とするなら、タスク数を減らす。ノード分類などの追加コールも同じ予約枠に含める。
+
+残り予算が3コール未満なら、原則として新規タスクを開始せず、候補を次サイクルへ持ち越す。
+
+## 6.4 必須：共有予算台帳
+
+```python
+class CycleBudget(Protocol):
+    def available_calls(self, *, exclude_phase7: bool = True) -> int: ...
+    def available_usd(self, *, exclude_phase7: bool = True) -> float: ...
+
+    def try_reserve(
+        self,
+        *,
+        owner: str,
+        max_calls: int,
+        max_usd: float,
+    ) -> "BudgetGrant | None": ...
+```
+
+全LLM呼び出しをここに通す。
+
+```python
+def budgeted_llm_call(
+    prompt: str,
+    *,
+    grant: "BudgetGrant",
+    max_output_tokens: int,
+):
+    upper_cost = estimate_upper_bound_cost(
+        prompt,
+        max_output_tokens=max_output_tokens,
+    )
+
+    ticket = grant.reserve_call_and_cost(upper_cost)
+
+    try:
+        result = cheap_llm.complete(
+            prompt,
+            max_output_tokens=max_output_tokens,
+        )
+    except Exception:
+        # コールは消費済み。課金額不明なら予約額を保持する。
+        grant.record_failed_or_unknown(ticket)
+        raise
+    else:
+        grant.settle(ticket, usage=result.usage)
+        return result
+```
+
+予約・精算はSQLiteのトランザクションで原子的に行う。再試行も1コールとして数える。コール上限に余裕があっても、ドル上限に達したら停止する。
+
+## 6.5 少ない予算で片方が飢餓状態にならない仕組み
+
+モードごとの予算負債を永続化する。
+
+```python
+deep_deficit += p_deep * available_task_calls
+expand_deficit += (1 - p_deep) * available_task_calls
+```
+
+次タスクは、合格候補が存在するモードのうち負債が大きい方から選ぶ。実際に使ったコール数を減算する。
+
+これにより、毎回1件しか実行できなくても、複数サイクルで概ね2：1になる。品質ゲートを満たさない拡大を、比率達成のために強行してはいけない。
+
+---
+
+# 7. D：発散・接続性・品質低下への安全装置
+
+## 7.1 発散防止
+
+```python
+EXPLORATION_LIMITS = {
+    "citation_hops_per_discovery": 1,
+    "new_domains_per_cycle": 1,
+    "new_nodes_per_cycle": 3,
+    "claims_per_task": 5,
+    "trial_calls_per_domain": 6,
+    "trial_ttl_cycles": 3,
+    "same_question_cooldown_cycles": 10,
+}
+```
+
+新ドメインは最初から`active`にしない。
+
+```text
+candidate
+   ↓ 関連文献と用途の確認
+trial
+   ↓ 内容確認・独立研究・接続ゲート合格
+active
+```
+
+`trial`ドメインから、さらに別の新ドメインへ飛ぶことは禁止する。昇格後も用途関連度ゲートは維持するため、引用をたどって無制限に遠ざからない。
+
+試行予算・期限を超えたものは`paused`へ移す。途中成果は消さず、追加文献が来たときだけ再開する。
+
+## 7.2 接続性維持
+
+`Edge/Node=1.78`は監視値にとどめる。エッジを水増しすれば改善できるため、合格条件にしない。
+
+見る指標：
+
+```python
+@dataclass
+class ConnectivityMetrics:
+    largest_component_ratio: float
+    isolated_node_ratio: float
+    verified_cross_domain_edges: int
+    new_nodes_with_verified_anchor_ratio: float
+```
+
+登録条件：
+
+- 深掘りノード：既存ノードへの検証済み接続が1本以上
+- 新ドメイン：異なる既存ノードへの検証済み接続が2本以上
+- 可能なら異なる既存ドメインに接続する
+- `co-evidence`だけでは検証済み接続とみなさない
+- 全新規ノードに、根拠付きで既存グラフへ到達する経路がある
+
+エッジは型と根拠を持つ。
+
+```python
+{
+    "relation": "boundary_condition_of",
+    "source_claim_ids": ["..."],
+    "evidence_ids": ["..."],
+    "source_spans": ["..."],
+    "verification_status": "content_checked"
+}
+```
+
+単なるLLMの類推は`proposed`として保持し、接続ゲートには数えない。適切な接続が見つからない場合、架空の橋を作らずステージングに留める。
+
+## 7.3 自動停止条件
+
+以下は初期運用値。
+
+| 条件 | 動作 |
+|---|---|
+| コールまたは費用上限到達 | 即時停止、未完了成果を保存 |
+| 最近10件以上の生成主張で、内容不支持率が40%超 | EXPAND全体を停止 |
+| 最近10件以上の生成書誌候補で、誤書誌率が20%超 | amplifier由来の探索を停止 |
+| 同一タスクで重要な検証エラーが2回連続 | 当該候補を停止 |
+| 同一モードで3タスク連続、有用な成果ゼロ | 5サイクル休止 |
+| API取得障害が3回連続 | ソース取得を休止。科学的反証とは数えない |
+| 未検証エッジが検証済みとして登録された | EXPANDを停止し、影響範囲を隔離 |
+| 新規ノードの接続ゲート違反 | トランザクションをロールバック |
+
+誤書誌率の分母にAPIタイムアウトを入れない。内容不支持率に「反証研究を正しく抽出した主張」を入れない。
+
+停止後はG1/G3修復と監査へ戻す。**品質低下時に同じ探索を無制限に再試行しない。**
+
+---
+
+# 8. 全体アルゴリズム
+
+```python
+def run_frontier(conn, *, cycle_id, budget, pipeline, config):
+    health = compute_graph_health(conn)
+    history = load_frontier_history(conn)
+
+    # 1. 品質異常なら増殖せず修復へ戻す
+    if health.quality_red:
+        enqueue_repair_jobs(conn, health.failure_reasons)
+        return FrontierReport.paused(health.failure_reasons)
+
+    # 2. 前回の途中成果を再利用
+    resumable = load_resumable_trials(conn, cycle_id=cycle_id)
+
+    # 3. 原則LLMなしで候補生成
+    nodes = rank_deepening_nodes(conn, cycle_id=cycle_id)
+    deep = generate_deepening_candidates(conn, nodes)
+    expand = generate_expansion_candidates(conn)
+
+    candidates = dedupe_candidates(resumable + deep + expand)
+    candidates = [
+        c for c in candidates
+        if c.score >= config.min_candidate_score
+        and not should_suspend_target(
+            conn, c, cycle_id=cycle_id
+        )[0]
+    ]
+
+    # 4. 必要な場合のみ、候補を一括で整形
+    # 出典のないドメイン・DOIの追加は許さない
+    candidates = maybe_refine_grounded_questions(
+        candidates,
+        budget=budget,
+        call_cap=config.planning_call_cap,
+    )
+
+    # 5. Phase 7予約を除いた共有予算からタスクを選ぶ
+    plan = allocate_frontier_budget(
+        health, candidates, budget, history
+    )
+
+    report = FrontierReport()
+
+    for task in plan.tasks[:config.max_tasks_per_cycle]:
+        grant = budget.try_reserve(
+            owner=f"frontier:{task.candidate.id}",
+            max_calls=task.call_cap,
+            max_usd=task.upper_bound_cost,
+        )
+
+        if grant is None:
+            break
+
+        try:
+            # 6. 直接登録せず、一時領域へ
+            staged = pipeline.amplify_to_staging(
+                task.candidate,
+                grant=grant,
+                max_claims=config.max_claims_per_task,
+            )
+
+            # 7. 内容・範囲・独立性・接続を検証
+            gate = evaluate_staged_result(
+                task.candidate,
+                staged,
+                grant=grant,
+            )
+
+            if gate.decision == "accept":
+                # コミット時点のDB状態で重複・上限・接続を再確認
+                with atomic_transaction(conn):
+                    validate_commit_invariants(
+                        conn, staged, gate, config
+                    )
+                    result = pipeline.commit_approved(
+                        conn, staged, gate
+                    )
+                report.add_committed(result)
+
+            elif gate.decision == "stage":
+                persist_partial_result(conn, staged, gate)
+                report.add_staged(task.candidate.id)
+
+            else:
+                record_rejection(conn, task.candidate, gate)
+
+        finally:
+            # 完了した予約だけ解放。不明課金は保守的に保持
+            grant.close()
+            persist_run_metrics(conn, task, grant, cycle_id)
+            update_mode_deficits(conn, task, grant.calls_used)
+
+        # 8. タスクごとにサーキットブレーカーを確認
+        if frontier_circuit_breaker_open(conn):
+            report.mark_paused()
+            break
+
+    apply_cooldowns_and_trial_expiry(conn, cycle_id)
+    return report
+```
+
+---
+
+# 9. 実装時に外せないテスト
+
+```python
+def test_nested_pipeline_calls_share_global_budget(): ...
+def test_failed_and_retried_calls_are_counted(): ...
+def test_real_doi_does_not_imply_claim_support(): ...
+def test_review_and_its_primary_study_are_not_independent(): ...
+def test_new_label_for_existing_concept_routes_to_deepening(): ...
+def test_unverified_bridge_cannot_satisfy_connectivity_gate(): ...
+def test_budget_exhaustion_preserves_staged_work(): ...
+def test_repeated_cycle_is_idempotent(): ...
+def test_conflicting_evidence_is_preserved_as_mixed(): ...
+def test_adult_evidence_is_not_auto_promoted_to_child_guidance(): ...
+```
+
+## 推奨する初期運用設定
+
+```python
+INITIAL_POLICY = {
+    "deepening_expansion_ratio": (2, 1),
+    "max_frontier_tasks_per_cycle": 3,
+    "max_new_domains_per_cycle": 1,
+    "max_new_nodes_per_cycle": 3,
+    "require_staging": True,
+    "require_verified_bridges": True,
+    "auto_clinical_recommendations": False,
+}
+```
+
+この設計の中心は、**「増えた量」ではなく、「新しく答えられる問い・明確になった適用条件・根拠付き接続」を報酬にすること**である。完全自律化するのは探索と検証の反復であり、根拠不足の知識を強制的に登録し続けることではない。

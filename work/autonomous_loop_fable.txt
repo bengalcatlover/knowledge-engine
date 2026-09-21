@@ -1,0 +1,246 @@
+# 知識OS 自律・再帰・拡大ループ設計
+
+設計思想：**「拾う→固める→つなぐ→広げる」を1サイクルとし、各段階で"暫定→検証→昇格"の3状態管理を貫く。** 既存のHYP隔離・policy engineをそのまま暴走防止の骨格に流用する。
+
+```yaml
+autonomous_loop_design:
+
+  # ==================================================================
+  # 1. Evidence → Claim 抽出
+  # ==================================================================
+  evidence_to_claim:
+    trigger: "amplifier/gap_detectorが新evidenceをストア登録した瞬間（フック）"
+
+    pipeline:
+      - step: claim_extraction
+        input: "abstract + title + (取得可能なら) conclusion section"
+        method: |
+          LLMに構造化抽出を強制:
+          {
+            claims: [
+              {
+                text: "単文・自己完結・検証可能な形に正規化",
+                claim_type: "empirical | theoretical | methodological | definitional",
+                subjects: ["言及エンティティ（正規化済み）"],
+                polarity: "supports | refutes | conditions",
+                confidence_language: "strong | hedged | speculative"  # "may", "suggests"等を検出
+              }
+            ]
+          }
+        constraints:
+          - "1 abstractあたり最大5 claims（過抽出防止）"
+          - "speculative claimは自動でHYP層行き"
+
+      - step: dedup_and_matching
+        method: |
+          抽出claimをembedding化し、既存claimストアに対して類似検索。
+          判定は3段階閾値:
+        thresholds:
+          - "cos_sim >= 0.92 → 既存claimと同一。evidenceを既存claimに追加紐付けのみ（confidence加算）"
+          - "0.75 <= cos_sim < 0.92 → グレーゾーン。LLM二者判定:
+              『同一主張の言い換えか / 同一トピックの別主張か / 矛盾する主張か』
+              - 言い換え → merge（evidence追加）
+              - 別主張 → 同一ノード配下に新claim追加
+              - 矛盾 → CONTRADICTS エッジを張り、両claimをdispute状態に（人間レビューキュー行き）"
+          - "cos_sim < 0.75 → 新規claim。ノード帰属判定へ"
+
+      - step: node_attribution
+        method: |
+          claim.subjectsを既存ノード名+aliasに対してentity linking。
+          - 全subjectが既存ノードに解決 → 最も中心的なノードにclaim追加、
+            他subjectノードへはエッジ推論（§3）へ回す
+          - 未解決subjectあり → auto_node_generation（§2）へ
+        entity_linking:
+          - "exact/alias match → 即解決"
+          - "embedding sim >= 0.85 → 候補提示してLLM確認（'CRISPR-Cas9'と'Cas9'問題対策）"
+          - "解決できない → 新エンティティ候補"
+
+    provenance: "全claimに source_evidence_id, extraction_model, extraction_timestamp を必須刻印。人間作成claimと自動抽出claimは origin: auto|human で区別"
+
+  # ==================================================================
+  # 2. ノード自動生成
+  # ==================================================================
+  auto_node_generation:
+    principle: "自動生成ノードは必ず status: provisional で生まれ、昇格条件を満たすまで検索結果での重み減衰・回答生成時に『暫定』明示"
+
+    flow:
+      - step: layer_type_decision
+        method: |
+          LLMに既存オントロジーのスキーマ（クラス一覧+定義+例）を提示し分類:
+          Q1: このエンティティは既存クラスのインスタンスか？
+              → YES: instance層に生成、HAS_SCOPED_INSTANCE エッジを親クラスへ
+          Q2: 既存クラスの下位/上位/兄弟概念か？
+              → YES: class層に生成、IS_A エッジ + 位置（親/子/兄弟）を決定
+          Q3: どちらでもない（新しい概念領域）？
+              → domain_candidate としてマーク → §4のドメイン拡大キューへ
+              （即座にはノード化しない。ドメイン拡大の予算判断を経る）
+        anti_fragmentation:
+          - "クラス生成は『既存クラスとの弁別テスト』を通過した場合のみ:
+             LLMに『既存クラスXとの違いを1文で述べよ。述べられなければXに吸収』"
+          - "兄弟クラスが7個を超える親には生成前に中間層の再編成を提案（人間レビュー）"
+
+      - step: mandatory_edges
+        rules:
+          - "class → 必ず IS_A エッジ1本以上（孤児クラス禁止）"
+          - "instance → 必ず HAS_SCOPED_INSTANCE の逆参照1本以上"
+          - "生成時にエッジが張れないノードは生成自体を却下（=G2ギャップを自分で作らない）"
+
+      - step: bootstrap_verification
+        method: |
+          新ノード生成直後にamplifierを1回だけ起動（budget: 3クエリ）し、
+          そのノード名+親クラス名で独立evidenceを探す。
+        promotion_criteria:
+          provisional → active:
+            - "独立ソース由来のverified evidence >= 2（同一論文の複数claimは1と数える）"
+            - "エッジ >= 2本"
+            - "矛盾claimなし or dispute解決済み"
+          provisional → rejected:
+            - "生成後2サイクル経過してevidence 0 → 自動archive（削除はしない）"
+
+  # ==================================================================
+  # 3. エッジ自動推論
+  # ==================================================================
+  edge_inference:
+    strategy: "候補生成は安く広く、検証は高く狭く（2段ロケット）"
+
+    candidate_generation:  # 安いフィルタ、LLM不使用
+      - signal: co_evidence
+        rule: "同一論文が2ノードのevidenceになっている → エッジ候補 score+0.4"
+      - signal: co_citation
+        rule: "OpenAlex/Semantic Scholarの引用グラフで、両ノードの主要evidenceが相互引用 or 共引用 → score+0.3"
+      - signal: embedding_proximity
+        rule: "ノードembedding kNN (k=10) で近傍 かつ 現在エッジなし → score+0.2"
+      - signal: claim_cooccurrence
+        rule: "1つのclaimのsubjectsに両ノードが登場 → score+0.5（最強シグナル）"
+      threshold: "score >= 0.5 でLLM検証段へ"
+
+    llm_verification:
+      prompt_structure: |
+        ノードA（定義+代表claim3件+evidence要約）
+        ノードB（同上）
+        を提示し、関係を強制選択:
+        { relation: "CAUSES | PART_OF | USES | CONTRADICTS | CORRELATES_WITH
+                     | PRECEDES | NONE",
+          direction: "A→B | B→A | bidirectional",
+          justification_claim: "この関係を支持する既存claim IDを引用せよ" }
+      hard_rule: |
+        justification_claimが実在claimを指せない関係は生成しない。
+        『LLMがそう思う』だけのエッジは禁止 = エッジもevidence-backed原則。
+        既存claimで支持できないがLLMが強く主張する関係 → HYP_EDGE として隔離し、
+        次サイクルのgap detectorが専用クエリで検証（新gap種別 G3: unverified_edge）
+
+    maintenance:
+      - "エッジにも confidence を持たせ、支持claim追加で加算、矛盾evidenceで減算"
+      - "confidence < 0.3 に落ちたエッジは dormant 化（検索経路から除外、削除せず）"
+
+  # ==================================================================
+  # 4. ドメイン拡大
+  # ==================================================================
+  domain_expansion:
+    frontier_detection:
+      boundary_node: |
+        以下を満たすノードを「境界ノード」と定義:
+        - evidenceの参考文献/被引用のうち、グラフ内に存在しないエンティティへの
+          言及率が高い（external_mention_ratio > 0.6）
+        - §2で domain_candidate としてマークされた未解決エンティティのクラスタ
+
+    scoring: |
+      各候補ドメイン D のスコア:
+        S(D) = w1·connectivity + w2·demand + w3·novelty - w4·cost
+      connectivity: 既存グラフの境界ノード何個からDへの言及があるか（正規化）
+                    → 孤島ドメインより既存知識と繋がるドメインを優先
+      demand:       ask_knowledge.pyのクエリログで「回答できなかった/低confidence回答」の
+                    質問がDに関連する頻度 → ユーザー需要駆動
+      novelty:      D関連の未解決エンティティ数 / 既カバー率
+      cost:         推定必要クエリ数（境界からの距離）
+      初期重み: w=(0.35, 0.35, 0.2, 0.1)。demandを重視=完全自律でも人間の関心に緩く錨を下ろす
+
+    execution:
+      - "1サイクルで拡大するドメインは最大1つ（拡大レート制限）"
+      - "拡大時はまずseed探索: ドメイン名でamplifierに5クエリ → 得たevidenceから
+         §1→§2を回してルートクラス+3〜5クラスの骨格を作る"
+      - "骨格が昇格条件を満たさなければドメインごとarchive（再挑戦は3サイクル後）"
+
+  # ==================================================================
+  # 5. 再帰ループ
+  # ==================================================================
+  recursive_loop:
+    cycle_phases:
+      1_repair:   "gap_detector実行（G1/G2/G3）→ amplifier → evidence補充"
+      2_extract:  "新evidenceに対し §1 evidence_to_claim"
+      3_grow:     "§2 ノード生成 + §3 エッジ推論"
+      4_promote:  "provisional昇格判定 / rejected archive / dispute整理"
+      5_expand:   "gap充足率 >= 85% の場合のみ §4 ドメイン拡大を1回"
+      6_audit:    "品質メトリクス記録、次サイクル予算決定"
+    ordering_rationale: "『既存の穴を塞いでから広げる』を構造的に強制。gap充足率が低いうちは拡大フェーズがスキップされる → 深さ優先の自己制動"
+
+    budgets_per_cycle:
+      llm_calls: 200
+      external_api_calls: 500
+      new_nodes: 20
+      new_edges: 50
+      new_domains: 1
+      note: "予算超過で即フェーズ打ち切り、未処理分は台帳に残し次サイクルへ（冪等キー流用）"
+
+    stop_conditions:
+      convergence: "3サイクル連続で (新規verified claim < 3) AND (open gap増加なし) → 休止状態へ。新クエリログ or 手動投入で再起動"
+      quality_circuit_breaker:
+        - "サイクル内ハレーション棄却率 > 40% → 停止+アラート（LLM/ソース品質異常）"
+        - "provisional比率 > 30%（全ノード比）→ 拡大凍結、repair/promoteのみ実行"
+        - "dispute（矛盾claim）滞留 > 10件 → 人間レビュー完了まで新規生成停止"
+      runaway_prevention:
+        - "ノード成長率 > 20%/サイクル → 次サイクル予算を半減（指数暴走防止）"
+        - "同一冪等キーのgapが3回失敗 → dead_letter化、自動リトライ永久停止"
+        - "自動生成claimのみを根拠に次の自動生成をする深度に上限（derivation_depth <= 3）
+           → LLM出力のLLM再消費による幻覚増幅ループの遮断"
+
+    human_in_the_loop:
+      auto: "evidence追加、instance生成、支持claim付きエッジ"
+      review_queue: "新クラス生成、CONTRADICTSエッジ、ドメイン拡大、階層再編成"
+      policy: "レビュー待ちでもループは止めない（当該ノードのみpending、他は進行）"
+
+  # ==================================================================
+  # 6. スケーリング
+  # ==================================================================
+  scaling:
+    at_100_nodes:
+      - "現行の全走査gap detectionで問題なし。embedding indexだけ先に導入
+        （FAISS/pgvector）— §1/§3の類似検索が全比較だと後で書き直しになるため今やる"
+    at_1000_nodes:
+      - "gap検出を差分駆動に: 全走査をやめ、直近サイクルで変更されたノード+その2ホップ
+         近傍のみスキャン（変更イベントキュー）"
+      - "エッジ候補生成のkNNをANN化、co-citation計算は主要evidenceのみに限定"
+      - "ドメイン単位のパーティション: サイクルはドメインごとにラウンドロビン実行
+         （1サイクル=1ドメイン集中、予算枯渇の分散）"
+      - "検証4層のティア化: 高confidenceソース（CrossRef即hit）は後段層スキップで
+         API呼び出し1/3に削減"
+    at_10000_nodes:
+      - "グラフDB移行（MVPストア → Neo4j/Kùzu等）。2ホップ近傍クエリが支配的作業に
+         なるため隣接リスト走査をネイティブ化"
+      - "階層的サマリーノード: ドメイン/クラスタごとに要約ノードを自動維持し、
+         ask_knowledgeの検索を『サマリー→ドリルダウン』の2段に。
+         全claim検索は不可能になる前提で設計"
+      - "エッジ推論の候補空間爆発（O(n²)）対策: co-evidence/claim_cooccurrenceの
+         強シグナルのみに限定し、embedding近傍推論はユーザークエリで触られた
+         ホットリージョンに限定（アクセス駆動の遅延推論）"
+      - "鮮度管理のティア化: 全ノード均等再検証をやめ、
+         hot（クエリ頻出）: 毎サイクル / warm: 月次 / cold: evidence失効時のみ"
+      - "コスト会計: ノードごとに累積LLM/APIコストを記録し、
+         『コスト対クエリヒット率』が閾値以下の枝はcold凍結 — 知識の損益計算"
+    invariants_at_all_scales:
+      - "evidence-backed原則（claim/edgeとも）は規模に関わらず不変"
+      - "provisional/active/archivedの3状態と冪等台帳は全コンポーネント共通"
+      - "削除はしない、archiveする（再帰ループの再現性・監査性のため）"
+```
+
+## 実装優先順位の提案
+
+| 順 | 項目 | 理由 |
+|---|---|---|
+| 1 | §1 evidence_to_claim | 既にevidenceは流れ込んでいる。ここが詰まりの根本 |
+| 2 | §3のG3（unverified_edge）をgap台帳に追加 | 既存gap detectorの拡張で済み、エッジもevidence-backed化できる |
+| 3 | §2 instance自動生成のみ先行 | クラス生成より安全（親が確定している）。昇格ロジックの実地検証に最適 |
+| 4 | §5 予算+サーキットブレーカー | 自動生成を有効化する**前**に必須 |
+| 5 | §4 ドメイン拡大 | 20ノード規模では境界検出の統計が効かない。100ノード到達後に |
+
+**最重要の設計判断は2つ**：(a) エッジにもevidence-backed原則を適用し「LLMの直感エッジ」をHYP隔離すること、(b) `derivation_depth`上限で「自動生成物の自動再消費」を遮断すること。この2つがないと、規模拡大と共にグラフが幻覚で自己汚染します。

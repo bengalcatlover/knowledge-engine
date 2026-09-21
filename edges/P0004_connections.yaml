@@ -1,0 +1,113 @@
+# P-0004 (マルチモーダル・現実空間へのグラウンディング) 接続マップ
+# Generated: 2026-09-09
+# Structure: Perspective → Concept Card → MIT Lecture (三層リンク)
+
+# ============================================================
+# Layer 1: P-0004 → Concept Cards
+# ============================================================
+
+- edge_id: "E-0034"
+  from_node: "P-0004"
+  to_node: "K-0014"
+  relation_type: "operationalizes"
+  claim: "スマホカメラ映像から図面仕様との一致を推論するには、センサーノイズを含む観測データから隠れ状態（施工状況）を推定する確率的推論が必要である。K-0014のベイズ推論がこの推定の理論的基盤を与える。"
+  source_locator: "K-0014#definition"
+  quote: ""
+  confidence: "medium"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+- edge_id: "E-0035"
+  from_node: "K-0014"
+  to_node: "P-0004"
+  relation_type: "constrains"
+  claim: "ベイズ推論の境界条件「グラフ構造が未知の場合、推論が信頼できない」は、建築現場のように物体間の空間関係が事前に定義しにくい環境での推論精度に制約を課す。"
+  source_locator: "K-0014#boundary_conditions"
+  quote: ""
+  confidence: "medium"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+- edge_id: "E-0036"
+  from_node: "P-0004"
+  to_node: "K-0011"
+  relation_type: "analogy"
+  claim: "リアルタイム推論・指摘のフィードバックループ（カメラ映像取得→推論→指摘→作業者の修正→再確認）は、フィードバック制御のクローズドループと構造的に類似するが、人間の行動を制御対象とする点で古典的制御とは異なる。"
+  source_locator: "K-0011#definition"
+  quote: ""
+  confidence: "medium"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+# E-0037 削除: P→K-0015(動的計画法)のanalogy、confidence: lowで実用価値なし
+
+# ============================================================
+# Layer 2: Concept Cards → MIT Lectures
+# ============================================================
+
+- edge_id: "E-0038"
+  from_node: "K-0014"
+  to_node: "D-TjrRSOHQACw"
+  relation_type: "supports"
+  claim: "Shashua講義「Applications of Vision」が、カメラベースのコンピュータビジョンが安価で情報密度の高いセンサーとして機能し、歩行者検出・衝突警告・自律運転に適用されている実例を示しており、P-0004の「スマホカメラをかざすだけで推論」の技術的実現可能性を裏付ける。"
+  source_locator: "D-TjrRSOHQACw:chunk_1"
+  quote: "Cameras are inexpensive, information-dense sensors. As their performance and the available computing hardware improve, cameras can take over functions traditionally assigned to radar and other sensors."
+  confidence: "high"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+- edge_id: "E-0039"
+  from_node: "K-0013"
+  to_node: "D-8QuyDcMIdRc"
+  relation_type: "supports"
+  claim: "MIT「Building Convolutional Neural Networks from Scratch」講義が、画像認識の基盤技術であるCNNの設計原理を説明しており、P-0004の図面と現場映像の突合に必要な視覚特徴抽出の理論基盤を提供する。"
+  source_locator: "D-8QuyDcMIdRc:chunk_1"
+  quote: ""
+  confidence: "high"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+- edge_id: "E-0040"
+  from_node: "K-0013"
+  to_node: "D-hwDRfkPSXng"
+  relation_type: "supports"
+  claim: "MIT「ImageNet is a CNN」講義が、畳み込みの数学的基盤（多項式積としての畳み込み、FFTによる高速化）を解説しており、リアルタイム映像処理の計算効率設計に直接使える知識を提供する。"
+  source_locator: "D-hwDRfkPSXng:chunk_1"
+  quote: "A deep CNN trained on ImageNet classified 1.2 million high-resolution images and achieved a 15% top-five test error rate in the 2012 competition."
+  confidence: "high"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+# ============================================================
+# Gaps
+# ============================================================
+
+- edge_id: "E-0041"
+  from_node: "P-0004"
+  to_node: "K-0014"
+  relation_type: "gap"
+  claim: "MIT OCWにはCAD/BIMデータの機械読み取り・建築規定との自動照合に特化した講義がない。コンピュータビジョンの基礎はあるが、建築ドメイン固有の空間推論・規定違反検出はMIT OCWの範囲外である。"
+  source_locator: "P-0004#未確定事項"
+  quote: ""
+  confidence: "high"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+- edge_id: "E-0042"
+  from_node: "P-0004"
+  to_node: "K-0011"
+  relation_type: "gap"
+  claim: "MIT OCWにはマルチモーダルAI（視覚+音声+テキストの統合推論）に特化した講義がない。視覚と言語を個別に扱う講義はあるが、現実空間でのリアルタイム統合推論は2024年以降の技術であり、MIT OCWの範囲外である。"
+  source_locator: "P-0004#未確定事項"
+  quote: ""
+  confidence: "high"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"

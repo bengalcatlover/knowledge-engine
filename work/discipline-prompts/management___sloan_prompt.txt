@@ -1,0 +1,202 @@
+You are creating a discipline knowledge index for: Management / Sloan
+Broad category: Business & Management
+Total courses: 14
+Total lecture units: 330
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 15.031J Energy Decisions, Markets, Policies, Spring 2012 (8 lectures)
+- 1. This Course and The U.S. Energy System
+- 11. Business Decisions in Reality: CHP at Hexion
+- ** 11. Business Decisions in Reality: CHP at Hexion
+- 12. Organizational Decision-Making: Biodiesel at MIT
+- 4. The Market and The State
+
+### MIT 15.071 The Analytics Edge, Spring 2017 (110 lectures)
+- 1.3.10 Working with Data - Video 5: Data Analysis - Summary Statistics and Scatterplots
+- 2.2.7 An Introduction to Linear Regression - Video 4: Linear Regression in R
+- 2.4.5 R2. Moneyball in the NBA - Video 4: Making Predictions
+- 4.2.5 An Introduction to Trees - Video 3: Splitting and Predictions
+- 4.3.15 Healthcare Costs - Video 8: Predicting Healthcare Cost in R
+- 4.4.7 R4. Regression Trees - Video 6: The CP Parameter
+- 7.1.1 Welcome to Unit 7 - Visualizing the World: An Introduction to Visualization
+- 7.2.1 An Introduction to Visualization - Video 1: The Power of Visualizations
+- 7.2.3 An Introduction to Visualization - Video 2: The World Health Organization (WHO)
+- 7.2.5 An Introduction to Visualization - Video 3: What is Data Visualization?
+- 7.2.7 An Introduction to Visualization - Video 4: Basic Scatterplots Using ggplot
+- 7.2.9 An Introduction to Visualization - Video 5: Advanced Scatterplots Using ggplot
+- 7.3.1 Visualization for Law and Order - Video 1: Predictive Policing
+- 7.3.11 Visualization for Law and Order - Video 6: A Heatmap on the United States
+- 7.3.13 Visualization for Law and Order - Video 7: The Analytics Edge
+- ** 7.3.13 Visualization for Law and Order - Video 7: The Analytics Edge
+- 7.3.3 Visualization for Law and Order - Video 2: Visualizing Crime Over Time
+- 7.3.5 Visualization for Law and Order - Video 3: A Line Plot
+- 7.3.7 Visualization for Law and Order - Video 4: A Heatmap
+- 7.3.9 Visualization for Law and Order - Video 5: A Geographical Hot Spot Map
+- 7.4.1 Welcome to Recitation 7 - The Good, the Bad, and the Ugly in Visualization
+- 7.4.2 R7. Visualization - Video 1: Introduction
+- 7.4.3 R7. Visualization - Video 2: Pie Charts
+- 7.4.4 R7. Visualization - Video 3: Bar Charts in R
+- 7.4.5 R7. Visualization - Video 4: A Better Visualization
+- 7.4.6 R7. Visualization - Video 5: World Maps in R
+- 7.4.7 R7. Visualization - Video 6: Scales
+- 7.4.8 R7. Visualization - Video 7: Using Line Charts Instead
+- 8.1.1 Welcome to Unit 8 - Airline Revenue Management: An Introduction to Linear Optimization
+- 8.2.1 An Introduction to Linear Optimization - Video 1: Introduction
+- ... and 25 more
+
+### MIT 15.356 How to Develop Breakthrough Products & Services (6 lectures)
+- 1. The Paradigm Shift from Producer to User Innovation
+- 2. Basing New Commercial Products on "Lead User" Innovations
+- 3. Users Working Together in Communities Are Powerful Innovators
+
+### MIT 15.371⧸10.807⧸2.907 Innovation Teams Fall 2024 (23 lectures)
+- Introduction: How to Move Technologies from Lab to Impact - MIT Innovation Teams
+- Video 10: Go Combinatorial - MIT Innovation Teams
+- Video 1: Congratulations, You Are a Terrible Robot - MIT Innovation Teams
+- Video 2: All Great Ideas Start Out Bad - MIT Innovation Teams
+- Video 3: Technology Isn’t What You Think It Is - MIT Innovation Teams
+- Video 4: Problems Are Not Catastrophes - MIT Innovation Teams
+- Video 5: Prototype Problems Not Products - MIT Innovation Teams
+- Video 6: Don’t Start Small, Start With What You Have - MIT Innovation Teams
+- Video 7: Lessons From a Real Garage - MIT Innovation Teams
+- Video 8: Are You Sure That’s a Risk? - MIT Innovation Teams
+- ** Video 8: Are You Sure That's a Risk? - MIT Innovation Teams
+- Video 9: All There Is to Unlearn - MIT Innovation Teams
+
+### MIT 15.390 New Enterprises, Spring 2013 (24 lectures)
+- From Passion to Idea or Technology
+- How to Do Market Segmentation
+- Market Segmentation with SensAble Technologies: Part I
+- Market Segmentation with SensAble Technologies: Part II
+- Our Passion for Entrepreneurship at MIT
+- Six Myths of Entrepreneurship
+- ** Six Myths of Entrepreneurship
+- Three Ways to Start a Company
+- Varieties of Innovation
+- What is a Beachhead Market
+- ** What is a Beachhead Market
+- What is Entrepreneurship
+- What is Innovation
+- What Makes a Business
+
+### MIT 15.393 Nuts and Bolts of New Ventures, IAP 2025 (24 lectures)
+- Session 1, Part 1: Introduction: Most Startups Fail; How to Improve Your Odds
+- Session 1, Part 2: Market Identification and Sales: Finding Your Customer
+- Session 2, Part 2: How Are You Going to Make Money?—The Business/Venture Model
+- Session 3, Part 1: Legal Issues
+- Session 3, Part 2: Organizational and People Issues
+- Session 4, Part 1: Presenting Your Venture
+- Session 4, Part 2: Negotiation Skills
+- Session 5, Part 2: Financial Projections
+- Session 6, Part 1: Why Do You Want to Be an Entrepreneur?
+- Session 6, Part 2: Common Startup Mistakes
+- The Blues-Print for Innovation
+- Winning SBIR Contracts
+- ** Winning SBIR Contracts
+
+### MIT 15.401 Finance Theory I, Fall 2008 (2 lectures)
+- Ses 2: Present Value Relations I
+
+### MIT 15.773 Hands-On Deep Learning Spring 2024 (24 lectures)
+- 10: Generative AI – Adapting LLMs with Parameter-Efficient Fine-Tuning
+- 11: Generative AI – Text-to-Image Models
+- ** 11: Generative AI – Text-to-Image Models
+- 1: Introduction to Neural Networks and Deep Learning; Training Deep NNs
+- 2: Training Deep NNs (cont.); Introduction to Keras/Tensorflow; Application to Tabular Data
+- 3: Deep Learning for Computer Vision – Building Convolutional Neural Networks from Scratch
+- 4: Deep Learning for Computer Vision – Transfer Learning and Fine-Tuning; Intro to HuggingFace
+- 5: Deep Learning for Natural Language – The Basics
+- 6: Deep Learning for Natural Language – Embeddings
+- 7: Deep Learning for Natural Language – Transformers
+- 8: Deep Learning for Natural Language – Transformers, Self-Supervised Learning
+- 9: Generative AI – Large Language Models (LLMs) and Retrieval Augmented Generation (RAG)
+
+### MIT 15.960 New Executive Thinking Social-Impact Technology Projects, Fall 2017 (8 lectures)
+- An Interview with Anjali Sastry on Facilitating a Customized Learning Experience for Sloan Fellows
+- Innovations Across the Agriculture Value Chain: An Opportunity for Entrepreneurs
+- Public Tech Innovation with Real-world Implementation
+- Using Technology to Improve Small Farming in Brazil
+
+### MIT 15.S08 FinTech： Shaping the Financial World, Spring 2020 (24 lectures)
+- Class 10: Insurance
+- ** Class 10: Insurance
+- Class 11: Coronavirus Crisis & Finance
+- Class 12: Conclusion
+- Class 1: Intro and Key Technological Trends Affecting Financial Services
+- ** Class 1: Intro and Key Technological Trends Affecting Financial Services
+- Class 2: Artificial Intelligence, Machine Learning, and Deep Learning
+- Class 3: Artificial Intelligence in Finance
+- Class 4: Open APIs & Marketing Channels
+- Class 5: Blockchain Technology & Cryptocurrencies
+- Class 6: Payments
+- Class 7: Credit & Lending
+- Class 8: Challenger Banks
+- Class 9: Trading & Capital Markets
+
+### MIT 15.S12 Blockchain and Money, Fall 2018 (51 lectures)
+- 1. Introduction for 15.S12 Blockchain and Money, Fall 2018
+- 10. Financial System Challenges & Opportunities
+- 11. Blockchain Economics
+- 12. Assessing Use Cases
+- ** 12. Assessing Use Cases
+- 13. Payments, Part 1
+- 14. Payments, Part 2
+- 15. Central Banks &  Commercial Banking, Part 1
+- 16. Central Banks &  Commercial Banking, Part 2
+- ** 16. Central Banks & Commercial Banking, Part 2
+- 17. Secondary Markets & Crypto-Exchanges
+- 19. Primary Markets, ICOs & Venture Capital, Part 1
+- 2. Money, Ledgers & Bitcoin
+- 20. Primary Markets, ICOs & Venture Capital, Part 2
+- 21. Post Trade Clearing, Settlement & Processing
+- 22. Trade Finance & Supply Chain
+- ** 22. Trade Finance & Supply Chain
+- 23. Digital ID
+- 24. Conclusion
+- 3. Blockchain Basics & Cryptography
+- 4. Blockchain Basics & Consensus
+- 5. Blockchain Basics & Transactions, UTXO and Script Code
+- 6. Smart Contracts and DApps
+- ** 6. Smart Contracts and DApps
+- 7. Technical Challenges
+- 8. Public Policy
+- 9. Permissioned Systems
+
+### MIT 15.S50 How to Win at Texas Hold 'Em, IAP 2016 (12 lectures)
+- 1. Course Overview and Introduction (MIT 15.S50 How to Win at Texas Hold 'Em, January IAP 2016)
+- 2. Introduction to Postflop Play
+- 3. Tournaments vs. Cash Games
+- 4. Preflop Re-raising Theory
+- 6. Independent Chip Model
+- 7. An In-depth Combinatorial Hand Analysis in Cash Games
+
+### MIT OCW： RES.15-004 System Dynamics： Systems Thinking and Modeling for a Complex World, IAP 2020 (2 lectures)
+- System Dynamics: Systems Thinking and Modeling for a Complex World
+
+### MIT RES.15-003 Shaping the Future of Work, Spring 2016 (12 lectures)
+- Careers and Competencies with Professor Lee Dyer
+- High Performance Work Systems
+- Holding Global Corporations Accountable
+- Introduction to Week 4
+- Managing Societal and Workplace Conflicts: Interview with Mary Rowe
+- The Changing Role of the Corporation: Interview with John Reed
+

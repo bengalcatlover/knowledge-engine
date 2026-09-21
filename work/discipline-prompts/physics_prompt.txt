@@ -1,0 +1,327 @@
+You are creating a discipline knowledge index for: Physics
+Broad category: Natural Sciences
+Total courses: 19
+Total lecture units: 862
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### How We Teach： MIT 8.03SC Physics III： Vibrations and Waves, Fall 2016 (16 lectures)
+- Combining Chalk Talks and Slides in a Complementary Way
+- Course Iteration: Incorporating Theoretical Content and Demonstrations
+- Making Time for Individual Questions in a Large Lecture
+- Students' Common Misconceptions
+- Taking a Vote to Engage Learners
+- The Role of Recitations
+- Tips for Physics Educators
+- Using Humor to Enhance Learning
+
+### How We Teach： MIT 8.13-14 Experimental Physics I & II “Junior Lab”, Fall 2016 - Spring 2017 (2 lectures)
+- Advice for Women in Physics: Be Confident
+
+### MIT 8.01SC Classical Mechanics, Fall 2016 (118 lectures)
+- 0.1 Vectors vs. Scalars
+- 0.2 Vector Operators
+- 0.3 Coordinate Systems and Unit Vectors
+- 0.4 Vectors - Magnitude and Direction
+- 0.5 Vector Decomposition into components
+- 0.6 Going Between Representations
+- 1.0 Week 1 Introduction (8.01 Classical Mechanics)
+- 1.1 Coordinate Systems and Unit Vectors in 1D
+- 1.2 Position Vector in 1D
+- 1.3 Displacement Vector in 1D
+- 1.4 Average Velocity in 1D
+- 1.5 Instantaneous Velocity in 1D
+- 1.7 Worked Example: Derivatives in Kinematics
+- 12.1 Pulley Problems
+- 13.3 Differential Elements
+- 13.4 Density
+- 17.2 Worked Example - Center of Mass of 3 Objects
+- 2.1 Introduction to Acceleration
+- 2.2 Acceleration in 1D
+- ** 2.2 Acceleration in 1D
+- 2.3 Worked Example: Acceleration from Position
+- 2.4 Integration
+- 20.4 Integrate adt and adx
+- 21.5 Work-Kinetic Energy Theorem in 2D and 3D
+- 22.1 Path Independence - Gravity
+- 22.2 Path Dependence - Friction
+- 22.3 Conservative Forces
+- 23.1 Introduction to Potential Energy
+- 26.0 Week 9 Introduction
+- 28.2 Introduction to Translation and Rotation
+- ... and 32 more
+
+### MIT 8.03SC Physics III： Vibrations and Waves, Fall 2016 (66 lectures)
+- 1. Periodic Oscillations, Harmonic Oscillators
+- 10. Traveling Waves
+- 11. Sound Waves
+- 12. Maxwell's Equation, Electromagnetic Waves
+- 13. Dispersive Medium, Phase Velocity, Group Velocity
+- 14. Fourier Transform, AM Radio
+- 15. Uncertainty Principle, 2D Waves
+- 16. 2D and 3D waves, Snell's Law
+- 17. Polarization, Polarizer
+- 18. Wave Plates, Radiation
+- 19. Waves in Medium
+- 2. Damped Free Oscillators
+- 20. Interference, Soap Bubble
+- 21. Phased Radar, Single Electron Interference
+- 22. Diffraction, Resolution
+- 23. Quantum Waves and Gravitational Waves
+- 3. Driven Oscillators, Transient Phenomena, Resonance
+- 4. Coupled Oscillators, Normal Modes
+- 5. Beat Phenomena
+- 6. Driven Oscillators, Resonance
+- 7. Symmetry, Infinite Number of Coupled Oscillators
+- 8. Translation Symmetry
+- 8.03SC Physics III: Vibrations and Waves Introduction
+- ** 8.03SC Physics III: Vibrations and Waves Introduction
+- 9. Wave Equation, Standing Waves, Fourier Series
+- Combining Chalk Talks and Slides in a Complementary Way
+- Course Iteration: Incorporating Theoretical Content and Demonstrations
+- Exam Review
+- Making Time for Individual Questions in a Large Lecture
+- Students' Common Misconceptions
+- ... and 4 more
+
+### MIT 8.04 Quantum Physics I, Spring 2013 (2013) (2 lectures)
+- Lecture 2: Experimental Facts of Life
+
+### MIT 8.04 Quantum Physics I, Spring 2016 (230 lectures)
+- Algebraic solution of the harmonic oscillator
+- Angular momentum operators and their algebra
+- Associated Legendre functions and spherical harmonics
+- Behavior of the differential equation
+- Center of mass and relative motion wavefunctions
+- Comments on the spectrum and continuity conditions
+- Commutators, matrices, and 3-dimensional Schrödinger equation
+- Commuting observables for angular momentum
+- Completeness of eigenvectors and measurement postulate
+- Compton Scattering
+- Consistency condition. Particle on a circle
+- Correspondence principle: amplitude as a function of position
+- Creation and annihilation operators acting on energy eigenstates
+- de Broglie wavelength in different frames
+- de Broglie’s proposal
+- Defining uncertainty
+- Degeneracy in the spectrum and features of the solution
+- Delta function potential I: Preliminaries
+- Delta function potential I: Solving for the bound state
+- ** Delta function potential I: Solving for the bound state
+- Effective potential and boundary conditions at r=0
+- Effects of resonance on phase shifts, wave amplitude and time delay
+- Eigenfunctions of a Hermitian operator
+- Eigenstates of the Hamiltonian
+- Elitzur-Vaidman bombs
+- Energy below the barrier and phase shift
+- Energy eigenstates for particle on a circle
+- Energy eigenstates of hydrogen
+- Energy eigenstates on a generic symmetric potential. Shooting method
+- Energy levels and diagram for hydrogen
+- ... and 94 more
+
+### MIT 8.05 Quantum Physics II, Fall 2013 (4 lectures)
+- 17. Two State Systems (continued)
+- 9. Dirac's Bra and Ket Notation
+
+### MIT 8.06 Quantum Physics III, Spring 2018 (20 lectures)
+- L10.1 Box regularization: density of states for the continuum
+- L14.2 Quantization of the magnetic field on a torus
+- L19.2 Energy eigenstates: incident and outgoing waves. Scattering amplitude
+- L2.1 Remarks and validity of the perturbation series
+- ** L2.1 Remarks and validity of the perturbation series
+- L2.2 Anharmonic Oscillator via a quartic perturbation
+- L20.3 Scattering amplitude in terms of phase shifts
+- L20.4 Cross section in terms of partial cross sections. Optical theorem
+- L3.4 Degeneracy resolved to second order (continued)
+- L4.1 Scales and zeroth-order spectrum
+- L8.1 Airy functions as integrals in the complex plane
+
+### MIT 8.20 Introduction to Special Relativity, January IAP 2021 (104 lectures)
+- 1.1 Course Organization (8.20 Introduction to Special Relativity)
+- 1.2. Prof. Klute’s Research
+- 1.3 History of Special Relativity
+- ** 1.3 History of Special Relativity
+- 1.4 Guest Lecture: Space, Time, and Spacetime
+- 1.5 Categories of Physics
+- 10.1 Tests of Special Relativity
+- 10.2 The Large Electron-Positron Collider
+- 10.3 Deuteron Production
+- 10.3 Deuteron Production
+- 10.4 Absorption and Emission of Photons
+- 10.5 Decay of a Pion
+- 10.6 Creation of Particles
+- 10.7 Compton Effect
+- ** 10.7 Compton Effect
+- 10.8 Global Positioning System
+- 11.1 Charge and Current
+- 11.2 Electric and Magnetic Fields
+- 11.2 Electric and Magnetic Fields
+- 12.1 Equivalence Principle
+- 12.2 Time Dilation Effect on Earth
+- 12.3 Bending of Light
+- 12.4 Redshift Tests
+- 12.5 General Relativity
+- 12.6 Experimental Evidence
+- 13.2 Course Review
+- 2.1 Events
+- 2.2 Galilean Transformation
+- 3.1 Light
+- 3.2 Waves
+- ... and 37 more
+
+### MIT 8.286 The Early Universe, Fall 2013 (10 lectures)
+- 10. Introduction to Non-Euclidean Spaces
+- 13. Non-Euclidean Spaces: Spacetime Metric and Geodesic Equation
+- 17. Black-Body Radiation and the Early History of the Universe, Part III
+- 23. Inflation
+- 6. The Dynamics of Homogeneous Expansion, Part II
+
+### MIT 8.333 Statistical Mechanics I： Statistical Mechanics of Particles, Fall 2013 (2 lectures)
+- 16. Interacting Particles Part 2
+
+### MIT 8.422 Atomic and Optical Physics II, Spring 2013 (6 lectures)
+- 1. Introduction to Atomic Physics
+- 10. van der Waals and Casimir interactions
+- 15. Unraveling Open System Quantum Dynamics
+
+### MIT 8.591J Systems Biology, Fall 2014 (2 lectures)
+- Interspecies Interactions
+
+### MIT 8.701 Introduction to Nuclear and Particle Physics, Fall 2020 (134 lectures)
+- L0.1 Introduction to Nuclear and Particle Physics: Course Overview
+- ** L0.1 Introduction to Nuclear and Particle Physics: Course Overview
+- L0.2 Introduction to Nuclear and Particle Physics: Course Organization
+- L0.3 Introduction to Nuclear and Particle Physics: Teaching Staff
+- L0.4 Introduction to Nuclear and Particle Physics: Literature
+- L0.5 Introduction: Early History and People in Nuclear and Particle Physics
+- L0.6 Introduction to Nuclear and Particle Physics: Particles
+- L0.7 Introduction to Nuclear and Particle Physics: Units
+- L0.8 Introduction to Nuclear and Particle Physics: Relativistic Kinematics
+- L0.9 Introduction to Nuclear and Particle Physics: Spin
+- L1.1 Fermions, Bosons, and Fields: Quantum Field and Matter
+- L1.2 Fermions, Bosons, and Fields: Feynman Diagram
+- L1.3 Fermions, Bosons, and Fields: Ranges of Forces
+- L1.4 Fermions, Bosons, and Fields: Decays
+- L1.5 Fermions, Bosons, and Fields: Reactions
+- L10.1 Instrumentation: Particle Interaction with Matter
+- L10.2 Instrumentation: Tracking Detectors
+- L10.3 Instrumentation: Calorimetry
+- L10.4 Instrumentation: Accelerators
+- L2.1 Symmetries: Introduction
+- L2.2 Symmetries: Flavor Symmetry
+- L2.3 Symmetries: Parity
+- L2.4 Symmetries: Charge Conjugation
+- L2.5 Symmetries: CP
+- L3.1 Feynman Calculus: Introduction
+- L3.2 Feynman Calculus: Fermi's Golden Rule
+- ** L3.2 Feynman Calculus: Fermi's Golden Rule
+- L3.3 Feynman Calculus: Toy Theory
+- L3.4 Feynman Calculus: Higher-Order Diagrams
+- L3.5 Feynman Calculus: Divergency
+- ... and 42 more
+
+### MIT 8.851 Effective Field Theory, Spring 2013 (52 lectures)
+- 1. Introduction to Effective Field Theory (EFT)
+- 10. HQET Examples
+- 11. Renormalons
+- 12. More Renormalons
+- 13. EFT with Fine Tuning
+- 14. EFT with Fine Tuning Part 2
+- 15. Soft-Collinear Effective Theory (SCET) Introduction
+- 16. SCET Collinear Wilson Lines
+- 17. SCET Multipole Expansion
+- 18. SCET Beyond Tree Level
+- 19. SCET Beyond Tree Level 2
+- 2. Dimensional Power Counting
+- 20. SCET Wilson Coefficients
+- 21. SCET Sudakov Logarithms
+- 22. SCET for DIS
+- 23. SCET for Dijets
+- 24. SCETII
+- 25. SCET_2 Rapidity RGE
+- 26. SCET for LHC
+- 3. Field Redefinitions
+- 4. Matching and Decoupling
+- 5. Classic Operator Renormalization Group Equations (RGE)
+- 6. Chiral Lagrangians
+- 7. Chiral Loops
+- 8. Heavy Quark Effective Theory (HQET)
+- 9. HQET Matching & Power Corrections
+
+### MIT 8.962 General Relativity, Spring 2020 (46 lectures)
+- 1. Introduction and the geometric viewpoint on physics.
+- 10. Spacetime curvature.
+- 11. More on spacetime curvature.
+- 12. The Einstein field equation.
+- 13. The Einstein field equation (variant derivation).
+- 14. Linearized gravity I: Principles and static limit.
+- 15. Linearized gravity II: Dynamic sources
+- 16. Gravitational radiation I
+- 17. Gravitational radiation II
+- 18. Cosmology I
+- 19. Cosmology II
+- 2. Introduction to tensors.
+- 20. Spherical compact sources I
+- 21. Spherical compact sources II
+- 22. Black holes I
+- 23. Black holes II
+- 3. Tensors continued.
+- 4. Volumes and volume elements; conservation laws.
+- 5. The stress energy tensor and the Christoffel symbol.
+- 6. The principle of equivalence.
+- 7. Principle of equivalence continued; parallel transport.
+- 8. Lie transport, Killing vectors, tensor densities.
+- 9. Geodesics.
+
+### MIT Exploring Black Holes： General Relativity & Astrophysics (6 lectures)
+- 10. The Universe and Three Examples | MIT 8.224 Exploring Black Holes
+- 13. Cosmic Structure Formation; From Inflation to Galaxies | MIT 8.224 Exploring Black Holes
+- 2. The Universe: Questions You Were Afraid to Ask | MIT 8.224 Exploring Black Holes
+
+### MIT RES.8-007 Cosmic Origin of the Chemical Elements, Fall 2019 (22 lectures)
+- Ep. 10: Telescopes and Observing
+- Ep. 11: Summary
+- Ep. 1: Introduction and Overview (RES.8-007 Cosmic Origin of the Chemical Elements)
+- Ep. 2: What the Universe Is Made of
+- Ep. 3: Early Chemical Evolution
+- Ep. 4: The First Chemical Enrichment Events
+- ** Ep. 4: The First Chemical Enrichment Events
+- Ep. 5: Stellar Archaeology
+- Ep. 6: Element Production (Fusion) -- Part 1
+- Ep. 7: Element Production (Fusion) -- Part 2
+- Ep. 8: Spectroscopy
+- Ep. 9: Formation of the Heaviest Elements
+
+### MIT Vibrations and Waves Problem Solving Help Videos, Fall 2012 (20 lectures)
+- 1. Simple Harmonic Motion & Problem Solving Introduction
+- 10. Interference of Electromagnetic Waves
+- 2. Harmonic Oscillators with Damping
+- ** 2. Harmonic Oscillators with Damping
+- 3. Driven Harmonic Oscillators
+- 4. Coupled Oscillators without Damping
+- 5. Traveling Waves without Damping
+- 6. Standing Waves Part I
+- 7. Standing Waves Part II
+- 8. Electromagnetic Waves in a Vacuum
+- ** 8. Electromagnetic Waves in a Vacuum
+- 9. Accelerated Charges Radiating Electromagnetic Waves
+

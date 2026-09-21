@@ -1,0 +1,8 @@
+知識ベースの次の候補について、AI草案カードを作るべきか判定してください。
+
+候補質問: 担当者だけが知る判断基準が退職で失われないように、組織は何を記録・更新すべきか。
+MIT検索根拠: "3. Overview of Quality Improvement" (https://www.youtube.com/watch?v=oRENvSw8pO4)
+確認できた断片: checklists standardize processes, reduce cognitive load, democratize knowledge; information systems are crucial for managing rapidly expanding knowledge, coordinating care, and tracking outcomes.
+
+既存カードには、状態機械、情報圧縮、暗号、機械学習等はあるが、組織記憶・知識継承はない。
+制約: 根拠のない主張は書かない。草案は未承認の _inbox のみ。新規カードは、明確に独立した再利用可能概念であり、検索断片がその最小限の定義・境界を支える場合だけ。判断結果を次のいずれかで返してください: draft / defer / existing-card-review。理由を短く、カード化なら安全な概念名・必須追加根拠も示してください。

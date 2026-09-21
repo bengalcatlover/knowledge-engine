@@ -1,0 +1,925 @@
+## 結論：カードを「世界の離散的な断片」ではなく「モデルへの型付きハンドル」にする
+
+離散的なカードでも、連続系・確率系・創発現象を記述できます。数式自体が有限の記号列でありながら連続関数を表せるのと同じです。
+
+ただし、すべてを継承・コンポジションだけで表現しようとせず、カードを次の層に分ける必要があります。
+
+1. **概念層**：概念、関係、意味
+2. **モデル層**：微分方程式、確率モデル、シミュレータ
+3. **証拠・観測層**：測定値、実験結果、実行結果
+4. **文脈・表示層**：分野、目的、利用者ごとの意味・表現
+5. **履歴・統治層**：更新履歴、由来、信頼性、採用状態
+
+つまり、カードは単なるクラスではなく、複数のモデルや観測を束ねる「科学的インターフェース」になります。これは科学哲学でいう**理論の意味論的捉え方／モデルベース科学観**に近い設計です。
+
+---
+
+# 0. 全カード共通の基盤スキーマ
+
+まず、Relationを単なる三つ組ではなく、文脈・時間・確からしさを持つ一級オブジェクトにします。
+
+```yaml
+Card:
+  id: concept:risk
+  version: 12
+  kind: Concept | Process | Model | Observation | Context | Claim
+  core_definition: ...
+  relation_refs: [...]
+  model_bindings: [...]
+  facets: [...]
+  provenance: ...
+  lifecycle:
+    status: candidate | accepted | deprecated | retracted
+
+Assertion:
+  id: assertion:987
+  subject: concept:A
+  predicate: causes
+  object: concept:B
+
+  context: context:manufacturing
+  valid_time: [2020-01-01, null]       # 世界で成立する期間
+  transaction_time: 2025-01-10T...    # KBに登録された時刻
+
+  valuation:
+    kind: boolean | probability | fuzzy | interval | belief_mass
+    value: ...
+
+  epistemic_quality:
+    source_reliability: 0.85
+    evidence_refs: [...]
+    model_version: ...
+
+  derivation:
+    kind: observed | imported | inferred | simulated | generated
+    rule_or_model: ...
+```
+
+重要なのは、以下を分離することです。
+
+- 命題の確率
+- 情報源の信頼度
+- 概念への所属度
+- モデルの適用可能性
+- 意思決定上の採否
+
+これらを一つの`confidence`に押し込めると、後で必ず破綻します。
+
+実装上は、意味グラフをRDF-star／プロパティグラフ、由来をW3C PROV-O、単位をQUDT、構造制約をSHACLで持たせる構成が現実的です。
+
+---
+
+# 1. 連続性の記述
+
+## 基本方針
+
+連続的な状態をカードに分割するのではなく、カードに**状態空間と状態遷移の生成規則**を持たせます。
+
+たとえば、時刻ごとの人口をカード化するのではなく、
+
+- 状態変数
+- 微分方程式
+- 初期条件
+- パラメータ
+- 適用範囲
+- 数値解法
+
+を持つ「動的モデルカード」を作ります。
+
+## スキーマ例
+
+```yaml
+DynamicModelCard:
+  id: model:logistic-growth
+  kind: ContinuousDynamicModel
+
+  independent_variables:
+    - name: t
+      unit: day
+
+  state_variables:
+    - name: N
+      meaning: concept:population
+      unit: count
+      domain: "[0, +inf)"
+
+  parameters:
+    - name: r
+      unit: 1/day
+    - name: K
+      unit: count
+
+  equations:
+    format: symbolic_ast
+    expressions:
+      - "d(N)/dt = r * N * (1 - N/K)"
+
+  initial_conditions:
+    - "N(t0) = N0"
+
+  validity_domain:
+    - "population is approximately homogeneous"
+    - "K changes slower than N"
+    - "birth and death events are aggregable"
+
+  events:
+    - guard: "N >= 0.95*K"
+      emit: near_capacity
+
+  solver_profile:
+    method: adaptive_runge_kutta
+    abs_tolerance: 1e-8
+    rel_tolerance: 1e-6
+
+  failure_modes:
+    - parameter_unidentifiable
+    - solver_divergence
+    - validity_domain_violation
+```
+
+数式は文字列だけでなく、OpenMath、MathML、SymPy AST、Julia/SciML式など、変数と単位を追跡できる構造化形式で保存します。
+
+## データ構造
+
+連続系では次のオブジェクトをカードと分離します。
+
+```yaml
+TrajectoryArtifact:
+  model_id: model:logistic-growth
+  model_version: 4
+  parameter_binding:
+    r: 0.12
+    K: 10000
+  initial_state:
+    N: 300
+  time_range: [0, 365]
+  storage_ref: arrow://trajectory/abc123
+  numerical_error:
+    estimated_max: 1e-5
+  execution:
+    solver_version: ...
+    random_seed: null
+```
+
+時系列本体はArrow、Parquet、時系列DB、オブジェクトストレージに置き、カードグラフには参照と要約だけを置きます。
+
+## アルゴリズム
+
+1. 文脈と入力から適用可能な動的モデルを選ぶ
+2. 単位と次元を検証する
+3. パラメータ・初期条件を束縛する
+4. ODE/DAE/PDEソルバを呼ぶ
+5. Guardをイベント検出で監視する
+6. 軌道をArtifactとして保存する
+7. 「増加した」「定常状態に近づいた」などの要約Assertionを生成する
+
+離散イベントと連続変化が混在する場合は、**ハイブリッドオートマトン**として表します。
+
+```yaml
+HybridModel:
+  modes:
+    normal:
+      flow: "dT/dt = ..."
+    emergency:
+      flow: "dT/dt = ..."
+  transitions:
+    - from: normal
+      to: emergency
+      guard: "T > 100"
+      reset: "alarm = true"
+```
+
+## 参考になる研究・技術
+
+- Hybrid Automata
+- Modelica
+- FMI/FMU
+- SBML
+- System Dynamics
+- SciML
+- QUDT、Units Ontology
+- Differential Dynamic Logic
+
+## 実用上の十分ライン
+
+**理想**：PDE、確率微分方程式、記号計算、自動ソルバ選択、検証付き数値計算まで統合する。
+
+**実用上**：
+
+- ODE/DAE
+- イベントGuard
+- 単位管理
+- 数値誤差
+- 有効範囲
+- 外部ソルバ／FMU参照
+
+まであれば、科学・工学・ビジネスの大部分を扱えます。
+
+---
+
+# 2. 確率・不確実性
+
+## 最初に不確実性を分類する
+
+「AでもありBでもある」は少なくとも四種類あります。
+
+1. **偶然性**：結果が確率的  
+   例：明日故障する確率が30%
+2. **認識的不確実性**：情報不足  
+   例：AかBか分からない
+3. **曖昧性**：概念境界が連続的  
+   例：「高温である」所属度0.7
+4. **矛盾**：信頼できる情報源が相反する  
+   例：センサー1はA、センサー2は非A
+
+これらをすべて確率で表さないことが重要です。
+
+## Boundary Conditionsを三つに分割する
+
+従来の真偽値型Boundary Conditionを、次に分けます。
+
+```yaml
+BoundaryEvaluator:
+  applicability:
+    predicate: "sensor_type == calibrated_thermometer"
+
+  valuation:
+    kind: fuzzy
+    membership_function:
+      type: sigmoid
+      expression: "1 / (1 + exp(-(temperature-30)/2))"
+
+  decision_policy:
+    accept_if: "membership >= 0.8"
+    review_if: "0.5 <= membership < 0.8"
+    reject_if: "membership < 0.5"
+```
+
+- `applicability`：この評価器を使ってよいか
+- `valuation`：どの程度成立しているか
+- `decision_policy`：業務上どう扱うか
+
+科学的評価と業務判断を分離できます。
+
+## 型付きTruthValue
+
+```text
+TruthValue =
+    Boolean(true | false)
+  | Probability(p, conditioning_set, model_id)
+  | FuzzyMembership(mu, membership_function_id)
+  | Interval(lower, upper)
+  | BeliefMass(assignments)
+  | Paraconsistent(support_true, support_false)
+  | Unknown(reason)
+```
+
+### AとBが排他的な場合
+
+```yaml
+HypothesisDistribution:
+  hypotheses:
+    A: 0.65
+    B: 0.35
+  constraint: mutually_exclusive
+```
+
+これは「実際にAかつB」という意味ではなく、「どちらの世界か分からない」という意味です。
+
+### AとBが重複可能な場合
+
+```yaml
+MultiLabelMembership:
+  A: 0.65
+  B: 0.52
+  exclusivity_constraint: none
+```
+
+この場合は両方への所属を許します。必要であれば共分散やFactorを持たせます。
+
+```yaml
+DependencyFactor:
+  variables: [A, B]
+  potential_table: ...
+```
+
+## アルゴリズム
+
+1. まずHardな適用条件を評価
+2. 観測証拠を収集
+3. 不確実性の種類を選択
+4. ベイズ推論、ファジー評価などを実行
+5. TruthValueを返す
+6. 意思決定ポリシーを後段で適用
+7. 低確信時は`Unknown`または`abstain`にする
+
+閾値付近で結果が振動する場合はヒステリシスを使います。
+
+```yaml
+DecisionPolicy:
+  enter_A_if: "p(A) >= 0.8"
+  remain_A_if: "p(A) >= 0.6"
+```
+
+## 参考になる研究・理論
+
+- Bayesian Networks
+- Probabilistic Programming
+- ZadehのFuzzy Set
+- Dempster–Shafer Theory
+- Belnapの四値論理、Paraconsistent Logic
+- Markov Logic Networks
+- Probabilistic Soft Logic
+- PR-OWL、MEBN
+- Open World Assumption
+
+## 実用上の十分ライン
+
+**理想**：全カードを大域的確率モデルに統合し、依存関係を含めて推論する。
+
+**実用上**：
+
+- Boolean
+- Probability
+- Fuzzy
+- Interval
+- Unknown
+- 証拠と由来
+- Decision Policyの分離
+
+を実装し、重要領域だけベイズネットなどを導入すれば十分です。特に「確率」と「信頼度」を別フィールドにすることが最重要です。
+
+---
+
+# 3. 創発
+
+## 基本方針
+
+創発を静的なRelationとしてだけ記録するのではなく、次の三つ組として表現します。
+
+1. **ミクロ規則**
+2. **組成・相互作用条件**
+3. **マクロ観測量と検出器**
+
+「個々のカードから直接予測する」のではなく、「カードの組成を実行し、上位レベルのパターンを検出する」設計です。
+
+## 組成カード
+
+```yaml
+CompositionCard:
+  id: composition:flocking-v1
+
+  components:
+    - card: agent:bird
+      multiplicity: 1000
+
+  interaction_topology:
+    kind: dynamic_neighborhood
+    radius: 5.0
+
+  rules:
+    - separation
+    - alignment
+    - cohesion
+
+  scheduler:
+    kind: synchronous
+
+  environment:
+    dimensions: 2
+    boundary: periodic
+
+  stochasticity:
+    noise_distribution: "Normal(0, sigma)"
+
+  initial_condition_generator: ...
+```
+
+同期更新か非同期更新か、境界条件、ネットワーク構造なども、創発結果に影響するため明示します。
+
+## 創発Claimカード
+
+```yaml
+EmergenceClaim:
+  id: emergence:collective-flocking
+
+  micro_model:
+    composition_id: composition:flocking-v1
+    version: 7
+
+  macro_level:
+    observable:
+      name: polarization
+      expression: "|sum(unit_velocity_i)| / N"
+
+  coarse_graining:
+    spatial_scale: 10
+    temporal_window: 100
+
+  detector:
+    condition: "polarization > 0.8"
+    persistence: 100_steps
+    null_model: random_motion
+
+  parameter_region:
+    density: [0.4, 0.8]
+    noise: [0.0, 0.15]
+
+  robustness:
+    success_rate: 0.91
+    number_of_runs: 1000
+
+  evidence:
+    simulation_runs: [...]
+    empirical_observations: [...]
+
+  relations:
+    - emerges_from: composition:flocking-v1
+    - contrasts_with: phenomenon:random-motion
+```
+
+ここで`emerges_from`は`has_part`とは異なるRelationとして定義します。
+
+## 検出アルゴリズム
+
+1. CompositionCardから実行モデルを組み立てる
+2. パラメータ領域をサンプリング
+3. 複数の乱数Seedでシミュレーション
+4. マクロ観測量を計算
+5. Null Modelと比較
+6. 持続性・再現性・頑健性を検査
+7. 条件を満たした領域を相図として保存
+8. 未知パターンならCandidate EmergenceCardを生成
+
+未知パターンの候補検出には以下を使えます。
+
+- 変化点検出
+- クラスタリング
+- ネットワークモチーフ
+- エントロピー変化
+- 相互情報量
+- スペクトル解析
+- トポロジカルデータ解析
+- 異常検知
+
+ただし、「新規性」はアルゴリズム単独ではなく、既存カードとの距離や人間の評価も含めて決めるのが現実的です。
+
+## 参考になる研究・理論
+
+- Agent-Based Modeling
+- Cellular Automata
+- Petri Nets
+- Process Algebra
+- System Dynamics
+- BedauのWeak Emergence
+- HakenのSynergetics／秩序変数
+- Renormalization Group
+- Multiscale Modeling
+- Causal Emergence
+
+## 実用上の十分ライン
+
+**理想**：マクロ変数自体を自動発見し、因果的に最適な粗視化を生成する。
+
+**実用上**：
+
+- マクロ観測量は人間が定義
+- パラメータ掃引
+- Monte Carlo
+- 持続性・頑健性検査
+- Simulation Artifact保存
+
+までで十分です。
+
+重要なのは、創発を単なる説明文ではなく、**再実行可能なClaim**として記録することです。
+
+---
+
+# 4. 観測問題・自己言及ループ
+
+## 基本方針
+
+「検索」と「知識更新」を同一トランザクションで行わないことです。
+
+以下を分離します。
+
+- Canonical Knowledge：採用済み知識
+- Derived Index：検索インデックス、埋め込み
+- Usage Telemetry：検索・クリック履歴
+- Candidate Knowledge：自動生成された候補
+- Evidence Store：外部観測・実験データ
+
+## スナップショット読み取り
+
+```pseudo
+function query(request):
+    snapshot = KB.acquire_snapshot()
+    context  = resolve_context(request)
+    plan     = build_query_plan(request, snapshot, context)
+    result   = execute(plan, snapshot)
+
+    EventLog.append(
+        QueryServed(
+            snapshot_version = snapshot.version,
+            query_id = request.id,
+            result_ids = result.ids
+        )
+    )
+
+    return result
+```
+
+検索中は固定されたバージョンを読みます。検索履歴による更新は次のEpochで行います。
+
+```pseudo
+function asynchronous_learning():
+    events = EventLog.read_since(last_epoch)
+    proposals = Learner.generate_proposals(events)
+
+    for p in proposals:
+        validate_provenance(p)
+        validate_against_holdout(p)
+        validate_drift(p)
+        CandidateStore.put(p)
+
+    promote_approved_candidates()
+```
+
+これはCQRS、Event Sourcing、MVCCに近い設計です。
+
+## 足りない概念の自動生成
+
+現在の問い合わせで必要になったカードは、まずEphemeral／Candidateとして生成します。
+
+```yaml
+GeneratedCard:
+  id: candidate:xyz
+  based_on_snapshot: 1042
+  trigger_query: query:abc
+  generated_by: model:gpt-x
+  evidence_refs: [...]
+  status: ephemeral
+  expires_at: ...
+```
+
+利用者には使わせてもよいですが、採用済みカードとは明確に区別します。
+
+```text
+ephemeral
+  → evidence-attached
+  → validated
+  → accepted
+```
+
+## 自己強化ループを防ぐルール
+
+1. **検索された回数は真理の証拠にしない**
+2. **生成物を、その生成物自身の独立証拠にしない**
+3. **同じ由来の情報を複数証拠として数えない**
+4. **更新は次のVersionにのみ反映**
+5. **一定以上の変化は人間承認**
+6. **モデル・ルール・Seedを記録**
+7. **Rollback可能にする**
+
+由来はDAGとして管理します。
+
+```yaml
+ProvenanceNode:
+  id: evidence:123
+  origin_kind: human | sensor | publication | simulation | generated
+  parent_refs: [...]
+  independent_source_group: source-group:45
+```
+
+引用循環や生成循環があっても、独立した証拠の数が水増しされないようにします。
+
+## 論理的な自己参照
+
+再帰ルールには次を使います。
+
+- 正の単調ルール：最小不動点まで反復
+- 否定を含むルール：Stratified Datalog
+- 非単調推論：Truth Maintenance System
+- 循環依存：Strongly Connected Componentsで検出
+- 反復回数・計算予算の上限
+
+メタ知識については、
+
+```text
+Version nのKBを評価するメタカード
+    ↓
+Version n+1への変更提案を作る
+```
+
+という階層にします。同じVersion内で自分自身の評価結果を書き換えないことが要点です。
+
+## 知識利用が現実世界を変える場合
+
+検索結果が意思決定を通じて世界を変える場合は、因果鎖として記録します。
+
+```text
+Query
+ → Recommendation
+ → Human/Automated Action
+ → World State Change
+ → Observation
+ → Knowledge Update
+```
+
+`Query`と後の`Observation`を直接結ばず、介入・行動を明示します。これはPearlの構造的因果モデルや介入の考え方と相性がよいです。
+
+## 参考になる研究・理論
+
+- CQRS
+- Event Sourcing
+- MVCC
+- Truth Maintenance System、ATMS
+- AGM Belief Revision
+- Datalogの最小不動点意味論
+- W3C PROV-O
+- Structural Causal Models
+- Performative Prediction
+- Active Learning
+
+## 実用上の十分ライン
+
+**理想**：すべての更新を形式的に追跡し、独立証拠性と固定点収束まで保証する。
+
+**実用上**：
+
+- immutable snapshot
+- append-only event log
+- candidate領域
+- provenance
+- 非同期昇格
+- 自己生成物を独立証拠にしない
+- rollback
+
+までで十分です。
+
+---
+
+# 5. 文脈依存性・ポリモーフィズム
+
+## 基本方針
+
+概念を次の三層に分けます。
+
+1. **Concept Core**：共通の意味核
+2. **Facet／Sense**：文脈別の意味
+3. **View／Lens**：表示・語彙・単位・説明形式
+
+「意味が異なること」と「表示が異なること」を分離します。
+
+## Contextスキーマ
+
+```yaml
+Context:
+  id: context:business-executive-jp
+  domain: business
+  task: decision_support
+  audience: executive
+  locale: ja-JP
+  jurisdiction: JP
+  time: 2025
+  granularity: strategic
+  assumptions:
+    - monetary_loss_is_primary
+```
+
+## Facetスキーマ
+
+```yaml
+ConceptCard:
+  id: concept:risk
+
+  core:
+    semantic_signature:
+      - uncertain_future_outcome
+      - affects_objective
+
+  facets:
+    - id: sense:risk-scientific
+      applies_when:
+        domain: science
+      definition:
+        "確率分布を持つ将来結果または損失変数"
+      model_bindings:
+        - model: probability-distribution
+        - model: expected-utility
+
+    - id: sense:risk-business
+      applies_when:
+        domain: business
+      definition:
+        "目標達成に影響する不確実性"
+      model_bindings:
+        - model: likelihood-impact-matrix
+      relation_additions:
+        - relates_to: concept:risk-appetite
+
+    - id: sense:risk-everyday
+      applies_when:
+        domain: everyday
+      definition:
+        "望ましくないことが起きるおそれ"
+```
+
+## ディスパッチアルゴリズム
+
+```pseudo
+function resolve_facet(concept, context):
+    candidates = concept.facets
+        .filter(f => matches(f.applies_when, context))
+
+    ranked = sort_by(
+        candidates,
+        specificity_of_context,
+        explicit_priority,
+        evidence_quality
+    )
+
+    if top_two_are_incomparable(ranked):
+        return Ambiguous(ranked[0:2])
+
+    return ranked.first_or(concept.core)
+```
+
+文脈の「特殊性」は部分順序にします。
+
+```text
+business
+  < business + finance
+  < business + finance + Japan
+  < business + finance + Japan + regulatory-reporting
+```
+
+同程度のFacetが競合したら、暗黙に片方を選ばず、曖昧性として返します。
+
+## 外部表現の切り替え
+
+表示はLensとして扱います。
+
+```yaml
+ViewLens:
+  context: context:business-executive-jp
+  label: リスク
+  preferred_units: JPY
+  relation_filter:
+    include: [causes, mitigated_by, measured_by]
+    exclude: [mathematical_formalization]
+  explanation_template:
+    "このリスクは{objective}に対して{impact}の影響を持ちます"
+```
+
+- 科学者向け：数式、仮定、誤差
+- 経営者向け：影響、意思決定、KPI
+- 日常向け：平易な説明と例
+
+を同じConcept IDから生成できます。
+
+利用者がView上で編集した場合は、Canonical Cardを直接書き換えず、逆変換可能な編集だけ反映し、それ以外は変更提案にします。これは双方向変換の**Lens**の考え方です。
+
+## 同じ概念にしない方がよい条件
+
+次の場合は、無理に共通Coreを作らず別Concept IDにします。
+
+- 指示対象が違う
+- 同一性条件が違う
+- 推論規則が互いに矛盾する
+- 単なる同音異義語である
+
+その上で、
+
+```text
+exact_match
+close_match
+broader_than
+narrower_than
+analogous_to
+lexicalized_as
+```
+
+などのマッピングで接続します。
+
+つまり、内部表現の共通化は「一つの万能定義」ではなく、**共通ID、意味核、明示的マッピング**で実現します。
+
+## 参考になる研究・理論
+
+- McCarthyのContexts
+- GuhaのContext Logic
+- RDF Named Graph／RDF Quads
+- Ontology Modularization
+- DOLCEのRole
+- Frame Semantics、FrameNet
+- Multimethod／Type Class
+- Bidirectional Lenses
+- SKOS Mapping Relations
+- Contextualized Knowledge Graphs
+
+## 実用上の十分ライン
+
+**理想**：形式的文脈論理により、文脈間の移送可能性まで自動推論する。
+
+**実用上**：
+
+- Contextを明示的な属性タプルにする
+- Concept CoreとFacetを分離する
+- 最詳細一致でディスパッチする
+- 同順位なら曖昧性を返す
+- Viewで語彙・単位・説明を切り替える
+
+までで十分です。
+
+---
+
+# 統合時の実行フロー
+
+全体を統合すると、一回の問い合わせは次のように処理できます。
+
+```text
+1. 入力からContextとEvidenceを抽出
+2. Concept CoreとFacetを解決
+3. 固定Snapshotの意味グラフを検索
+4. 必要なモデル種別を選択
+   ├─ 連続系 → ODE/DAEソルバ
+   ├─ 不確実性 → Bayes/Fuzzy評価器
+   ├─ 創発 → Composition Simulator
+   └─ 静的知識 → Graph推論
+5. 実行結果をArtifactとして保存
+6. Context Lensで外部表現を生成
+7. Query/Event/Provenanceを追記
+8. 不足概念はCandidateとして非同期生成
+9. 検証後に次Versionへ昇格
+```
+
+---
+
+# 最終的な設計原則
+
+## 1. カードは世界の原子ではなく、モデルへのアドレスである
+
+連続性・確率・創発は、カード内部に全展開せず、カードが指す実行可能モデルで扱います。
+
+## 2. クラス・インスタンス以外の型を導入する
+
+最低でも以下を一級オブジェクトにします。
+
+- Model
+- Observation
+- Evidence
+- Assertion
+- Context
+- Trajectory
+- Simulation Run
+- Emergence Claim
+- Decision Policy
+
+## 3. Boundary Conditionを分解する
+
+- モデルの適用条件
+- 概念への所属度
+- 業務上の意思決定閾値
+
+を別にします。
+
+## 4. すべてのAssertionに文脈・時間・由来を持たせる
+
+「A causes B」ではなく、
+
+> 文脈C、期間T、モデルM、証拠Eの下で、AがBを引き起こす確からしさP
+
+として保存します。
+
+## 5. 実行結果と定義を混ぜない
+
+シミュレーション結果や検索結果はArtifactです。検証を経て初めてCanonical Knowledgeになります。
+
+## 6. 自動生成は即時採用せず、候補層を通す
+
+動的クラス定義は維持しつつ、
+
+```text
+Ephemeral → Candidate → Validated → Accepted
+```
+
+というライフサイクルを設けます。
+
+## 7. 文脈差を「上書き」ではなくFacetとして持つ
+
+共通Coreを保持し、分野別意味を明示的にディスパッチします。意味差と表示差は分離します。
+
+## 8. 単一表現に統一しない
+
+統合すべきなのは保存形式ではなく、ID・型・由来・呼び出し規約です。
+
+- グラフ：意味関係
+- 数式AST：連続モデル
+- Factor Graph：確率依存
+- 時系列：観測・軌道
+- シミュレータ：創発
+- Event Log：自己更新
+
+という**表現多元主義**が、科学知識基盤では最も安定します。
+
+実装順としては、まず「Assertionの文脈化・型付き不確実性・Snapshot/Event Sourcing」を基盤にし、その上に連続モデルプラグイン、Facet、Composition Simulatorを追加するのが最も堅実です。

@@ -1,0 +1,107 @@
+You are creating a discipline knowledge index for: Nuclear Science & Engineering
+Broad category: Engineering
+Total courses: 5
+Total lecture units: 147
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 22.01 Introduction to Nuclear Engineering and Ionizing Radiation, Fall 2016 (70 lectures)
+- 1. Radiation History to the Present — Understanding the Discovery of the Neutron
+- 10. Radioactive Decay Continued
+- 11. Radioactivity and Series Radioactive Decays
+- 12. Numerical Examples of Activity, Half Life, and Series Decay
+- 13. Practical Radiation Counting Experiments
+- 14. Photon Interactions with Matter I — Interaction Methods and Gamma Spectral Identification
+- 15. Photon Interaction with Matter II — More Details, Shielding Calculations
+- 16. Nuclear Reactor Construction and Operation
+- 17. Ion-Nuclear Interactions I — Scattering and Stopping Power Derivation, Ion Range
+- 18. Ion-Nuclear Interactions II — Bremsstrahlung, X-Ray Spectra, Cross Sections
+- 19. Uses of Photon and Ion Nuclear Interactions — Characterization Techniques
+- 2. Radiation Utilizing Technology
+- 20. How Nuclear Energy Works
+- ** 20. How Nuclear Energy Works
+- 21. Neutron Transport
+- 22. Simplifying Neutron Transport to Neutron Diffusion
+- 23. Solving the Neutron Diffusion Equation, and Criticality Relations
+- 24. Transients, Feedback, and Time-Dependent Neutronics
+- 25. Review of All Nuclear Interactions and Problem Set 7 Help
+- 26. Chernobyl — How It Happened
+- 27. Nuclear Materials — Radiation Damage and Effects in Matter
+- 28. Chernobyl Trip Report by Jake Hecla
+- 29. Nuclear Materials Science Continued
+- 3. Nuclear Mass and Stability, Nuclear Reactions and Notation, Introduction to Cross Section
+- 30. Radiation Dose, Dosimetry, and Background Radiation
+- 31. Frontiers in Nuclear Medicine, Where One Finds Ionizing Radiation (Background and Other Sources)
+- 32. Chemical and Biological Effects of Radiation, Smelling Nuclear Bullshit
+- 33. Long-Term Biological Effects of Radiation, Statistics, Radiation Risk
+- 34. Radiation Hormesis
+- 35. Food Irradiation and Its Safety
+- ... and 5 more
+
+### MIT 22.033 Nuclear Systems Design Project, Fall 2011 (20 lectures)
+- Biofuels Sub-task Presentation II
+- ** Biofuels Sub-task Presentation II
+- Core Sub-task Presentation II
+- Final Project Presentation
+- Hydrogen Sub-task Presentation II
+- ** Hydrogen Sub-task Presentation II
+- Lecture 1: Core - Nonconventional (Non-PWR/BWR) Reactors
+- Lecture 2: Process Heat - Major Challenges
+- Lecture 3: Hydrogen and Biofuel Production; Design Process
+- Lecture 4: Quality Function Deployment (QFD) and House of Quality
+- Lecture 7: Qualitative Optimization of CaC2/Acetylene Block Diagram
+- Lecture 8: Metals and Cheeses - Uncoventional Pairings
+
+### MIT 22.04 Social Problems of Nuclear Energy, Fall 2025 (39 lectures)
+- Lecture 10: Potential for Nuclear Process Heat
+- Lecture 11: Theory of Externalities and How Nuclear Power Is Regulated by the NRC
+- Lecture 12: Introduction to Radiation Risk
+- Lecture 13: The Linear No-Threshold Theory
+- Lecture 14: Is Nuclear Power Safe? Calculating the Number of Deaths Caused by Nuclear Accidents...
+- Lecture 15: Dealing with Nuclear Waste
+- Lecture 16: Nuclear Proliferation and the Nuclear Fuel Cycle—Part 1
+- Lecture 17: Nuclear Proliferation and the Nuclear Fuel Cycle — Part 2
+- Lecture 18: Do We Need Nuclear Power to Fix Climate Change—a Review of the Course’s Findings
+- Lecture 18: Do We Need Nuclear Power to Fix Climate Change—a Review of the Course's Findings
+- Lecture 19: Why the Public Is Skeptical About Nuclear Power—a Way Forward
+- Lecture 1: Introduction to 22.04 and the History of Nuclear Power
+- Lecture 2: Nuclear Technology 101
+- Lecture 3: How Should We Join Climate Change to Energy Policy?
+- Lecture 4: The Capital Cost of Nuclear Power
+- Lecture 5: Can Nuclear Compete Given Decarbonization?
+- Lecture 6: Nuclear Reactor Cost Around the World and the Potential for Cost Reduction
+- Lecture 7: Can Renewables Decarbonize the Electricity Sector in the United States?
+- Lecture 8: What Investors Need to Know About Small-Modular and Microreactors
+- Lecture 9: How the Electric Grid Controls Progress on Decarbonization
+
+### MIT 22.091 Nuclear Reactor Safety, Spring 2008 (6 lectures)
+- Lec 10 | MIT 22.091 Nuclear Reactor Safety, Spring 2008
+- Lec 24 | MIT 22.091 Nuclear Reactor Safety, Spring 2008
+- Lec 3 | MIT 22.091 Nuclear Reactor Safety, Spring 2008
+
+### MIT 22.67J Principles of Plasma Diagnostics, Fall 2023 (12 lectures)
+- Lecture 14: Line Radiation
+- Lecture 15: Equilibria and Imaging
+- Lecture 20: Thomson Scattering: Basics
+- Lecture 23: Thomson Scattering: Advanced
+- Lecture 5: Refractive Index Diagnostics I
+- Lecture 7: Refractive Index Diagnostics III
+

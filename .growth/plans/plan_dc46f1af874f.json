@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T09:06:49.884437+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_a437ad65e9b79067",
+      "question_id": "q_62ff687b7cecb047",
+      "question": "家計管理と大きな買い物の判断で、ナッシュ均衡と戦略的相互作用は何を説明し、どこで使えないか",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_62ff687b7cecb047",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0003"
+      ],
+      "external_query": null
+    },
+    {
+      "gap_id": "gap_092b3403985eb94b",
+      "question_id": "q_b4324d8c579f6e16",
+      "question": "学習計画を続けられない問題で、ナッシュ均衡と戦略的相互作用は何を説明し、どこで使えないか",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_b4324d8c579f6e16",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0003"
+      ],
+      "external_query": null
+    },
+    {
+      "gap_id": "gap_72a8f4e31cd3fb9a",
+      "question_id": "q_06be72f014d21d5d",
+      "question": "家族・チーム内の役割分担で、ナッシュ均衡と戦略的相互作用は何を説明し、どこで使えないか",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_06be72f014d21d5d",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0003"
+      ],
+      "external_query": null
+    }
+  ],
+  "plan_id": "plan_dc46f1af874f",
+  "input_hash": "dc46f1af874f778ced4cc2f906bfcbdcd52a446e9f0b809078512ed1983549cb"
+}

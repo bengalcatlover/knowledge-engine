@@ -1,0 +1,373 @@
+# frontier_manager.py 設計書
+
+## 全体構造
+
+```python
+# frontier_manager.py
+from dataclasses import dataclass
+from enum import Enum
+
+class FrontierAction(Enum):
+    DEEPEN = "deepen"
+    EXPAND = "expand"
+    CONSOLIDATE = "consolidate"  # 安全装置発動時のフォールバック
+
+@dataclass
+class FrontierPlan:
+    action: FrontierAction
+    topics: list[str]          # knowledge_amplifierへの投入キュー
+    llm_calls_reserved: int
+    rationale: dict            # 監査ログ用
+
+class FrontierManager:
+    def __init__(self, db, llm, config):
+        self.db = db
+        self.llm = llm          # cheap_llm.py のインスタンス
+        self.cfg = config
+
+    def plan(self, budget: "CycleBudget") -> FrontierPlan: ...
+```
+
+---
+
+## A. 深掘り (Deepening)
+
+### A-1. 深掘り対象ノードのスコアリング
+
+```python
+def score_node_for_deepening(self, node_id: str) -> float:
+    n = self.db.get_node_stats(node_id)
+    # n.claims, n.evidence, n.degree, n.last_touched_cycle,
+    # n.unsupported_claims, n.layer
+
+    # --- 各成分 (すべて0-1に正規化) ---
+
+    # 1. 需要圧: claimは多いがevidenceが薄い = 掘る価値が高い
+    demand = n.claims / (n.evidence + 1)
+    demand = min(demand / 3.0, 1.0)          # 3claim/evidenceで飽和
+
+    # 2. 構造的重要度: 次数中心性（ハブは掘るほど波及する）
+    centrality = min(n.degree / 8.0, 1.0)    # 現状Edge/Node比1.78なので8は上位
+
+    # 3. 鮮度ペナルティの逆数: 最近掘ったノードは冷却する
+    cycles_since = current_cycle - n.last_touched_cycle
+    freshness = 1.0 - math.exp(-cycles_since / 5.0)   # 5サイクルで約63%回復
+
+    # 4. 用途アラインメント: practice層への到達距離
+    #    practice層ノードへの最短パス長 d (BFS, キャッシュ可)
+    d = self.db.shortest_path_to_layer(node_id, "practice")
+    alignment = 1.0 / (1.0 + d)              # 直結=0.5, 2ホップ=0.33...
+
+    # 5. ギャップ密度: gap_detectorのG1/G2件数
+    gap_density = min(n.g1_count * 0.3 + n.g2_count * 0.2, 1.0)
+
+    return (0.30 * demand +
+            0.20 * centrality +
+            0.15 * freshness +
+            0.25 * alignment +
+            0.10 * gap_density)
+```
+
+**設計意図**: `alignment` に0.25と大きめの重みを置く。塾用途では foundation 層の抽象理論より、practice 層に近いノード（ZPD、フィードバック、自己効力感など）の深掘りが直接的な価値を生む。
+
+### A-2. トピック生成
+
+深掘りは**3つの掘り方をローテーション**する（LLM 1コール/ノード）:
+
+```python
+DEEPEN_STRATEGIES = ["mechanism", "boundary", "application"]
+
+def generate_deepening_topics(self, node_id: str, k: int = 2) -> list[str]:
+    node = self.db.get_node(node_id)
+    strategy = DEEPEN_STRATEGIES[node.deepen_count % 3]
+    neighbors = self.db.get_neighbor_labels(node_id, limit=5)
+    claims = self.db.get_top_claims(node_id, limit=3)
+
+    prompt = f"""
+ノード: {node.label}
+既存の主張: {claims}
+隣接ノード: {neighbors}
+戦略: {strategy}
+
+{STRATEGY_INSTRUCTIONS[strategy]}
+既存の主張と重複しない、実証研究(DOI付き論文)が存在しそうな
+具体的トピックを{k}個、JSON配列で出力せよ。
+各トピックは検索可能な英語キーフレーズ形式。
+"""
+    return self.llm.call_json(prompt)
+
+STRATEGY_INSTRUCTIONS = {
+    "mechanism":   "この理論の因果メカニズム・神経科学的/数理的基盤を掘る",
+    "boundary":    "この理論が成立しない境界条件・反証研究・モデレータ変数を掘る",
+    "application": "教育・学習指導・青少年カウンセリングへの応用研究を掘る",
+}
+```
+
+**重要**: `boundary` 戦略を必ず含めること。「〜が有効」の主張だけが蓄積すると、生徒指導で過剰一般化する（例: 自我消耗は再現性論争がある）。反証研究の取り込みが知識グラフの信頼性を担保する。
+
+### A-3. 停止条件（飽和検出）
+
+```python
+def is_saturated(self, node_id: str) -> bool:
+    n = self.db.get_node_stats(node_id)
+    history = self.db.get_deepen_history(node_id, last=3)
+
+    return any([
+        # 直近3回の深掘りでの新規claim獲得率が閾値未満
+        history.new_claims_per_call < 0.5,
+        # evidence/claim比が十分（十分に裏付けられた）
+        n.evidence / max(n.claims, 1) > 2.0,
+        # 重複検出: 直近の投入トピックで既存claimとの類似度>0.85が続いた
+        history.duplicate_rate > 0.6,
+        # 絶対上限
+        n.deepen_count >= 9,   # 3戦略×3周
+    ])
+```
+
+飽和ノードは `saturated=True` フラグを付け、スコアリングから除外（10サイクル後に自動解除して再評価）。
+
+---
+
+## B. 拡大 (Expansion)
+
+### B-1. 候補生成: 二段構え
+
+**(1) 静的シードリスト**（LLMコール不要、用途アラインメント保証済み）:
+
+```python
+EXPANSION_SEEDS = [
+    # (domain, alignment_score, bridge_nodes: 既存グラフとの接続点)
+    ("spaced repetition & forgetting curves", 0.95, ["記憶科学", "意図的練習"]),
+    ("test anxiety & stereotype threat",       0.95, ["自己効力感", "認知負荷"]),
+    ("growth mindset (実証と論争含む)",          0.90, ["動機づけSDT", "自己効力感"]),
+    ("sleep & memory consolidation",           0.90, ["記憶科学"]),
+    ("adolescent brain development",           0.85, ["自我消耗", "感情知性"]),
+    ("parental involvement in education",      0.85, ["社会的学習理論", "動機づけ"]),
+    ("procrastination & temporal discounting", 0.85, ["限定合理性", "サンクコスト"]),
+    ("habit formation",                        0.80, ["動機づけSDT"]),
+    ("peer effects in classrooms",             0.80, ["ネットワーク効果", "社会的学習"]),
+    ("formative assessment",                   0.80, ["フィードバック", "Bloom's Taxonomy"]),
+    ("attention & mind-wandering",             0.75, ["認知負荷", "メタ認知"]),
+    ("goal-setting theory",                    0.75, ["期待価値理論", "フィードバック"]),
+]
+```
+
+**(2) 動的生成**（シード枯渇後、LLM 1コール）:
+
+```python
+def generate_expansion_candidates(self) -> list[dict]:
+    domains = self.db.get_domain_labels()
+    prompt = f"""
+既存ドメイン: {domains}
+用途: 塾での生徒の学習指導・悩み相談
+
+既存ドメインに隣接し（少なくとも2つの既存ドメインと理論的接続がある）、
+かつ実証研究が豊富な未カバー分野を5個提案せよ。
+各候補: {{"domain": str, "bridges": [既存ドメイン2つ以上],
+         "why_tutoring": str, "sample_search_phrase": str}}
+"""
+    return self.llm.call_json(prompt)
+```
+
+### B-2. 優先度スコアリング
+
+```python
+def score_expansion_candidate(self, cand: dict) -> float:
+    # 1. 用途アラインメント (シードは固定値、動的候補はLLM自己評価+人手上書き可)
+    alignment = cand["alignment_score"]
+
+    # 2. ブリッジ強度: 接続先の既存ノードが実在し、かつ活性か
+    bridge = 0.0
+    for b in cand["bridges"]:
+        node = self.db.find_node_by_label(b)
+        if node:
+            bridge += 0.5 * (1 + min(node.degree / 8, 1)) / 2
+    bridge = min(bridge, 1.0)
+
+    # 3. 実現可能性プロキシ: OpenAlexでのヒット件数（APIコール1回、LLM不使用）
+    hits = openalex_count(cand["sample_search_phrase"])
+    feasibility = min(math.log10(hits + 1) / 4.0, 1.0)  # 10^4件で飽和
+
+    return 0.45 * alignment + 0.35 * bridge + 0.20 * feasibility
+```
+
+**bridge に0.35**: 孤立ドメインの発生が最大のリスク。接続点のないドメインはスコアがどれだけ高くても実質採用されない構造にする。
+
+### B-3. 品質ゲート（ハレーション防止）
+
+```python
+class ExpansionGate:
+    def pre_check(self, cand) -> bool:
+        # 投入前: ブリッジノードが最低2つ実在すること
+        return count_existing_bridges(cand) >= 2
+
+    def probe(self, cand) -> bool:
+        # 試掘: 本採用前に1トピックだけamplifierに投入し、
+        # 4層検証(CrossRef/OpenAlex/S2/Unpaywall)の通過率を測る
+        result = knowledge_amplifier.run(cand["sample_search_phrase"],
+                                         max_claims=5)
+        verification_rate = result.verified / max(result.total, 1)
+        return verification_rate >= 0.6   # DOI実在率60%未満 = LLMの幻覚領域
+
+    def post_check(self, domain_id, cycles=3) -> str:
+        # 採用後3サイクル以内の検収
+        stats = self.db.get_domain_stats(domain_id)
+        if stats.edges_to_other_domains < 2:
+            return "QUARANTINE"   # 孤立 → relation_engine優先投入 or 凍結
+        if stats.evidence / max(stats.claims, 1) < 0.3:
+            return "ROLLBACK"     # 裏付け不能 → ドメインごと無効化フラグ
+        return "ACCEPTED"
+```
+
+3段ゲート: **pre（接続保証）→ probe（試掘で幻覚検出）→ post（3サイクル後検収）**。probe が最重要。GPT-4.1 nano は馴染みの薄い分野でDOIを捏造しやすいので、4層検証の通過率をそのままドメインの「掘削可能性」の実測値として使う。
+
+---
+
+## C. 予算配分
+
+### C-1. 状態依存の動的比率
+
+```python
+def compute_budget_split(self) -> dict:
+    g = self.db.get_graph_stats()
+
+    # 健全性指標
+    edge_ratio     = g.edges / g.nodes                    # 現状1.78
+    support_ratio  = g.supported_claims / g.claims        # 現状~0.57 (130/230)
+    saturation     = g.saturated_nodes / g.nodes
+
+    # --- 判定ロジック ---
+    if support_ratio < 0.45 or edge_ratio < 1.5:
+        # グラフが脆い → 拡大凍結、深掘り+整合に全振り
+        return {"deepen": 0.7, "expand": 0.0, "consolidate": 0.3}
+
+    if saturation > 0.5:
+        # 掘り尽くしている → 拡大に振る
+        return {"deepen": 0.3, "expand": 0.6, "consolidate": 0.1}
+
+    # デフォルト: 深掘り優位
+    return {"deepen": 0.6, "expand": 0.3, "consolidate": 0.1}
+```
+
+**デフォルトで深掘り60%**の理由: 塾用途では「広く浅い」知識は悩み相談の説得力を持たない。1ノードあたり claim 2.3・evidence 1.3 の現状はまだ薄く、当面は深掘り優位が正しい。
+
+### C-2. 20コールの具体的配分（デフォルト時）
+
+```
+Phase 6 EXPAND の取り分: 6コール（他フェーズが14コール消費と仮定）
+
+deepen (60% ≈ 4コール):
+  - トピック生成: 2ノード × 1コール = 2
+  - 生成トピックの重複チェック(既存claimとの照合): 1
+  - 予備: 1
+expand (30% ≈ 2コール):
+  - 候補生成 or シード選択: 0-1 (シード使用時は0)
+  - probe試掘のclaim抽出: 1-2
+consolidate (10%):
+  - LLM不使用。relation_engineへの孤立ノードリスト送付のみ
+```
+
+シードリスト消化中は expand のLLMコストがほぼゼロになるため、実質的に序盤は深掘りに5コール使える。
+
+---
+
+## D. 安全装置
+
+```python
+class SafetyGuard:
+
+    # D-1. 発散防止: グラフ半径の監視
+    def check_divergence(self) -> bool:
+        # practice層から到達可能なノードの割合
+        reachable = self.db.reachable_from_layer("practice", ratio=True)
+        if reachable < 0.85:
+            self.freeze_expansion()       # 拡大凍結、consolidateへ
+            return False
+        return True
+
+    # D-2. 接続性維持: 拡大の事後義務
+    def enforce_connectivity(self):
+        for domain in self.db.domains_added_within(cycles=3):
+            if domain.cross_domain_edges < 2:
+                # relation_engineの次サイクル優先キューに強制挿入
+                relation_engine.priority_queue.push(domain.node_ids)
+
+    # D-3. 品質劣化の自動停止（サーキットブレーカー連携）
+    def check_quality(self) -> FrontierAction | None:
+        w = self.db.rolling_window(cycles=5)
+        triggers = {
+            "verification_collapse": w.doi_verification_rate < 0.5,
+            "duplicate_flood":       w.duplicate_claim_rate > 0.4,
+            "orphan_growth":         w.unattributed_claims_delta > 10,
+            "budget_burn":           w.cost_per_verified_claim > 0.01,  # $
+        }
+        fired = [k for k, v in triggers.items() if v]
+        if len(fired) >= 2:
+            return FrontierAction.CONSOLIDATE   # EXPAND全停止、既存整理のみ
+        if fired:
+            self.halve_expansion_budget()       # 1個なら減速
+        return None
+```
+
+**発散の定義を「practice層からの到達可能率」にする**のがポイント。塾用途において、practice に繋がらない知識サブグラフは目的上ノイズ。85%を切ったら拡大を止め、relation_engine に接続作業をさせる。
+
+---
+
+## メインループ擬似コード
+
+```python
+def plan(self, budget) -> FrontierPlan:
+    # 0. 安全装置チェック
+    if (forced := self.guard.check_quality()):
+        return FrontierPlan(forced, topics=self.consolidation_targets(), ...)
+    if not self.guard.check_divergence():
+        split = {"deepen": 0.5, "expand": 0.0, "consolidate": 0.5}
+    else:
+        split = self.compute_budget_split()
+
+    topics = []
+
+    # 1. 深掘り
+    calls_d = int(budget.llm_calls * split["deepen"])
+    candidates = sorted(self.db.active_nodes(),
+                        key=self.score_node_for_deepening, reverse=True)
+    for node in candidates:
+        if calls_d <= 0: break
+        if self.is_saturated(node.id):
+            self.db.mark_saturated(node.id); continue
+        topics += self.generate_deepening_topics(node.id, k=2)
+        calls_d -= 1
+
+    # 2. 拡大
+    calls_e = int(budget.llm_calls * split["expand"])
+    if calls_e > 0:
+        cand = self.pick_expansion_candidate()   # シード優先→動的生成
+        if self.gate.pre_check(cand) and self.gate.probe(cand):
+            topics.append(cand["sample_search_phrase"])
+            self.db.register_pending_domain(cand)  # 3サイクル後post_check
+
+    # 3. 検収
+    self.guard.enforce_connectivity()
+    for d in self.db.pending_domains():
+        verdict = self.gate.post_check(d.id)
+        self.db.apply_verdict(d.id, verdict)
+
+    return FrontierPlan(action=..., topics=topics, ...)
+```
+
+---
+
+## パラメータ初期値まとめ
+
+| パラメータ | 値 | 根拠 |
+|---|---|---|
+| deepen重み: alignment | 0.25 | 塾用途最優先 |
+| 飽和判定: new_claims/call | < 0.5 | 収穫逓減の検出 |
+| 深掘り絶対上限 | 9回/ノード | 3戦略×3周 |
+| probe通過閾値 | 検証率60% | 幻覚領域の遮断 |
+| 拡大後の接続義務 | 3サイクル内に他ドメインエッジ2本 | 孤立防止 |
+| デフォルト配分 | 深掘60/拡大30/整合10 | 現状claim密度が薄い |
+| 発散閾値 | practice到達率85% | 用途直結 |
+| 全停止条件 | 品質トリガー2個同時発火 | 誤停止防止の冗長化 |
+
+すべての閾値は `config` に外出しし、5サイクルごとにログから閾値妥当性レポートを吐く関数（`export_tuning_report()`）を付けておくことを推奨する。

@@ -1,0 +1,109 @@
+# Perspective Schema — v1.0
+# A perspective records the user's own stated beliefs, judgments, hypotheses, and
+# interpretations. It is NOT a concept extracted from a source; it IS the user's
+# intellectual position.
+#
+# CRITICAL AUTHORSHIP RULE:
+# AI must never fabricate or infer a perspective and label it as user_stated.
+# AI may structure or reword a perspective ONLY after the user has provided the
+# raw statement, and MUST set authorship: ai_structured and user_confirmed: false.
+# Only the user can set user_confirmed: true.
+#
+# Perspectives feed into outputs. A perspective that is not user_confirmed MUST be
+# labeled as unconfirmed in any output that cites it.
+
+$schema: perspective/v1.0
+
+# ---------------------------------------------------------------------------
+# Identity
+# ---------------------------------------------------------------------------
+
+perspective_id: ""       # (required) P-NNNN — read from _meta/counters.yaml before writing
+
+title: ""                # (required) Short label (5–10 words). Used as a heading in indexes.
+                         # E.g. "RAG retrieval quality determines answer quality"
+
+# ---------------------------------------------------------------------------
+# Substantive Content
+# ---------------------------------------------------------------------------
+
+content: ""              # (required) The user's actual statement or belief, as close to
+                         # verbatim as possible. Preserve the user's voice and framing.
+                         # Do not clean up or smooth out hedging language — it carries meaning.
+                         # If the user wrote in Japanese, keep Japanese here.
+
+context: ""              # (required) When and why this was stated. Include:
+                         #   - The situation or project it arose from (e.g., "During Bionest RAG build")
+                         #   - The question or problem that prompted it
+                         #   - Any relevant emotional or practical weight (e.g., "This was a hard-won judgment after X failed")
+                         # This field prevents the perspective from being decontextualized later.
+
+scope: ""                # (optional) The domain or conditions to which this perspective applies.
+                         # E.g. "Japanese SME knowledge management" or "RAG systems with < 10k docs"
+                         # Perspectives without scope are treated as general claims — be careful.
+
+# ---------------------------------------------------------------------------
+# Authorship and Confirmation
+# ---------------------------------------------------------------------------
+
+authorship: ""           # (required) How this record was created.
+                         # Allowed values:
+                         #   "user_stated"    — user wrote or said this directly, with minimal AI shaping
+                         #   "ai_structured"  — AI reformatted or condensed the user's input;
+                         #                      the ideas are the user's but the wording is AI's
+                         # When in doubt, use "ai_structured" — it is the safer claim.
+
+user_confirmed: false    # (required) Boolean. Has the user explicitly validated that this
+                         # perspective accurately represents their actual view?
+                         # Default is false. AI must never set this to true.
+
+# ---------------------------------------------------------------------------
+# Links to Other Artifacts
+# ---------------------------------------------------------------------------
+
+related_concepts: []     # (optional) List of K-* concept_ids that this perspective draws on,
+                         # challenges, or extends. These are not citations — they are intellectual
+                         # neighbors. The direction of influence does not need to be explicit here;
+                         # use edges for that.
+
+related_claims: []       # (optional) List of CL-* claim_ids that support, contradict,
+                         # or are implied by this perspective.
+
+supporting_sources: []   # (optional) List of objects. Source documents that the user
+                         # cited or had in mind when forming this perspective.
+                         #   doc_id: string (D-* or other artifact ID)
+                         #   note: string (why this source is relevant)
+
+contradicting_sources: [] # (optional) List of objects. Sources that push against this view.
+                         # Recording these makes the perspective intellectually honest.
+                         #   doc_id: string
+                         #   note: string
+
+# ---------------------------------------------------------------------------
+# Temporal Metadata
+# ---------------------------------------------------------------------------
+
+created_at: ""           # (required) ISO 8601 datetime in UTC when this record was first written.
+confirmed_at: null       # (optional) ISO 8601 datetime when user_confirmed was set to true.
+last_updated_at: ""      # (required) ISO 8601 datetime of most recent edit to this record.
+
+# ---------------------------------------------------------------------------
+# Provenance
+# ---------------------------------------------------------------------------
+
+recorded_by: ""          # (required) Who created this record.
+                         # E.g. "claude-sonnet-4-6", "user", "gpt-4o-2025-07"
+                         # If AI transcribed a user statement, AI is the recorder but
+                         # authorship is still "user_stated".
+
+# ---------------------------------------------------------------------------
+# Evolution Tracking
+# ---------------------------------------------------------------------------
+
+superseded_by: null      # (optional) P-* ID of a newer perspective that replaces this one.
+                         # Keep old perspectives — do not delete. Intellectual history matters.
+
+changelog: []            # (optional) List of objects.
+                         #   at: ISO 8601 datetime
+                         #   by: identifier
+                         #   note: what changed and why

@@ -1,0 +1,88 @@
+CS CONCEPT CARDS GENERATION SUMMARY
+===================================
+Date: 2026-09-09
+Model: gpt-5.6-luna
+
+TASK
+----
+Regenerated 6 remaining CS concept cards (K-0015 through K-0020) to complement 
+previously generated cards K-0011 through K-0014.
+
+EXISTING CARDS (K-0011 to K-0014)
+---------------------------------
+K-0011: フィードバック制御とクローズドループシステム (Feedback Control)
+        - Pillar tags: agent_loop, hybrid_control
+        
+K-0012: 状態機械とオートマトン理論 (State Machines & Automata)
+        - Pillar tags: agent_loop, hybrid_control
+        
+K-0013: グラフ探索アルゴリズム (Graph Search: BFS/DFS/A*)
+        - Pillar tags: agent_loop
+        
+K-0014: 確率的推論とベイズネットワーク (Probabilistic Inference & Bayesian Networks)
+        - Pillar tags: hybrid_control, graphrag
+
+NEW CARDS GENERATED (K-0015 to K-0020)
+--------------------------------------
+
+K-0015: 動的計画法 (Dynamic Programming)
+        Course: MIT 6.006, 6.046J
+        Pillar tags: agent_loop, hybrid_control, physical_grounding
+        Key transfer: Inventory planning, multi-agent task sequencing, robot trajectory planning
+        
+K-0016: 分散合意アルゴリズム (Distributed Consensus)
+        Course: MIT 6.852
+        Pillar tags: agent_loop, hybrid_control, physical_grounding
+        Key transfer: Multi-agent task assignment, transaction ordering, robot coordination
+        
+K-0017: 情報理論と表現圧縮 (Information Theory & Representation Compression)
+        Course: MIT 6.004, 6.02
+        Pillar tags: next_gen_rag, agent_loop, physical_grounding
+        Key transfer: RAG context compression, inter-agent communication, IoT data compression
+        
+K-0018: 最適化理論 (Optimization Theory)
+        Course: MIT 6.251
+        Pillar tags: agent_loop, hybrid_control, next_gen_rag, physical_grounding
+        Key transfer: Resource allocation, RAG re-ranking, trajectory planning with constraints
+        
+K-0019: 機械学習と学習アルゴリズム (Machine Learning & Learning Algorithms)
+        Course: MIT 6.034, 6.7960
+        Pillar tags: hybrid_control, next_gen_rag, physical_grounding, agent_loop
+        Key transfer: Fraud detection, RAG document ranking, predictive maintenance
+        
+K-0020: 暗号技術とセキュリティ設計 (Cryptography & Security)
+        Course: MIT 6.5630, 6.858
+        Pillar tags: agent_loop, next_gen_rag, physical_grounding
+        Key transfer: Agent tool authorization, RAG source verification, firmware updates
+
+STRUCTURAL NOTES
+----------------
+- All cards follow YAML frontmatter + markdown body format matching template
+- Each card includes: Definition, Mechanism, Boundary Conditions, Failure Modes, 
+  Business Transfer (3 scenarios), Non-Examples, Source References, Related Concepts
+- Boundary conditions are falsifiable and concrete
+- Business transfer caveats are specific to each scenario
+- Related concepts link to K-0011 through K-0020 where relevant
+- All generated with: generated_by: gpt-5.6-luna, generated_at: 2026-09-09, 
+  prompt_version: cs-remaining-v1
+
+PILLAR TAG DISTRIBUTION
+-----------------------
+agent_loop:          K-0015, K-0016, K-0017, K-0018, K-0019, K-0020 (6/6)
+hybrid_control:      K-0015, K-0016, K-0018, K-0019 (4/6)
+next_gen_rag:        K-0017, K-0018, K-0019, K-0020 (4/6)
+physical_grounding:  K-0015, K-0016, K-0017, K-0018, K-0019, K-0020 (6/6)
+
+All new cards are aligned with user's business-AI application focus and 4 pillars.
+
+OUTPUT FILES
+------------
+Raw combined output:  C:/Users/akira/OneDrive/Desktop/clauce/knowledge-engine/work/concept-cards-cs-remaining-raw.txt
+Split card files:     C:/Users/akira/OneDrive/Desktop/clauce/knowledge-engine/concepts/_inbox/K-00{15..20}.md
+
+STATUS
+------
+✓ All 6 concept cards generated successfully
+✓ Files split and saved individually to _inbox
+✓ Format validated
+✓ Ready for user review and promotion to confirmed concepts/

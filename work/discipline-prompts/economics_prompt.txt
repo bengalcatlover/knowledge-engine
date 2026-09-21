@@ -1,0 +1,283 @@
+You are creating a discipline knowledge index for: Economics
+Broad category: Social Sciences
+Total courses: 14
+Total lecture units: 552
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 14.01 Principles of Microeconomics, Fall 2018 (78 lectures)
+- 1. Introduction and Supply & Demand
+- 10. Welfare Economics
+- 11. Monopoly I
+- 12. Monopoly II
+- 13. Oligopoly
+- 14. Oligopoly II
+- 15. Input Markets I—Labor Market
+- 16. Input Markets II—Labor and Capital
+- 17. Making Choices Over Time
+- 18. Increasing Savings & Introduction to Trade
+- 19. International Trade: Welfare and Policy
+- 2. Preferences and Utility Functions
+- ** 2. Preferences and Utility Functions
+- 20. Uncertainty
+- 21. Efficiency and Equity
+- 22. Government Redistribution and Taxation
+- 23. Market Failures I: Externalities
+- 24. Market Failures II: Informational Asymmetry
+- 25. Health Economics
+- 3. Budget Constraints and Constrained Choice
+- 4. Demand Curves and Income/Substitution Effects
+- 5. Production Theory
+- 6. Costs
+- 7. Competition I
+- 8. Competition II
+- 9. Supply and Demand & Consumer/Producer Surplus
+
+### MIT 14.01 Principles of Microeconomics, Fall 2023 (78 lectures)
+- Lec 10: Welfare Economics
+- Lec 11: Monopoly I
+- Lec 12: Monopoly II
+- Lec 13: Oligopoly I
+- Lec 14: Oligopoly II
+- Lec 15: Input Markets I—Labor Market
+- ** Lec 15: Input Markets I—Labor Market
+- Lec 16: Input Markets II—Labor and Capital
+- Lec 17: Making Choices over Time
+- Lec 18: Introduction to Trade
+- Lec 19: International Trade: Welfare and Policy
+- Lec 1: Introduction to Principles of Microeconomics and Supply & Demand
+- Lec 20: Uncertainty
+- Lec 21: Social Insurance
+- Lec 22: Efficiency and Equity
+- Lec 23: Government Redistribution and Taxation
+- Lec 24: Externalities
+- ** Lec 24: Externalities
+- Lec 25: Behavioral Economics
+- Lec 26: Health Care Economics
+- Lec 2: Preferences and Utility Function
+- Lec 3: Budget Constraints and Constrained Choice
+- Lec 4: Demand Curves and Income/Substitution Effects
+- Lec 5: Production Theory
+- Lec 6: Costs
+- Lec 7: Competition I
+- ** Lec 7: Competition I
+- Lec 8: Competition II
+- ** Lec 8: Competition II
+- Lec 9: Supply and Demand & Consumer/Producer Surplus
+
+### MIT 14.01SC Principles of Microeconomics (14 lectures)
+- Lec 1 | MIT 14.01SC Principles of Microeconomics
+- Lec 10 | MIT 14.01SC Principles of Microeconomics
+- Lec 16 | MIT 14.01SC Principles of Microeconomics
+- Lec 2 | MIT 14.01SC Principles of Microeconomics
+- Lec 25 | MIT 14.01SC Principles of Microeconomics
+- Lec 5 | MIT 14.01SC Principles of Microeconomics
+- ** Lec 5 | MIT 14.01SC Principles of Microeconomics
+- Problem Set 5, Problem #4e-h | MIT 14.01SC Principles of Microeconomics
+
+### MIT 14.02 Principles of Macroeconomics, Spring 2023 (15 lectures)
+- Lecture 10: Quiz 1 Review
+- Lecture 15: Technological Progress and Growth
+- Lecture 16: Convergence and Cross-Country Variation
+- Lecture 18: Quiz 2 Review
+- Lecture 22: Financial Markets and Expectations
+
+### MIT 14.04 Intermediate Microeconomic Theory, Fall 2020 (72 lectures)
+- Exam #1 Review for Intermediate Microeconomic Theory
+- Exam #2 Review for Intermediate Microeconomic Theory
+- Final Exam Review for Intermediate Microeconomic Theory
+- Lecture 10: Ledgers and Management
+- Lecture 11: Contracts and Mechanism Design
+- Lecture 12: Contract Application, Obstacles
+- Lecture 13: Walrasian Equilibrium and Trade
+- Lecture 14: Real and Financial Flows: Thailand
+- Lecture 15: Data and Policy in the United States
+- Lecture 16: Fundamental Welfare Theorems
+- Lecture 17: Existence of Equilibria
+- Lecture 18: Aggregation
+- Lecture 19: Identification and Falsification
+- Lecture 1: Economic Science
+- ** Lecture 1: Economic Science
+- Lecture 20: Failure of Welfare Theorems
+- Lecture 21: Bubbles
+- Lecture 2: Consumer Choice
+- Lecture 3: Income and Substitution Effects
+- Lecture 4: Production and Profit Maximization
+- Lecture 5: Uncertainty and Linear Programs
+- Lecture 6:  Dynamics and Programming
+- Lecture 7: Pareto Optimality
+- Lecture 8: Risk-Sharing Application
+- Lecture 9: Risk-Sharing with Production
+
+### MIT 14.12 Economic Applications of Game Theory, Fall 2025 (75 lectures)
+- Lecture 10: Subgame-Perfect Nash Equilibrium
+- Lecture 11: One-Shot Deviation Principle and Bargaining
+- Lecture 12: Finitely Repeated Games
+- Lecture 13: Infinitely Repeated Games
+- Lecture 14: Folk Theorem
+- Lecture 15: Implicit Cartels
+- Lecture 16: Bayesian Games
+- Lecture 17: Bayesian Nash Equilibrium: Applications
+- Lecture 18: Auctions
+- Lecture 19: Revenue Equivalence
+- Lecture 1: Introduction to Individual Decision-Making
+- Lecture 20: Ad Auctions
+- Lecture 21: Perfect Bayesian Equilibrium
+- Lecture 22: Signaling
+- Lecture 23: Bargaining with Incomplete Information
+- Lecture 24: Cheap Talk
+- Lecture 25: Common Knowledge
+- Lecture 2: Representation of Games
+- Lecture 3: Dominance
+- Lecture 4: Rationalizability
+- Lecture 5: Nash Equilibrium
+- Lecture 6: Imperfect Competition
+- Lecture 7: Zero-Sum Games
+- Lecture 8: Backward Induction
+- ** Lecture 8: Backward Induction
+- Lecture 9: Negotiation
+
+### MIT 14.13 Psychology and Economics, Spring 2020 (61 lectures)
+- Lecture 10: Social Preferences I
+- Lecture 11: Social Preferences II
+- Lecture 12: Social Preferences III
+- Lecture 13: Social Preferences IV
+- Lecture 14: Limited Attention
+- Lecture 15: Utility from Beliefs; Learning I
+- Lecture 16: Utility from Beliefs; Learning II
+- Lecture 17: State-Dependent Preferences, Projection, and Attribution Bias
+- Lecture 18: Gender, Discrimination, and Identity
+- Lecture 19: Defaults, Nudges, and Frames
+- Lecture 1: Introduction and Overview I (14.13 Psychology and Economics, Spring 2020)
+- Lecture 20: Malleability and Inaccessibility of Preferences
+- Lecture 21: Poverty through the Lens of Psychology
+- Lecture 22: Happiness and Mental Health
+- Lecture 23: Policy with Behaviorial Agents
+- ** Lecture 23: Policy with Behaviorial Agents
+- Lecture 2: Introduction and Overview II
+- Lecture 3: Time Preferences (Theory) I
+- Lecture 4: Time Preferences (Theory) II
+- Lecture 5: Time Preferences (Applications) I
+- Lecture 6: Time Preferences (Applications) II
+- Lecture 7: Risk Preferences I
+- Lecture 8: Risk Preferences II
+- Lecture 9: Reference-Dependent Preferences
+- Mid-Term Review
+
+### MIT 14.271 Industrial Organization I, Fall 2022 (9 lectures)
+- Lecture 07: Estimation of Demand, Supply, and Market Power, Part 1
+- Lecture 11: Regulating the Tech Giants
+- Lecture 19: Strategic Investment, Part 2
+- Lecture 25: Online Markets, Part 1
+
+### MIT 14.41 Public Finance and Public Policy, Fall 2024 (49 lectures)
+- Lecture 01: Why Study Public Finance?
+- Lecture 02: Externalities in Theory
+- Lecture 03: Externalities in Theory & Practice
+- Lecture 04: Externalities in Practice II
+- Lecture 05: Public Goods Theory, Optimality, and Pricing
+- Lecture 06: Cost/Benefit Analysis
+- Lecture 07: Political Economy
+- Lecture 08: Local Public Goods and Fiscal Federalism
+- Lecture 09: Public Provision of Private Goods: Education
+- Lecture 10: Social Insurance Theory
+- Lecture 11: Social Security
+- Lecture 12: Other Social Insurance Programs
+- Lecture 13: Health Care I
+- ** Lecture 13: Health Care I
+- Lecture 14: Health Care II
+- Lecture 15: Health Care III, Redistribution
+- Lecture 16: Redistribution and Welfare Policy
+- Lecture 17: Redistribution and Welfare, Taxation Overview
+- Lecture 18: Overview of Taxation and Tax Base, Tax Incidence
+- Lecture 19: Tax Incidence and Tax Efficiency
+- Lecture 20: Taxation and Labor Supply
+- Lecture 21: Taxation and Savings
+- Lecture 22: Wealth Taxation
+- Lecture 23: Corporate Taxation
+- Lecture 24: Corporate Taxation and Tax Reform
+
+### MIT 14.73 The Challenge of World Poverty, Spring 2011 (44 lectures)
+- 1. Introduction  (14.73 The Challenge of World Poverty)
+- 10. Is It Possible to Deliver Quality Education to the Poor-The Pratham-JPAL Partnership
+- 11. Education: The Man Made Trap
+- 12. (Somewhat) Un-Orthodox Findings on the Family
+- 13. How Do Families Decide?
+- 14. Gender Discrimination
+- ** 14. Gender Discrimination
+- 15. Risk and Insurance
+- 16. Insurance
+- 17. The (Not So Simple) Economics of Lending to the Poor
+- ** 17. The (Not So Simple) Economics of Lending to the Poor
+- 19. The Promise and Perils of Microfinance
+- 2. What is a Poverty Trap?
+- 20. Savings
+- 21. Savings 2
+- ** 21. Savings 2
+- 22. Entrepreneurs and Workers
+- 24. Policies, Politics: Can Evidence Play a Role in the Fight Against Poverty?
+- 25. Policies, Politics: Can Evidence Play a Role in the Fight Against Poverty?, cont.
+- 26. Five Thoughts in Place of a Sweeing Conclusion
+- 3. Social Experiments: Why and How?
+- 5. Is There a Nutrition-Based Poverty Trap?
+- 6. Nutrition: The Hidden Traps
+- ** 6. Nutrition: The Hidden Traps
+- 8. Health: Low Hanging Fruit?
+- 9. Education: Setting the Stage
+
+### MIT 14.771 Development Economics, Fall 2021 (15 lectures)
+- Lecture 15: Gender and the Labor Market
+- Lecture 20: Public Finance (Part 3)
+- Lecture 21: PF (Part 4) / Labor (Part 1)
+- Lecture 22: Labor (Part 2)
+- Lecture 23: Labor (Part 3)
+- ** Lecture 23: Labor (Part 3)
+- Lecture 24: Credit (Part 1)
+- Lecture 25: Credit (Part 2)
+
+### MIT 14.772 Development Economics： Macroeconomics, Spring 2013 (24 lectures)
+- 1. Finance, Growth, and Volatility
+- 10. Dynamic Financial Constraints
+- 11. Evaluation of a Large Scale Microfinance Experiment
+- 12. From Reduced Form to Structural Evaluation
+- 2. Micro-Founded Macro Models
+- 3. Growth, TFP, and Inequality
+- 4. Growth, TFP, Domestic and International Capital Flows
+- 5. Measurement in Development
+- 6. Insurance
+- 7. Capital Asset Pricing
+- ** 7. Capital Asset Pricing
+- 8. Macro Approaches to Consumption Smoothing and Risk Sharing
+- 9. Labor and Development
+
+### MIT Abdul Latif Jameel Poverty Action Lab Executive Training (16 lectures)
+- Ses 1 | MIT Abdul Latif Jameel Poverty Action Lab Executive Training
+- Ses 2 | MIT Abdul Latif Jameel Poverty Action Lab Executive Training
+- Ses 3 | MIT Abdul Latif Jameel Poverty Action Lab Executive Training
+- Ses 4 | MIT Abdul Latif Jameel Poverty Action Lab Executive Training
+- Ses 5 | MIT Abdul Latif Jameel Poverty Action Lab Executive Training
+- Ses 6 | MIT Abdul Latif Jameel Poverty Action Lab Executive Training
+- Ses 7 | MIT Abdul Latif Jameel Poverty Action Lab Executive Training
+- Ses 8 | MIT Abdul Latif Jameel Poverty Action Lab Executive Training
+
+### MIT RES.14-004 Seven Questions About Tariffs That Everyone Should Know The Answer To (2 lectures)
+- Seven Questions About Tariffs That Everyone Should Know
+

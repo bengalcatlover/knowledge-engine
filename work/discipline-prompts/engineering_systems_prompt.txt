@@ -1,0 +1,71 @@
+You are creating a discipline knowledge index for: Engineering Systems
+Broad category: Engineering
+Total courses: 5
+Total lecture units: 70
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT ESD.051J Engineering Innovation and Design, Fall 2012 (4 lectures)
+- Instructor Interview: Grading a Design Course
+- Instructor Interview: Online Student Forum
+
+### MIT ESD.290 Special Topics in Supply Chain Management (4 lectures)
+- Lec 5 | Special Topics in Supply Chain Management
+- Lec 6 | Special Topics in Supply Chain Management
+
+### MIT ESD.57 Technology-based Business Transformation, Fall 2007(Select Lectures) (12 lectures)
+- 10. Organization and cultural issues - building and managing a virtual organization
+- 3. Strategy formulation - the internet and the Web as major disruptive forces; Coming up with...
+- 4. Strategy formulation - key internal factors
+- 5. Operationalizing the strategy - key internal factors; Market and application segmentation,...
+- 6. Operationalizing the strategy - key external factors; Major role of market experimentation...
+- 9. The major role of marketing and communications in strategy formulation and execution;  The...
+- 9. The major role of marketing and communications in strategy formulation and execution; The...
+
+### MIT ESD.932 Engineering Ethics, Spring 2006 (46 lectures)
+- 10: Case Studies: Chernobyl, Three Mile Island (cont.)
+- 11: Case Studies: B. F. Goodrich A7D Air Force Brakes
+- 12: First Principles of Engineering Ethics
+- 13: Solving Ethical Problems: Discussion of Heroes, Journeys, and Virtue in Mythology
+- 14: Individual, Professional, and Institutional Values
+- 15: Leadership in Engineering and Industry
+- 16: Competency with Good Character
+- 17: Recap of Semester so Far; Introduction to Codes of Ethics
+- 18: Codes of Ethics (cont.)
+- 19: Safety; Introduction to Narrative Ethics
+- 20: Ethical Terminology
+- 21: Planning for Public Seminar; Terminology (cont.)
+- 22: Public Seminar on Narrative Ethics
+- 23: Human Flourishing
+- 24: Student Presentation
+- 3: Introduction to Ethics II; Initial Discussion of B. F. Goodrich Case
+- 4: Introduction to Philosophy of Engineering I
+- 5: Introduction to Philosophy of Engineering II
+- 6: Introduction to Engineering Ethics: Codes of Ethics, Whistle Blowing, Case Study Methodology
+- 7: Case Studies: Finish Challenger Case; Ford Pinto Case
+- 8: Case Studies: Chernobyl, Three Mile Island
+- 9: Case Studies (cont.): News Articles
+- Course Introduction | MIT ESD.932 Engineering Ethics, Spring 2006
+
+### MIT ESD.S43 Green Supply Chain Management, Spring 2014 (4 lectures)
+- Lecture 3: Reverse Logistics and Closing the Loop
+- Lecture 7: Multi-stakeholder Engagements
+

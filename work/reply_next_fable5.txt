@@ -1,0 +1,211 @@
+# 次期実装フェーズ提案: `gapfill` パイプライン
+
+「query_gap_detected までは記録できるが、その先が手作業」という状態なので、次フェーズは **gap → MIT検索 → 根拠検証 → 草案 → 重複検出 → レビュー待ち** を1本のバッチCLIにすることに絞ります。
+
+---
+
+## 1. 最小データモデルとイベント種別
+
+### SQLite 追加テーブル(4つだけ)
+
+```sql
+-- 自己生成質問。格子由来の質問はすべてここを通す
+CREATE TABLE questions (
+  question_id TEXT PRIMARY KEY,        -- sha256(正規化テキスト)で重複防止
+  text        TEXT NOT NULL,
+  origin      TEXT NOT NULL,           -- life|business|science|def|mech|boundary|failure|counter|interaction
+  depth       INTEGER NOT NULL,        -- 1=格子直生成, 2=草案からの派生
+  parent_id   TEXT,                    -- depth2の親(草案カードID or 質問ID)
+  status      TEXT NOT NULL DEFAULT 'new',  -- new|covered|weak|gap|processed|skipped
+  created_at  TEXT NOT NULL
+);
+
+-- 根拠。カードより先に独立レコードとして存在させる
+CREATE TABLE evidence (
+  evidence_id  TEXT PRIMARY KEY,
+  gap_event_id TEXT NOT NULL,          -- 追記ログのquery_gap_detectedを指す
+  url          TEXT NOT NULL,          -- 実際にfetchしたURLのみ
+  page_sha256  TEXT NOT NULL,          -- cache/pages/のファイルと一致必須
+  quote        TEXT NOT NULL,          -- fetch済み本文の部分文字列であることを機械検証
+  verified     INTEGER NOT NULL,       -- 部分文字列チェック合格=1。0のevidenceは草案に使用禁止
+  fetched_at   TEXT NOT NULL
+);
+
+-- 埋め込みキャッシュ(コスト対策の心臓部)
+CREATE TABLE embedding_cache (
+  text_sha256 TEXT NOT NULL,
+  model       TEXT NOT NULL,
+  vector      BLOB NOT NULL,
+  created_at  TEXT NOT NULL,
+  PRIMARY KEY (text_sha256, model)
+);
+
+-- 実行ごとの予算消費台帳
+CREATE TABLE run_budget (
+  run_id TEXT, resource TEXT,          -- gemini_embed|flash_lite|mit_search|http_fetch
+  used INTEGER, cap INTEGER,
+  PRIMARY KEY (run_id, resource)
+);
+```
+
+### 追記専用イベントログへの追加種別
+
+すべてのイベントに **`actor: human|auto`** と **`parents: [event_id]`**(由来連鎖)を必須フィールドとして持たせます。これが原則1(自己生成物は独立証拠にならない)の機械的な担保です。
+
+| イベント | actor | 内容 |
+|---|---|---|
+| `question_generated` | auto | origin, depth, question_id |
+| `retrieval_run` | 両方 | **`session_kind: organic\|synthetic` 必須** |
+| `query_gap_detected` | 既存 | question_id を parents に追加 |
+| `gap_triaged` | auto | verdict: covered/weak/gap, 判定方法(threshold/llm) |
+| `mit_search_run` | auto | クエリ、ヒットURL一覧 |
+| `evidence_recorded` | auto | verified フラグ付き |
+| `draft_created` | auto | card_path, evidence_ids |
+| `draft_validation_failed` | auto | 引用不一致など。草案は書かれない |
+| `dup_flagged` | auto | 類似カードID、cos類似度 |
+| `review_requested` | auto | レビュー待ち行列に追加 |
+| `card_accepted` / `card_rejected` | **human のみ** | CLIが actor=auto での書き込みを拒否 |
+
+草案カード(Markdown frontmatter)側の必須フィールド:
+
+```yaml
+status: draft            # パイプラインはこの値以外を書けない
+origin: synthetic        # 実利用gap由来なら organic
+gap_event_id: evt_...
+depth: 1
+sources:
+  - url: https://ocw.mit.edu/...
+    quote: "..."         # evidence.verified=1 のもののみ
+    evidence_id: ev_...
+```
+
+---
+
+## 2. 実行順(1バッチ = 1 run_id)
+
+```
+[格子] → 質問生成(depth1, 上限N)
+   │  question_generated
+   ▼
+[ローカル検索: BM25のみ]  ← 無料。ここで大半をふるい落とす
+   │  top1スコア ≥ θ_high → covered(終了)
+   │  θ_low〜θ_high の「弱層」だけ次へ
+   ▼
+[埋め込み検索]  ← 弱層の質問だけを1回のバッチ呼び出しで埋め込み。cache優先
+   │  cos ≥ θ_cos → covered / それ未満 → gap候補
+   │  境界域のみ Flash-Lite に「この抜粋で回答可能か」を1バッチ判定
+   │  query_gap_detected + gap_triaged
+   ▼
+[gap選別] 今回runで進めるのは上位K件(K=5)。残りは status=gap のまま滞留
+   ▼
+[MIT OCW検索] gap 1件につきクエリ1〜2本。結果URLをそのまま記録(生成しない)
+   │  mit_search_run
+   ▼
+[根拠確認] URLをfetch → cache/pages/に保存 → 引用抽出 →
+   │  quote が fetch本文の部分文字列であることを機械検証
+   │  合格のみ evidence_recorded(verified=1)。不合格なら草案生成に進まない
+   ▼
+[草案生成] Flash-Lite。入力=質問+verified引用のみ。出力をバリデータで検査:
+   │  ・sources のURLが evidence テーブルに実在するか
+   │  ・quote が evidence.quote と一致するか(捏造検出)
+   │  不合格 → draft_validation_failed、ファイル書かない
+   ▼
+[重複検出] 既存カード全埋め込み(キャッシュ済)と cos比較 + BM25タイトル照合
+   │  cos ≥ 0.85 → dup_flagged、frontmatterに duplicate_of を記入して _inbox/ へ
+   ▼
+[承認ゲート] _inbox/ に書き込み + review_requested + git commit(ブランチ or 単独commit)
+   人間が kb review accept/reject するまで一切先へ進まない
+```
+
+**depth制御**: 草案生成時に Flash-Lite が「派生質問」を出したら depth=2 として `questions` に記録だけする。**depth=2 の質問は同一runでは処理せず、次回runで処理可。depth=2 の草案から派生した質問(depth=3相当)は記録すらせず捨てる。** これで連鎖は機械的に深度2で止まります。
+
+---
+
+## 3. 自己生成ログと実利用ログの分離
+
+**分離方法**: 新テーブルではなく、`retrieval_run` と共活性化ログの全行に `session_kind` カラムを付ける(既存ログはマイグレーションで `organic` を埋める)。Composition候補を算出するクエリは `WHERE session_kind='organic'` を固定でハードコードし、テストで担保する。
+
+**synthetic ログから候補化してよいもの / いけないもの**:
+
+| 用途 | 可否 | 理由 |
+|---|---|---|
+| gap検出(検索が空振りした事実) | ✅ | 「インデックスに答えがない」は自己生成でも客観的事実 |
+| 埋め込みキャッシュの温め | ✅ | 副作用なし |
+| 重複検出の入力 | ✅ | 既存カードとの機械的比較 |
+| `_inbox/` 草案の生成 | ✅ ただし `origin: synthetic` を明記、人間承認必須 | 原則3 |
+| Composition候補スコアリング | ❌ | 原則1,2。synthetic共活性化は「hint」リストとして別出力してよいが、昇格には organic 共活性化 or 人間判断が必要 |
+| 需要・重要度の証拠 | ❌ | 自己生成質問の頻度は需要ではない |
+| 承認済みカードの根拠 | ❌ | 根拠は MIT OCW の verified evidence のみ |
+
+要するに: **synthetic ログは「穴の座標」を教えるだけで、「穴を埋める価値」も「埋めた内容の正しさ」も証明しない。** 価値判断は人間、正しさは verified evidence が担う。
+
+---
+
+## 4. コスト上限・キャッシュ・停止条件
+
+`config.yaml` に per-run の予算を宣言し、`run_budget` 台帳で消費を数え、超えたら `run_halted(reason=budget)` を記録して正常終了:
+
+```yaml
+budget:
+  questions_per_run: 20        # depth1生成の上限
+  embed_batch_calls: 1         # 埋め込みAPIは1runにつき1バッチ呼び出しまで
+  flash_lite_calls: 7          # triage 1バッチ + 草案 5 + 予備 1
+  mit_search_queries: 8
+  http_fetch: 10
+  gaps_processed_per_run: 5    # K
+thresholds:
+  bm25_covered: θ_high         # 初回は33枚に対して実測して較正
+  cos_covered: 0.75
+  dup_cos: 0.85
+```
+
+- **キャッシュ**: 埋め込みは `(model, sha256)` キーで永続。fetchページは `cache/pages/<sha256>.html` に保存し30日再利用。MIT検索結果もクエリhashで30日キャッシュ。**同一入力での再実行はAPI呼び出しゼロが仕様**(受け入れ基準に含める)。
+- **重複質問の抑制**: question_id = sha256(正規化テキスト)。既知IDは `skipped`。
+- **停止条件**: ①予算枯渇 ②gap候補ゼロ ③fetch失敗のリトライは1回まで、失敗gapは `status=gap` に戻して次回へ ④`_inbox/` のレビュー待ちが上限(例: 15枚)を超えたら新規草案生成を停止 — **人間の承認速度がパイプラインの律速**、という背圧をここで入れる。これが実質的に暴走防止になります。
+
+---
+
+## 5. 最初に実装するCLIと受け入れ基準
+
+### `kb gapfill run [--dry-run] [--run-id X]`
+
+上記パイプライン全体を1コマンドで実行。`--dry-run` はAPI・fetch・ファイル書き込みなしで、実行計画と予算見積もりだけ出力。
+
+### `kb review list | show <id> | accept <id> | reject <id> --reason "..."`
+
+accept は人間専用: ファイルを `concepts/` へ移動、`status: accepted` に書き換え、`card_accepted(actor=human)` を記録、git commit。
+
+### 受け入れ基準(すべて自動テスト可能)
+
+1. **ゲート不可侵**: パイプラインが `_inbox/` 以外に書き込んだら失敗。frontmatter に `status: draft` 以外を書いたら失敗。`card_accepted` を actor=auto で記録しようとしたら例外。
+2. **捏造ゼロ**: 生成カードの全 sources について、URLが evidence に実在し、quote が cache済みfetch本文の部分文字列であること。故意に偽引用を返すモックLLMでテストし、`draft_validation_failed` になりファイルが生成されないこと。
+3. **冪等性**: 同一入力で2回目の run は API呼び出し0回・新規草案0枚・run_budget の全 used=0(キャッシュヒットのみ)。
+4. **予算遵守**: 予算を1に絞った設定で実行し、`run_halted(budget)` が記録され、超過呼び出しが発生しないこと。
+5. **系譜完全性**: 任意の草案から parents を辿って `draft_created → evidence_recorded → mit_search_run → query_gap_detected → question_generated` が復元できること。
+6. **分離**: run 実行後、Composition候補クエリの結果が run 前と変わらないこと(synthetic 共活性化が混入していない証明)。
+7. **深度**: depth=2 質問が同一runで処理されず、depth=3相当が記録されないこと。
+8. **重複**: 既存33枚のいずれかとほぼ同文の質問を種にした場合、新規カードではなく `dup_flagged` + `duplicate_of` 付き草案になること。
+
+---
+
+## 6. この段階で絶対に作らないもの
+
+- **自動承認・自動昇格**: `_inbox/` から出す処理の自動化は一切なし。「重複だから自動マージ」も含めて禁止。
+- **synthetic共活性化によるComposition昇格・スコアリング**: hint出力止まり。
+- **深度3以上の連鎖、常駐エージェント、cron的自律ループ**: 実行は人間が叩くバッチのみ。
+- **既存acceptedカードの自動編集**: gapfillは新規草案しか作らない。既存カードの改訂提案が出ても記録のみ。
+- **MIT OCWの一括クロール・全文取り込み**: fetchは gap 単位で最大10ページ。fetch失敗時に「引用なし草案」を作る逃げ道も作らない(草案自体を中止)。
+- **高額モデルのパイプライン組み込み**: 高額モデルは θ 較正や設計レビューの手動セッション限定。
+- **カード間関係エッジの事実としての自動生成、質問の重要度スコア、ベクタDB移行**: 全部次フェーズ以降。
+
+---
+
+### 実装順(依存関係順)
+
+1. スキーマmigration + `session_kind` 埋め + 予算台帳(半日)
+2. 質問生成→BM25→埋め込みtriage(キャッシュ込み)(1日)
+3. MIT検索→fetch→引用部分文字列検証(1日)
+4. 草案生成+バリデータ+重複検出(1日)
+5. `kb review` と受け入れテスト一式(1日)
+
+このフェーズの成功指標は「草案枚数」ではなく、**受け入れ基準1〜7が全部グリーンなまま、人間が accept したくなる草案が数枚出ること**です。量は承認ゲートの背圧が自然に決めます。

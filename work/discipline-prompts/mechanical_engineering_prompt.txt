@@ -1,0 +1,169 @@
+You are creating a discipline knowledge index for: Mechanical Engineering
+Broad category: Engineering
+Total courses: 10
+Total lecture units: 228
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 2.003J Dynamics and Control I, Fall 2007 (18 lectures)
+- 1. Course information; Begin kinematics
+- 10. Three cases, rolling disc problem
+- 2. The "spider on a Frisbee" problem
+- 3. Pulley problem, angular velocity, magic formula
+- 4. Magic and super-magic formulae
+- ** 4. Magic and super-magic formulae
+- 5. Super-magic formula, degrees of freedom, non-standard coordinates, kinematic constraints
+- 7. Impulse, skier separation problem
+- 8. Single particle; Two particles
+- 9. Dumbbell problem, multiple particle systems, rigid bodies, derivation of torque = I*alpha
+
+### MIT 2.003SC Engineering Dynamics, Fall 2011 (20 lectures)
+- 1. History of Dynamics; Motion in Moving Reference Frames
+- 10. Equations of Motion, Torque, Angular Momentum of Rigid Bodies
+- 12. Problem Solving Methods for Rotating Rigid Bodies
+- 2. Newton's Laws & Describing the Kinematics of Particles
+- 26. Response of 2-DOF Systems by the Use of Transfer Functions
+- 4. Movement of a Particle in Circular Motion w/ Polar Coordinates
+- 6. Torque & the Time Rate of Change of Angular Momentum
+- 7. Degrees of Freedom, Free Body Diagrams, & Fictitious Forces
+- R2. Velocity and Acceleration in Translating and Rotating Frames
+- R5. Equations of Motion
+
+### MIT 2.087 Engineering Mathematics： Linear Algebra and ODEs, Fall 2014 (4 lectures)
+- 2. First-Order Equations
+- ** 2. First-Order Equations
+- 3. First-Order Equations (continued)
+
+### MIT 2.43 Advanced Thermodynamics, Spring 2024 (10 lectures)
+- Lecture 12: Ideal Mixture Behavior; Work from Reversible Mixing; Entropy of Irreversible Mixing
+- Lecture 13: The Gibbs Paradox; Shannon Information Entropy; Single Quantum Particle in a Box
+- Lecture 2: Second Law and Entropy; Adiabatic Availability; Maximum Entropy Principle
+- Lecture 6: Free Energies, Available Energies, and Stability Conditions
+- Lecture 9: Minimum Work of Partitioning Small Systems; The Gibbs Phase Rule; The Van der Waals Model
+
+### MIT 2.57 Nano-to-Micro Transport Processes, Spring 2012 (50 lectures)
+- 1. Intro to Nanotechnology, Nanoscale Transport Phenomena
+- 10. Fundamental of Statistical Thermodynamics
+- 11. Energy Transfer by Waves: Plane Waves
+- 12. EM Waves: Reflection at a Single Interface
+- 13. EM Wave Propagation Through Thin Films & Multilayers
+- 14. Wave Phenomena and Landauer Formalism
+- 15. Particle Description, Liouville & Boltzmann Equations
+- 16. Fermi Golden Rule and Relaxation Time Approximation
+- 17. Solutions to Boltzmann Equation: Diffusion Laws
+- 18. Electron Transport and Thermoelectric Effects
+- 19. Classical Size Effects, Parallel Direction
+- 2. Characteristic Time and Length, Simple Kinetic Theory
+- 20. Classical Size Effects, Perpendicular Direction
+- 21. Slip Condition, Coupled Energy Transport & Conversion
+- 22. PN Junction, Diode and Photovoltaic Cells
+- 23. Liquids: Brownian Motion and Forces in Liquids
+- 24. Electrical Double Layer, Size Effects in Phase Change
+- 25. Statistical Foundation for Molecular Dynamics Simulation
+- 3. Schrödinger Equation and Material Waves
+- 4. Solutions to Schrödinger Equation, Energy Quantization
+- 5. Electronic Levels in One-Dimensional Lattice Chain
+- 6. Crystal Bonding & Electronic Energy Levels in Crystals
+- 7. Phonon Energy Levels in Crystal and Crystal Structures
+- 8. Density of States and Statistical Distributions
+- 9. Specific Heat and Planck's Law
+
+### MIT 2.627 Fundamentals of Photovoltaics, Fall 2011 (52 lectures)
+- 1. Introduction (2.627 Fundamentals of Photovoltaics)
+- 10. Wafer Silicon-Based Solar Cells, Part I
+- 11. Wafer Silicon-Based Solar Cells, Part II
+- 12. Thin Films: Material Choices & Manufacturing, Part I
+- 13. Thin Films: Material Choices & Manufacturing, Part II
+- 14. PV Efficiency: Measurement and Theoretical Limits
+- 15. Advanced Concepts
+- 16. Solar Cell Characterization
+- 17. Modules, Systems, and Reliability
+- 18. Cost, Price, Markets, & Support Mechanisms, Part I
+- 19. Cost, Price, Markets, & Support Mechanisms, Part II
+- 2. The Solar Resource
+- 20. R&D Investment & Innovation in PV
+- 3. Light Absorption and Optical Losses
+- ** 3. Light Absorption and Optical Losses
+- 4. Charge Excitation
+- 5. Charge Separation, Part I: Diode
+- 6. Charge Separation, Part II: Diode Under Illumination
+- 7. Toward a 1D Device Model, Part I: Device Fundamentals
+- 8. Toward a 1D Device Model, Part II: Material Fundamentals
+- 9. Charge Extraction
+- ** 9. Charge Extraction
+- Student Project Presentations - Part 1
+- Student Project Presentations - Part 2
+- ** Student Project Presentations - Part 2
+- Tutorial: Doping
+- ** Tutorial: Doping
+- Tutorial: Photoconductivity
+- Tutorial: Solar Cell Operation
+- Tutorial: Texturing
+- ... and 1 more
+
+### MIT 2.71 Optics, Spring 2009 (8 lectures)
+- Holographic Tomography | MIT 2.71 Optics, Spring 2009
+- Lec 15 | MIT 2.71 Optics, Spring 2009
+- Lec 3 | MIT 2.71 Optics, Spring 2009
+- Lec 9 | MIT 2.71 Optics, Spring 2009
+
+### MIT 2.830J, Control of Manufacturing Processes S08 (44 lectures)
+- Lec 1 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 10 | MIT 2.830J Control of Manufacturing Processes, S08
+- ** Lec 10 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 11 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 12 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 13 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 14 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 15 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 16 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 17 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 18 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 19 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 2 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 20 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 21 | MIT 2.830J Control of Manufacturing Processes, S08
+- ** Lec 21 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 22 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 3 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 4 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 5 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 6 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 7 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 8 | MIT 2.830J Control of Manufacturing Processes, S08
+- Lec 9 | MIT 2.830J Control of Manufacturing Processes, S08
+- ** Lec 9 | MIT 2.830J Control of Manufacturing Processes, S08
+
+### MIT RES.2-006 Girls Who Build Cameras, Summer 2016 (20 lectures)
+- Closing Remarks
+- Engineering M13 Bacteriophage NIR-II Platforms for Tumor Imaging Applications
+- Girls Who Build Cameras Promo
+- Image Processing
+- Inspiring the Next Generation: Women's Technology Program at MIT
+- Instructor Insights: Image Processing Activity
+- Intro to Digital Cameras
+- SWE (Society of Women Engineers)
+- Welcome to Girls Who Build Cameras, Summer 2016
+- What Cameras Can Do for You… and How They Do It!
+
+### Testing Student-designed Remotely Operated Vehicles for MIT 2.00AJ Exploring Sea, Space, & Earth： Fundamentals of Engineering Design, Spring 2009 (2 lectures)
+- River Testing Video
+

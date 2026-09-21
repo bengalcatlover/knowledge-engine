@@ -1,0 +1,23 @@
+card_id: K-0007
+card_revision: v2
+claims:
+  - id: K-0007-C1
+    type: lecture_derived
+    text: "平均処置効果は比較によって扱う。"
+    evidence:
+      source_id: mitocw:zdotUAxiPGM
+      locator: "MIT OCW 17. Reinforcement Learning, Part 2"
+      url: "https://www.youtube.com/watch?v=zdotUAxiPGM"
+      quote: "the average treatment effect is inherently comparative"
+    disposition: supported_by_search_excerpt
+  - id: K-0007-C2
+    type: lecture_derived
+    text: "無作為割付が因果推定を可能にする。"
+    evidence: null
+    disposition: unresolved_needs_primary_locator
+  - id: K-0007-A1
+    type: application_hypothesis
+    text: "RAGや自己修復の変更をカナリア環境で比較する。"
+    evidence: null
+    disposition: explicitly_unverified
+recommendation: defer_until_C2_has_a_primary_locator

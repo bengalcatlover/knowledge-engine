@@ -1,0 +1,107 @@
+{
+  "model": "claude-haiku-4-5-20251001",
+  "calls": 8,
+  "estimated_usd": 0.0040160000000000005,
+  "calibration_passed": 5,
+  "calibration_total": 6,
+  "results": [
+    {
+      "id": "support",
+      "quote": "The experiment recorded 12 successful trials out of 20 trials.",
+      "claim": "The experiment recorded 12 successes in 20 trials.",
+      "expected": "yes",
+      "synthetic": true,
+      "result": {
+        "verdict": "yes",
+        "reason": "The claim directly restates the source quote with equivalent meaning: '12 successful trials out of 20 trials' is the same as '12 successes in 20 trials.'"
+      },
+      "passed": true
+    },
+    {
+      "id": "causation",
+      "quote": "In an observational sample, X and Y were correlated; causality was not established.",
+      "claim": "X causes Y.",
+      "expected": "no",
+      "synthetic": true,
+      "result": {
+        "verdict": "no",
+        "reason": "The source explicitly states causality was not established. Correlation alone does not entail causation, and the source directly negates the causal claim."
+      },
+      "passed": true
+    },
+    {
+      "id": "negation",
+      "quote": "No statistically significant difference was detected; the study cannot establish equivalence.",
+      "claim": "The treatments are equivalent.",
+      "expected": "no",
+      "synthetic": true,
+      "result": {
+        "verdict": "no",
+        "reason": "The source explicitly states no statistically significant difference was detected AND that the study cannot establish equivalence. The claim asserts equivalence, which directly contradicts the source's statement that equivalence cannot be established."
+      },
+      "passed": true
+    },
+    {
+      "id": "scope",
+      "quote": "For two bidders with bids in {0,1,2}, truthful bidding was weakly dominant.",
+      "claim": "Truthful bidding is weakly dominant for any number of bidders and arbitrary continuous bids.",
+      "expected": "insufficient",
+      "synthetic": true,
+      "result": {
+        "verdict": "no",
+        "reason": "The source specifies a limited case (two bidders, discrete bids in {0,1,2}), while the claim generalizes to any number of bidders and arbitrary continuous bids. The source does not support this broader scope."
+      },
+      "passed": false
+    },
+    {
+      "id": "hypothesis",
+      "quote": "We hypothesize memory may improve completion. No experiment has been run.",
+      "claim": "Memory modules experimentally improve task completion.",
+      "expected": "no",
+      "synthetic": true,
+      "result": {
+        "verdict": "no",
+        "reason": "The source explicitly states this is an untested hypothesis with no experiment run. The claim asserts an experimental result, which directly contradicts the source's acknowledgment that no experiment has been conducted."
+      },
+      "passed": true
+    },
+    {
+      "id": "truncated",
+      "quote": "The study evaluates a random sampling method and shows that the algorithm is",
+      "claim": "The algorithm is 15-competitive.",
+      "expected": "insufficient",
+      "synthetic": true,
+      "result": {
+        "verdict": "insufficient",
+        "reason": "The source quote is truncated and does not complete the statement about what the algorithm is. The claim specifies a particular competitive ratio (15-competitive), but the source provides no information about this specific value."
+      },
+      "passed": true
+    },
+    {
+      "id": "E-AUTO-10_1145-1566374_1566402#factory-1",
+      "quote": "Since random sampling is a popular approach for auctions that aims to maximize the seller's revenue, this method has been analyzed further by Feige, Flaxman, Hartline and Kleinberg, who have shown that it is 15-competitive in the worst case",
+      "claim": "Random sampling is a popular approach for auctions that aims to maximize the seller's revenue.",
+      "expected": null,
+      "synthetic": false,
+      "result": {
+        "verdict": "yes",
+        "reason": "The claim is directly stated in the source quote as an introductory premise ('Since random sampling is a popular approach for auctions that aims to maximize the seller's revenue'). This portion is explicitly asserted before the subsequent analysis by the cited researchers."
+      },
+      "passed": null
+    },
+    {
+      "id": "E-AUTO-10_1145-1566374_1566402#factory-2",
+      "quote": "this method has been analyzed further by Feige, Flaxman, Hartline and Kleinberg, who have shown that it is 15-competitive in the worst case",
+      "claim": "The analysis shows that the random sampling approach is 15-competitive in the worst case.",
+      "expected": null,
+      "synthetic": false,
+      "result": {
+        "verdict": "insufficient",
+        "reason": "The source identifies 'this method' as analyzed by the named researchers but does not explicitly confirm that 'this method' refers to a 'random sampling approach.' The claim's specific characterization of the method requires information not provided in the quote."
+      },
+      "passed": null
+    }
+  ],
+  "automatic_promotion_enabled": false,
+  "limit": "Six synthetic controls are not an accuracy estimate. Real-source verdicts are advisory only; provenance independence remains unresolved."
+}

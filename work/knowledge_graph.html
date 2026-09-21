@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>あきらぐ — Knowledge Engine Graph</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', sans-serif; background: #0a0a1a; color: #e0e0e0; }
+#graph { width: 100vw; height: 100vh; }
+#legend {
+  position: fixed; top: 16px; left: 16px; background: rgba(10,10,26,0.92);
+  border: 1px solid #333; border-radius: 8px; padding: 16px; z-index: 10;
+  font-size: 13px; min-width: 200px;
+}
+#legend h2 { font-size: 16px; margin-bottom: 10px; color: #fff; }
+.legend-item { display: flex; align-items: center; margin: 5px 0; }
+.legend-dot { width: 14px; height: 14px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; }
+#stats {
+  position: fixed; top: 16px; right: 16px; background: rgba(10,10,26,0.92);
+  border: 1px solid #333; border-radius: 8px; padding: 16px; z-index: 10;
+  font-size: 13px;
+}
+#stats h2 { font-size: 16px; margin-bottom: 10px; color: #fff; }
+#stats .stat { margin: 4px 0; }
+#stats .val { color: #3498db; font-weight: bold; }
+#info {
+  position: fixed; bottom: 16px; left: 16px; right: 16px;
+  background: rgba(10,10,26,0.95); border: 1px solid #333;
+  border-radius: 8px; padding: 12px 16px; z-index: 10;
+  font-size: 12px; display: none; max-height: 120px; overflow-y: auto;
+}
+#info h3 { color: #f39c12; margin-bottom: 4px; }
+#edge-legend {
+  position: fixed; bottom: 16px; right: 16px; background: rgba(10,10,26,0.92);
+  border: 1px solid #333; border-radius: 8px; padding: 12px; z-index: 10;
+  font-size: 11px;
+}
+#edge-legend h3 { font-size: 13px; margin-bottom: 6px; color: #fff; }
+.edge-item { display: flex; align-items: center; margin: 3px 0; }
+.edge-line { width: 20px; height: 3px; margin-right: 6px; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div id="legend">
+  <h2>あきらぐ Knowledge Graph</h2>
+  <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>基礎科学 (Foundation)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3498db"></div>科学 (Science)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div>世界モデル (Universe)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div>実行 (Object)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div>実践 (Practice)</div>
+</div>
+
+<div id="stats">
+  <h2>Stats</h2>
+  <div class="stat">Nodes: <span class="val" id="s-nodes">-</span></div>
+  <div class="stat">Edges: <span class="val" id="s-edges">-</span></div>
+  <div class="stat">Edge/Node: <span class="val" id="s-ratio">-</span></div>
+  <div class="stat">Domains: <span class="val" id="s-domains">-</span></div>
+</div>
+
+<div id="edge-legend">
+  <h3>Edge Types</h3>
+  <div class="edge-item"><div class="edge-line" style="background:#3498db"></div>COMPLEMENTS</div>
+  <div class="edge-item"><div class="edge-line" style="background:#2ecc71"></div>HAS_SCOPED_INSTANCE</div>
+  <div class="edge-item"><div class="edge-line" style="background:#e74c3c"></div>DERIVES_FROM</div>
+  <div class="edge-item"><div class="edge-line" style="background:#9b59b6"></div>ABOUT</div>
+  <div class="edge-item"><div class="edge-line" style="background:#f39c12"></div>ABSTRACTS_FROM</div>
+  <div class="edge-item"><div class="edge-line" style="background:#1abc9c"></div>IS_A</div>
+  <div class="edge-item"><div class="edge-line" style="background:#bdc3c7"></div>Other</div>
+</div>
+
+<div id="info"></div>
+<div id="graph"></div>
+
+<script>
+fetch('graph_data.json').then(r => r.json()).then(data => {
+  document.getElementById('s-nodes').textContent = data.nodes.length;
+  document.getElementById('s-edges').textContent = data.edges.length;
+  document.getElementById('s-ratio').textContent = (data.edges.length / data.nodes.length).toFixed(2);
+
+  // Count domains
+  const layers = {};
+  data.nodes.forEach(n => { layers[n.group] = (layers[n.group]||0) + 1; });
+  document.getElementById('s-domains').textContent = Object.keys(layers).length + ' layers';
+
+  // Enhance nodes for vis.js
+  data.nodes.forEach(n => {
+    n.borderWidth = 2;
+    n.borderWidthSelected = 3;
+    n.color = {
+      background: n.color,
+      border: n.color,
+      highlight: { background: '#fff', border: n.color },
+      hover: { background: n.color, border: '#fff' },
+    };
+    n.shadow = { enabled: true, color: n.color.background || n.color, size: 6, x: 0, y: 0 };
+  });
+
+  const container = document.getElementById('graph');
+  const network = new vis.Network(container, {
+    nodes: new vis.DataSet(data.nodes),
+    edges: new vis.DataSet(data.edges),
+  }, {
+    physics: {
+      solver: 'forceAtlas2Based',
+      forceAtlas2Based: {
+        gravitationalConstant: -40,
+        centralGravity: 0.008,
+        springLength: 120,
+        springConstant: 0.04,
+        damping: 0.4,
+        avoidOverlap: 0.5,
+      },
+      stabilization: { iterations: 300 },
+    },
+    nodes: {
+      shape: 'dot',
+      font: { color: '#ccc', face: 'Segoe UI', size: 10 },
+    },
+    edges: {
+      smooth: { type: 'continuous' },
+      font: { size: 0 },
+    },
+    interaction: {
+      hover: true,
+      tooltipDelay: 100,
+      navigationButtons: false,
+      keyboard: true,
+    },
+    layout: { improvedLayout: true },
+  });
+
+  // Click event
+  network.on('click', params => {
+    const info = document.getElementById('info');
+    if (params.nodes.length > 0) {
+      const nodeId = params.nodes[0];
+      const node = data.nodes.find(n => n.id === nodeId);
+      const connected = data.edges.filter(e => e.from === nodeId || e.to === nodeId);
+      info.style.display = 'block';
+      info.innerHTML = `<h3>${node.id} — ${node.label}</h3>
+        <div>Layer: ${node.group} | Connections: ${connected.length}</div>
+        <div style="margin-top:4px;color:#aaa">
+          ${connected.map(e => {
+            const other = e.from === nodeId ? e.to : e.from;
+            const otherNode = data.nodes.find(n => n.id === other);
+            return `→ ${e.title}: ${other} (${otherNode ? otherNode.label : '?'})`;
+          }).join('<br>')}
+        </div>`;
+    } else {
+      info.style.display = 'none';
+    }
+  });
+});
+</script>
+</body>
+</html>

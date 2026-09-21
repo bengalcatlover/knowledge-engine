@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T09:13:21.295005+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_3afdc0aa47093bfc",
+      "question_id": "q_c9504364c4889918",
+      "question": "複数部門の意思決定と合意形成を設計する際に、オークション理論と収入等価性をどう使い、何を検証すべきか",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_c9504364c4889918",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "オークション理論の既存草案に直接対応する未処理状態を修復する。",
+      "related_cards": [
+        "K-0002"
+      ],
+      "external_query": null
+    },
+    {
+      "gap_id": "gap_c67abaad45f9118d",
+      "question_id": "q_fd7a6decf916d34d",
+      "question": "小さな遅延が繰り返されることで、業務フロー全体が不安定化する条件をどう見つけるか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_fd7a6decf916d34d",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "遅延を含むフィードバック安定性は既存のフィードバック制御草案の境界条件に対応する。",
+      "related_cards": [
+        "K-0011"
+      ],
+      "external_query": "feedback delay stability"
+    },
+    {
+      "gap_id": "gap_4cfce538d0b4ba39",
+      "question_id": "q_1c6d94ff693c14c1",
+      "question": "複数部門が各自の最適化を続けた結果、全体最適を失う問題をどう記述するか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_1c6d94ff693c14c1",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "部門間の局所最適化と協調は既存の戦略的相互作用草案の適用問題である。",
+      "related_cards": [
+        "K-0003"
+      ],
+      "external_query": "game theory coordination"
+    }
+  ],
+  "plan_id": "plan_289c22152b7c",
+  "input_hash": "289c22152b7c697063c70a1cb955cbf19ae40351aaecac695f13f25b38bb7301"
+}

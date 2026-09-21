@@ -1,0 +1,58 @@
+You are creating a discipline knowledge index for: Data, Systems & Society
+Broad category: Computing & Engineering
+Total courses: 1
+Total lecture units: 90
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT IDS.333 Risk and Decision Analysis, Fall 2021 (90 lectures)
+- Unit 10: Utility Analysis and Multidimensional Evaluation, Video 1: Is Optimization Possible?
+- Unit 10: Utility Analysis and Multidimensional Evaluation, Video 2: Diminishing Marginal Utility
+- Unit 10: Utility Analysis and Multidimensional Evaluation, Video 3: Conditions for Value Function
+- Unit 10: Utility Analysis and Multidimensional Evaluation, Video 4: Consequences
+- Unit 10: Utility Analysis and Multidimensional Evaluation, Video 5: There's No Valid Group Utility
+- Unit 10: Utility Analysis and Multidimensional Evaluation, Video 6: Dominated Solutions
+- Unit 10: Utility Analysis and Multidimensional Evaluation, Video 7: Robustness and Take-aways
+- Unit 11: De-Salt and LNG Cases, Video 1: De-Salt Plant Australia
+- Unit 11: LNG Case 1, Video 2: Introduction
+- Unit 11: LNG Case 2, Video 3: Initial Analysis
+- Unit 11: LNG Case 3, Video 4: Learning effects
+- Unit 11: LNG Case 4, Video 5: Final Analysis
+- Unit 2: The Forecast is "Always" wrong, Video 4: Common Forecasting Process Inherently Flawed
+- Unit 2: the Forecast is always wrong, Video 1: Cost Estimates
+- Unit 2: The Forecast is Always wrong, Video 3: Porcupine Graphs
+- Unit 2: The Forecast is Always wrong, Video 5: Flaw of Averages 1-the Concept
+- Unit 2: The Forecast is Always wrong, Video 6: Flaw of Averages 2-the Consequences
+- Unit 2: The Forecast is ‘Always’ wrong, Video 2: Demand Forecasts
+- Unit 4: Parking Garage Case Example, Video 1: Introduction
+- Unit 4: Parking Garage Case Example, Video 2: Logic of Analysis
+- Unit 4: Parking Garage Case Example, Video 3: Recognizing Uncertainty, Simulation
+- Unit 4: Parking Garage Case Example, Video 4: Adding Flexibility
+- Unit 4: Parking Garage Case Example, Video 5: Design to Manage Uncertainties
+- Unit 4: Parking Garage Case Example, Video 6: Flexibility is Win-Win
+- Unit 5: Mechanics of Simulation, Video 1: Concept—What Is Needed
+- Unit 5: Mechanics of Simulation, Video 2: Recommended Process
+- Unit 5: Mechanics of Simulation, Video 3: Outcomes and Target Curves
+- Unit 5: Mechanics of Simulation, Video 4: Decision Rules and Unit Closure
+- Unit 5: Mechanics of Simulation, Video 5: Physical Situation
+- Unit 5: Mechanics of Simulation, Video 6: Simulation and Value Flexibility "on" Project
+- ... and 15 more
+

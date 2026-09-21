@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T09:06:20.981354+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_a20a4945fcd0268c",
+      "question_id": "q_51e99fca56da7dfa",
+      "question": "在庫不足を避けるために発注量を増やすほど、かえって欠品と余剰が交互に大きくなる現象をどう説明・検証するか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_51e99fca56da7dfa",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "inventory oscillation feedback"
+    },
+    {
+      "gap_id": "gap_99fa217f574d8d0a",
+      "question_id": "q_03afcbc2a5170f8c",
+      "question": "売上KPIを改善した施策が顧客価値を損なっていないかを、どのような構造で検証すべきか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_03afcbc2a5170f8c",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "incentives measurement externalities"
+    },
+    {
+      "gap_id": "gap_cd011d803f335af4",
+      "question_id": "q_f1defac008552589",
+      "question": "過去の成功パターンが環境変化後に失敗へ反転する兆候を、どのように検出するか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_f1defac008552589",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "nonstationary change detection"
+    }
+  ],
+  "plan_id": "plan_d35b532e9263",
+  "input_hash": "d35b532e9263e961a76a09b8b0cf873e3a5806ab1e933eabc1ee68e517d557b8"
+}

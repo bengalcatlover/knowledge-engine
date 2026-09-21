@@ -1,0 +1,209 @@
+# 知識エンジン設計図 v1.0
+
+## blueprint
+
+```yaml
+schema_version: 1.0
+設計原則:
+  - 根拠は下から上へ流れる（evidences）。抽象は上から下へ追跡可能（abstracted_from）
+  - 「層」はタグではなく、ノード型・必須属性・状態機械が異なる別テーブル
+  - 応用・推測は L5 の HYP ノードに隔離。検証通過まで L2/L3 に混入禁止
+
+共通状態機械:
+  states: [draft, evidenced, candidate, canonical, rejected]
+  仮説専用: [proposed, testing, supported, refuted]   # HYPのみ。canonicalには直接なれない
+
+layers:
+
+  L1_基礎科学:
+    定義: 経験に依存せず証明・定義のみで閉じる形式体系（数学・論理・確率・計算理論）
+    ノード型:
+      AXM: 公理
+      THM: 定理
+      DEF: 形式的定義
+    必須属性:
+      - id, statement_formal（記号化された主張）
+      - proof_source（証明の所在。L4のSRCノードIDで指す）
+      - assumptions[]（依存する AXM/DEF の ID）
+      - status
+    許可エッジ:
+      - derives_from → L1        # 定理間の導出関係
+      - evidenced_by → L4        # 証明が載る一次資料
+    禁止: L3/L5 への直接エッジ（科学を経由せず世界を語らせない）
+
+  L2_科学:
+    定義: 反証条件を持つ経験的理論・法則・手法。falsification_condition が空なら登録拒否
+    ノード型:
+      THY: 理論
+      LAW: 法則・定型化された事実
+      MTH: 手法（測定・検証のプロトコル雛形）
+    必須属性:
+      - id, claim（自然言語の主張）
+      - falsification_condition（何が観測されたら棄却か）
+      - formal_basis[]（依拠するL1ノード。無ければ明示的にnull+理由）
+      - domain_of_validity（成立範囲）
+      - status
+    許可エッジ:
+      - formalized_by → L1
+      - abstracted_from → L3/L4   # どの世界モデル・事例から抽象したか
+      - evidenced_by → L4
+      - refuted_by / supported_by → L5(VER)
+
+  L3_宇宙:
+    定義: 特定ドメインの世界モデル。「この領域はこの因果構造で動く」という
+          複数理論の合成体。理論そのものではなく理論の適用済み地図
+    ノード型:
+      WM:  ドメインモデル（因果グラフ本体）
+      CAU: 因果リンク（WM内の1本の矢印を独立ノード化したもの）
+      BND: 境界条件（モデルが壊れる条件）
+    必須属性:
+      - id, domain, scope
+      - instantiates[]（適用しているL2ノードID。空なら登録拒否）
+      - causal_claims[]（CAUのリスト）
+      - confidence（根拠経路数から機械計算。手入力禁止）
+      - status
+    許可エッジ:
+      - instantiates → L2
+      - abstracted_from → L4
+      - predicts → L5(Q/HYP)
+
+  L4_オブジェクト:
+    定義: 観測可能な個別実体。一次資料・講義・事例・データ・実務記録。
+          MITはここの供給源の一つであり特権を持たない
+    ノード型:
+      SRC: 一次資料（論文・原典）
+      LEC: 講義・教材（MIT OCW等。二次資料として信頼度を別枠管理）
+      CSE: 事例（現実の出来事）
+      LOG: 実務記録・実験ログ
+    必須属性:
+      - id, provenance（DOI/URL/取得日/版）
+      - reliability_grade（A:一次査読済 / B:公式二次 / C:実務記録）
+      - extraction_method（誰が・どのエージェントが抽出したか）
+    許可エッジ:
+      - evidences → L1/L2/L3
+      - cited_by → L4
+    禁止: L4ノード自体は主張を持たない。主張は必ず上位層ノードとして分離
+
+  L5_問い行動検証:
+    定義: エンジンの駆動部。上位層への疑問、未検証の応用、検証計画と結果
+    ノード型:
+      Q:   問い（target_nodeを必ず持つ）
+      HYP: 仮説（応用アイデアは全部ここ。status=proposed固定で生成）
+      ACT: 行動計画
+      VER: 検証（protocol_refでL2のMTHを参照する）
+    必須属性:
+      - id, target_node（どの上位ノードを問う/試すか）
+      - HYP: prediction, 棄却条件
+      - VER: protocol_ref（MTHのID）, success_criteria, result, decision
+    許可エッジ:
+      - asks → L2/L3
+      - tests → HYP
+      - uses_method → L2(MTH)
+      - result_logged_as → L4(LOG)   # 検証結果は新しいオブジェクトになり、次周回の根拠になる
+
+成功指標（枚数・関係数・講義数は禁止）:
+  - traceability率: 全canonical上位ノードのうちL4まで根拠経路が辿れる割合（目標100%）
+  - 反証可能率: L2ノードのうちfalsification_conditionが具体的な割合
+  - 仮説解決率: HYPのうちsupported/refutedに到達した割合（proposedの滞留=負債）
+```
+
+---
+
+## mvp
+
+**MVP名: 「ナッシュ均衡 縦串スライス」— 5層を1本だけ貫通させ、根拠往復とHYP隔離を実証する**
+
+```yaml
+nodes:
+  # --- L4 オブジェクト（最初に投入）---
+  O-0001: {type: SRC, 内容: "Nash (1950) Equilibrium Points in N-Person Games, PNAS", grade: A}
+  O-0002: {type: LEC, 内容: "MIT OCW 14.12 ゲーム理論講義ノート（均衡回）", grade: B}
+  O-0003: {type: CSE, 内容: "FCC周波数オークション設計記録（Milgrom報告）", grade: B}
+  O-0004: {type: LOG, 内容: "自社調達入札の過去12ヶ月ログ", grade: C}
+
+  # --- L1 基礎科学 ---
+  F-0001: {type: THM, 内容: "角谷の不動点定理", proof_source: O-0001内の引用文献}
+
+  # --- L2 科学（既存カードを昇格移送）---
+  S-0003: {type: THY, 内容: "ナッシュ均衡（存在定理含む）", 旧ID: K-0003}
+  S-0010: {type: THY, 内容: "インセンティブ両立性", 旧ID: K-0010}
+  M-0007: {type: MTH, 内容: "RCTプロトコル雛形", 旧ID: K-0007}
+
+  # --- L3 宇宙 ---
+  W-0001: {type: WM, 内容: "封印入札オークション市場の戦略行動モデル",
+           instantiates: [S-0003, S-0010], scope: "単一財・私的価値・入札者n≥2"}
+
+  # --- L5 ---
+  Q-0001: {type: Q,   内容: "自社調達を第二価格封印入札に変えると真値入札が増えるか", target: W-0001}
+  H-0001: {type: HYP, 内容: "第二価格化でIC成立→入札分散が縮小し調達コスト-3%", status: proposed}
+  V-0001: {type: VER, protocol_ref: M-0007, tests: H-0001,
+           success_criteria: "処置群の入札乖離が統制群比で有意に縮小(α=0.05)"}
+
+edges:
+  - O-0001 --evidences--> F-0001, S-0003
+  - O-0002 --evidences--> S-0003            # MITは根拠の一つ。単独根拠にしない
+  - O-0003 --evidences--> S-0010, W-0001
+  - O-0004 --evidences--> W-0001
+  - S-0003 --formalized_by--> F-0001
+  - S-0003 --abstracted_from--> W-0001? → 不可。方向注意:
+  - W-0001 --instantiates--> S-0003, S-0010
+  - W-0001 --abstracted_from--> O-0003, O-0004
+  - Q-0001 --asks--> W-0001
+  - V-0001 --uses_method--> M-0007
+  - V-0001 --result_logged_as--> (完了時に新規 O-0005 を生成)
+
+実行順:
+  1. O-0001〜O-0004 投入（Gemini Flash Lite が抽出、status=draft）
+  2. F-0001 起票、O-0001 との evidences 接続（Haiku lint通過で evidenced）
+  3. K-0003/K-0010/K-0007 を移送（下記 placement 参照）
+  4. W-0001 起票。instantiates と abstracted_from を両方張る
+  5. Q-0001 / H-0001 / V-0001 起票。H-0001 は proposed 固定
+  6. Astra が全ノードの昇格判定を一括実施
+
+完了条件（全て満たすこと）:
+  - S-0003, S-0010, W-0001 の各々から L4 への根拠経路が2本以上
+  - H-0001 が L2/L3 に一切エッジを持たず proposed のまま隔離されている
+  - V-0001 に success_criteria と棄却条件が記入済み
+  - 孤立ノード0、循環エッジ0（Haiku lint）
+  - Astra が S-0003 / W-0001 を canonical 判定（差戻しなら理由付きで1回まで再試行）
+```
+
+---
+
+## placement
+
+```yaml
+K-0003_ナッシュ均衡:
+  配置: L2_科学 / THY として S-0003 に移送
+  理由: 数学的定理だが「戦略的相互作用の記述として妥当」という経験的主張を含むため
+        L1でなくL2。存在証明部分は formalized_by → F-0001（角谷）で L1 に接続
+  必須追記: falsification_condition（例:「反復非協力ゲーム実験で均衡予測が
+            系統的に外れる条件」）、domain_of_validity
+
+K-0010_インセンティブ両立性:
+  配置: L2_科学 / THY として S-0010 に移送
+  接続: evidenced_by → O-0003（FCC事例）。W-0001 から instantiates で参照される
+  注意: 「ICを自社に適用すべき」という含意は K-0010 から剥がして H-0001 へ移す。
+        カード内に混在していた理論と応用をここで分離する
+
+K-0007_RCT:
+  配置: L2_科学 / MTH として M-0007 に移送（L5ではない）
+  理由: RCT自体は反証可能な方法論的主張（無作為化が交絡を除去する）であり理論財。
+        L5の VER ノードは M-0007 を protocol_ref で参照する使い捨てインスタンス
+  接続: formalized_by → 確率論のL1ノード（MVP範囲外、スタブとして起票のみ可）
+```
+
+---
+
+## agent_contract
+
+```yaml
+Fable_5:                       # 高コスト・設計専任
+  役割: スキーマ設計、層定義・エッジ型の追加変更、再帰ラウンドの設計レビュー
+  権限: schema write（唯一）。ノード個別の編集権限なし
+  呼出条件: MVP開始時、再帰ラウンド設計変更時のみ。定常運用では呼ばない
+
+GPT-6_Astra:                   # 高コスト・最終判定専任
+  役割: 昇格判定（candidate→canonical / rejected）、HYPのsupported/refuted裁定、
+        矛盾（refuted_byとsupported_byの衝突）の裁定
+  権

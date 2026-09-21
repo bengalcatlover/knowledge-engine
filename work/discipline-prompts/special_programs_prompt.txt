@@ -1,0 +1,158 @@
+You are creating a discipline knowledge index for: Special Programs
+Broad category: Cross-disciplinary
+Total courses: 7
+Total lecture units: 252
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### How We Teach： MIT ES.S41 Speak Italian With Your Mouth Full, S12 (36 lectures)
+- Creating the Assignments
+- Future Versions of the Course
+- Goals for the Course
+- Idea for the Course
+- Language Immersion
+- Preparing for the Course
+- Selecting the Correct Language Level
+- Structure of a Typical Class
+- Teaching Italian Grammar
+- Time Management/Students' Energy Levels
+- Tour the Experimental Study Group Area
+- Using Cooking to Teach Italian
+
+### MIT ES.S41 Speak Italian With Your Mouth Full, Spring 2012 (56 lectures)
+- Lesson 10: Part 1 - Opening Lecture
+- Lesson 10: Part 2 - Ingredients and Cooking Instruction
+- Lesson 10: Part 3 - Closing Lecture
+- Lesson 10: Part 4 - A Game!
+- Lesson 11: Part 1 - Opening Lecture
+- Lesson 11: Part 2 - Ingredients and Cooking Instruction
+- Lesson 11: Part 3 - Closing Lecture
+- Lesson 12: Part 3 - Closing Lecture
+- Lesson 13: Part 1 - Opening Lecture
+- Lesson 1: Part 1 - Language Instruction
+- Lesson 1: Part 2 - Cooking Instruction
+- Lesson 2: Part 1 - Language Instruction
+- Lesson 2: Part 2 - Ingredients
+- Lesson 2: Part 3 - Cooking Instruction
+- Lesson 3: Part 1 - Opening Lecture
+- Lesson 3: Part 2 - Ingredients and Vocab
+- Lesson 3: Part 3 - Cooking Instruction
+- Lesson 4: Part 3 - Cooking Instruction
+- Lesson 5: Part 1 - Language Instruction
+- Lesson 5: Part 3 - Cooking Instruction
+- Lesson 6: Part 3 - Closing Lecture
+- Lesson 7: Part 1 - Opening Lecture
+- Lesson 7: Part 2 - Ingredients
+- Lesson 7: Part 3 - Cooking Instruction
+- Lesson 8: Part 1 - Opening Lecture
+- Lesson 8: Part 2 - Cooking Instruction
+- Lesson 9: Part 1 - Opening Lecture
+- Lesson 9: Part 2 - Ingredients and Cooking Instruction
+
+### MIT RES.EC-001 Exploring Fairness in Machine Learning, Spring 2020 (18 lectures)
+- Case Studies with Data: Mitigating Gender Bias on the UCI Adult Dataset
+- ** Case Studies with Data: Mitigating Gender Bias on the UCI Adult Dataset
+- Case Study: Identifying and Mitigating Unintended Demographic Bias in Machine Learning for NLP
+- Exploring Fairness in Machine Learning: Background
+- Fairness Criteria, Exploring Fairness in Machine Learning
+- ** Fairness Criteria, Exploring Fairness in Machine Learning
+- Introduction to Ethics in Machine Learning
+- Protected Attributes and 'Fairness through Unawareness,' Exploring Fairness in Machine Learning
+- Pulmonary Health Case Study: Bias Exploration, Exploring Fairness in Machine Learning
+- ** Pulmonary Health Case Study: Bias Exploration, Exploring Fairness in Machine Learning
+- Solar Lighting Example, Exploring Fairness in Machine Learning
+- USAID Appropriate Use Framework, Exploring Fairness in Machine Learning
+
+### MIT SP.775 D-Lab： Energy, Spring 2011 (42 lectures)
+- 1. Introduction to Energy
+- 2. Energy Storage & Microgrids
+- 3. Lighting; Trip Introduction
+- 4. Solar Energy
+- ** 4. Solar Energy
+- 5. Wind and Micro-Hydro Power; Trip Planning
+- 6. Cooking, Stoves and Fuel
+- 7. Solar Cookers; Creative Capacity Building; Trip Preparation
+- 8. Project Design Process
+- Lab 1: Human Power
+- Lab 2: Solar Power Measurement, Part I: Lecture
+- Lab 2: Solar Power Measurement, Part II: Activities
+- ** Lab 2: Solar Power Measurement, Part II: Activities
+- Lab 3: Biogas and Biodigesters, Part I: Lecture
+- Lab 3: Biogas and Biodigesters, Part II: Activities
+- Lab 4: Wiring Solar Panels, Part I: Lecture
+- Lab 4: Wiring Solar Panels, Part II: Activities
+- Lab 5: Savonius Wind Turbine Construction and Testing
+- ** Lab 5: Savonius Wind Turbine Construction and Testing
+- Lab 6: Charcoal Making and Stove Testing
+- Project 1: Trip Planning Presentations (from Lecture 7)
+- Project 2: Trip Report Presentations (from Lecture 8)
+- Project 3: Initial Design Review
+- Project 4: Final Presentations
+
+### MIT STEM Concept Videos (82 lectures)
+- An Ode to ODEs
+- ** An Ode to ODEs
+- Basic Programming Techniques
+- Buffers
+- Chirality
+- ** Chirality
+- Conditional Probability
+- Conservation of Mass
+- Contaminant Fate Modeling
+- ** Contaminant Fate Modeling
+- Diffusion and Fick's Law
+- Dimensional Analysis
+- ** Dimensional Analysis
+- Electric Potential
+- ** Electric Potential
+- Entropy
+- Enzyme Kinetics
+- Equilibrium vs. Steady State
+- Feedback Loops
+- Flux and Gauss' Law
+- Free Body Diagrams
+- ** Free Body Diagrams
+- Gear Trains
+- Genetics and Statistics
+- Gradient
+- Gravity
+- Kinetic Theory
+- Kinetics and Equilibrium
+- ** Kinetics and Equilibrium
+- Latent Heat
+- ... and 22 more
+
+### Project Videos for EC.S06 Practical Electronics, Fall 2004 (14 lectures)
+- Color Organ Video 1
+- Color Organ Video 2
+- ** Color Organ Video 2
+- Color Organ Video 3
+- Sunflower Video 1
+- Sunflower Video 2
+- ** Sunflower Video 2
+- Sunflower Video 3
+- Sunflower Video 4
+
+### Projects for PE.920 PE For ME, Spring 2005 (4 lectures)
+- Week 8 E-motion: Balance
+- ** Week 8 E-motion: Balance
+- Week 8 E-motion: Big Swing
+

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T09:09:31.742952+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_672d56203d4e67f8",
+      "question_id": "q_2a16385868110370",
+      "question": "異なる品質の情報を持つ参加者が取引するとき、価格や選別はどう歪むか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_2a16385868110370",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存草案のcanonical_nameと英語探索語が明確に一致した。新規カードではなく根拠レビューへ送る。",
+      "related_cards": [
+        "K-0004"
+      ],
+      "external_query": "asymmetric information signaling"
+    }
+  ],
+  "plan_id": "plan_c1e625cec317",
+  "input_hash": "c1e625cec3174ffd27cc8cf03b5dc2e2008b5821abc98d0a330dcbe9c8156201"
+}

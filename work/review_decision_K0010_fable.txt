@@ -1,0 +1,13 @@
+decision: revise
+
+理由:
+1. レビュー票の確認点1・2は本文で満たされている（Non-Examplesで監視・罰則・目標共有と誘因制約を区別し、Boundary Conditionsで時間・評判・権限・リスクを効用に含める条件を明記）。定義とメカニズムの記述も真実申告のIC条件として妥当。
+2. 確認点4は未解決。Source Referencesが講義群ID（`C-MIT-14.04`/`C-MIT-14.12`）のみで、主張単位のURL・位置・引用がない。一方、レビュー票側には確認済み断片（Lecture 11のURLと引用2件）が存在するため、根拠は取得可能であり `defer` ではなく `revise` が適切。
+3. 確認点3も未解決。Business TransferおよびDefinition末尾のAI応用（報酬・権限・検証の設計）は講義由来の事実ではなく転用提案だが、本文中でその区別が明示されていない。
+4. Relationsが4件とも一律 `confidence: 0.8` / `epistemic_status: established` で、根拠引用がない状態では `established` の裏付けが不足している。
+5. 上記はいずれも局所的修正で対応可能であり、構造・定義の作り直しは不要。
+
+最小限の修正:
+- Source Referencesに、レビュー票で確認済みの断片（MIT OCW Lecture 11のURLと引用 "The key is the incentive constraint" 等）を主張単位で追記し、DefinitionとMechanismの中核主張に対応付ける。
+- Business Transferセクション冒頭（またはDefinitionのAI言及部分）に「講義内容からの応用提案であり、出典に直接由来しない」旨の注記を追加する。
+- Relationsの `epistemic_status` を、引用で裏付けられないものは `established` から `inferred`（または相当の弱い区分）へ変更するか、各関係に根拠を付す。

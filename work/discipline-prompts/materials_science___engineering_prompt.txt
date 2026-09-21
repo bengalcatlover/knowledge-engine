@@ -1,0 +1,223 @@
+You are creating a discipline knowledge index for: Materials Science & Engineering
+Broad category: Engineering
+Total courses: 12
+Total lecture units: 375
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 3.020 Thermodynamics of Materials, Spring 2021 (2 lectures)
+- Lecture 25: Building Binary Phase Diagrams, Part III
+
+### MIT 3.021J Introduction to Modeling and Simulation, Spring 2012 (22 lectures)
+- 0. Introduction to Part II: Quantum mechanical methods
+- ** 0. Introduction to Part II: Quantum mechanical methods
+- 1. It's a quantum world: The theory of quantum mechanics
+- 10. Solar photovoltaics
+- 2. Practice makes perfect
+- 3. From many-body to single-particle: Quantum modeling of molecules
+- 4. Application of QM modeling: Solar thermal fuels (I)
+- 5. Application of QM modeling: Solar thermal fuels (II)
+- 6. Hydrogen storage, and atoms to molecules
+- 7. Quantum modeling of solids: Basic properties
+- 8. Advance properties of materials: What else can we do?
+- 9. Some review and introduction to solar photovoltaics
+
+### MIT 3.054 Cellular Solids： Structure, Properties and Applications, Spring 2015 (6 lectures)
+- 14. Tissue Engineering: Osteochondral Scaffold; How To Write a Paper
+- 6. Natural Honeycombs: Wood
+- Unique Aspects of the Course
+
+### MIT 3.091 Introduction to Solid State Chemistry, Fall 2004 (26 lectures)
+- Lec 1 | MIT 3.091 Introduction to Solid State Chemistry
+- Lec 10 | MIT 3.091 Introduction to Solid State Chemistry
+- Lec 17 | MIT 3.091 Introduction to Solid State Chemistry
+- Lec 20 | MIT 3.091 Introduction to Solid State Chemistry
+- Lec 24 | MIT 3.091 Introduction to Solid State Chemistry
+- ** Lec 24 | MIT 3.091 Introduction to Solid State Chemistry
+- Lec 25 | MIT 3.091 Introduction to Solid State Chemistry
+- Lec 26 | MIT 3.091 Introduction to Solid State Chemistry
+- Lec 30 | MIT 3.091 Introduction to Solid State Chemistry
+- Lec 34 | MIT 3.091 Introduction to Solid State Chemistry
+- Lec 35 | MIT 3.091 Introduction to Solid State Chemistry
+- Lec 6 | MIT 3.091 Introduction to Solid State Chemistry
+- ** Lec 6 | MIT 3.091 Introduction to Solid State Chemistry
+- Lec 7 | MIT 3.091 Introduction to Solid State Chemistry
+- Lec 9 | MIT 3.091 Introduction to Solid State Chemistry
+
+### MIT 3.091 Introduction to Solid-State Chemistry, Fall 2018 (95 lectures)
+- 1. Introduction (Intro to Solid-State Chemistry)
+- 10. Lewis Structures II (Intro to Solid-State Chemistry)
+- 11. Shapes of Molecules and VSEPR (Intro to Solid-State Chemistry)
+- 12. Molecular Orbitals (Intro to Solid-State Chemistry)
+- 13. Hybridization (Intro to Solid-State Chemistry)
+- 14. Intermolecular Forces (Intro to Solid-State Chemistry)
+- 15. Semiconductors (Intro to Solid-State Chemistry)
+- ** 15. Semiconductors (Intro to Solid-State Chemistry)
+- 16. Doping (Intro to Solid-State Chemistry)
+- 17. Metals (Intro to Solid-State Chemistry)
+- 18. Introduction to Crystallography (Intro to Solid-State Chemistry)
+- 19. Crystallographic Notation (Intro to Solid-State Chemistry)
+- 2. The Periodic Table (Intro to Solid-State Chemistry)
+- 20. X-ray Emission and Absorption (Intro to Solid-State Chemistry)
+- 21. X-ray Diffraction Techniques I (Intro to Solid-State Chemistry)
+- 22. X-ray Diffraction Techniques II (Intro to Solid-State Chemistry)
+- 23. Point and Line Defects I (Intro to Solid-State Chemistry)
+- 24. Point and Line Defects II (Intro to Solid-State Chemistry)
+- 25. Introduction to Glassy Solids (Intro to Solid-State Chemistry)
+- 26. Engineering Glass Properties (Intro to Solid-State Chemistry)
+- 27. Reaction Rates (Intro to Solid-State Chemistry)
+- 28. Introduction to Aqueous Solutions (Intro to Solid-State Chemistry)
+- 29. Acids and Bases I (Intro to Solid-State Chemistry)
+- 3. Atomic Models (Intro to Solid-State Chemistry)
+- ** 3. Atomic Models (Intro to Solid-State Chemistry)
+- 30. Acids and Bases II (Intro to Solid-State Chemistry)
+- 31. Exam Review (Intro to Solid-State Chemistry)
+- 32. Polymers I (Intro to Solid-State Chemistry)
+- 33. Polymers II (Intro to Solid-State Chemistry)
+- 34. Introduction to Organic Chemistry (Intro to Solid-State Chemistry)
+- ... and 20 more
+
+### MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010 (24 lectures)
+- Exam 2, Problem 1 | MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010
+- Exam 2, Problem 4 | MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010
+- Exam 3, Problem 3 | MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010
+- Final Exam B, Problem 13 | MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010
+- Final Exam B, Problem 5 | MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010
+- Lec 2 | MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010
+- Lec 23 | MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010
+- Lec 27 | MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010
+- Lec 28 | MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010
+- ** Lec 28 | MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010
+- Lec 30 | MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010
+- Lec 31 | MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010
+- Lec 8 | MIT 3.091SC Introduction to Solid State Chemistry, Fall 2010
+
+### MIT 3.320 Atomistic Computer Modeling of Materials (18 lectures)
+- Lec 11 | MIT 3.320 Atomistic Computer Modeling of Materials
+- Lec 13 | MIT 3.320 Atomistic Computer Modeling of Materials
+- Lec 14 | MIT 3.320 Atomistic Computer Modeling of Materials
+- Lec 18 | MIT 3.320 Atomistic Computer Modeling of Materials
+- Lec 2 | MIT 3.320 Atomistic Computer Modeling of Materials
+- Lec 22 | MIT 3.320 Atomistic Computer Modeling of Materials
+- Lec 23 | MIT 3.320 Atomistic Computer Modeling of Materials
+- Lec 6 | MIT 3.320 Atomistic Computer Modeling of Materials
+- Lec 7 | MIT 3.320 Atomistic Computer Modeling of Materials
+- ** Lec 7 | MIT 3.320 Atomistic Computer Modeling of Materials
+
+### MIT 3.60 Symmetry, Structure & Tensor Properties of Material (14 lectures)
+- MIT 3.60 | Lec 15b: Symmetry, Structure, Tensor Properties of Materials
+- MIT 3.60 | Lec 21a: Symmetry, Structure, Tensor Properties of Materials
+- MIT 3.60 | Lec 26: Symmetry, Structure, Tensor Properties of Materials
+- MIT 3.60 | Lec 3b: Symmetry, Structure, Tensor Properties of Materials
+- MIT 3.60 | Lec 5a: Symmetry, Structure, Tensor Properties of Materials
+- MIT 3.60 | Lec 7b: Symmetry, Structure, Tensor Properties of Materials
+- MIT 3.60 | Lec 8a: Symmetry, Structure, Tensor Properties of Materials
+
+### MIT RES.3-002 Collaborative Design & Creative Expression, IAP17 (40 lectures)
+- Collaboration: Ideation and Brainstorming
+- Collaboration: Introduction to Git/Github
+- Collaboration: Red Ball During Class
+- Getting Started: Icebreaker
+- Getting Started: Introducing Introductions (Design, Expression w Arduino Microcontrollers)
+- Long Project: Awesome Light Show Touch Game
+- ** Long Project: Awesome Light Show Touch Game
+- Long Project: Hand Motion Controlled Car
+- Long Project: Introduction
+- Long Project: LED Framed Light Display Part 1
+- Long Project: LED Framed Light Display Part 2
+- Long Project: Punching Glove
+- Long Project: Quadcopter
+- Short Project: Arduino Pinball
+- Short Project: Back in Black Light Show
+- Short Project: Calculator
+- Short Project: Chance Game
+- Short Project: Infrared Lock
+- Short Project: Introduction
+- Short Project: Knock Knock Lock
+- Short Project: Plant People
+
+### MIT RES.3-003 Learn to Build Your Own Videogame with the Unity Game Engine and Microsoft Kinect, IAP 2017 (50 lectures)
+- Collaboration: Ideation and Brainstorming
+- Collaboration: Introduction to Git/Github
+- Collaboration: Red Ball during Class
+- Expanding on Tutorials: Humans Matter and Class Details
+- Expanding on Tutorials: Kinect Demo
+- Expanding on Tutorials
+- Getting Started: Icebreaker
+- Getting Started: Introducing Introductions
+- Getting Started: Q&A
+- Guided Tutorial: Introduction to Unity
+- Guided Tutorial: Purpose and Overview
+- Long Project: Blackout Tetris
+- Long Project: Cats Cradle
+- Long Project: Cube Constructor
+- Long Project: Desert Racing
+- Long Project: Introduction
+- Long Project: Multiple Mini-games
+- Long Project: Zoo Escape
+- Short Project: Antisocial
+- Short Project: Bodypaint
+- Short Project: Car Racing
+- Short Project: Cube Constructor
+- Short Project: Downhill Skiing
+- Short Project: Goshzilla
+- Short Project: Introduction
+
+### MIT RES.3-004 Visualizing Materials Science, Fall 2017 (10 lectures)
+- Student Video: Modeling & Energy Analysis of Liquid Crystals
+- Student Video: Nanoparticle-polymer Network
+- Student Video: Potential Energy Surfaces
+- Student Video: Quantum Time Evolution Using the Split Operator Fourier Transform Algorithm
+- Student Video: Thin Film Rainbows
+
+### “Why This Matters” Moments： Highlights from 3.091 Intro to Solid-State Chemistry (68 lectures)
+- 'Weak' Forces Are Strong (Intro to Solid-State Chemistry)
+- ** 'Weak' Forces Are Strong (Intro to Solid-State Chemistry)
+- Carbon Dioxide Concentration (Intro to Solid-State Chemistry)
+- Cars and Carbon Dioxide (Intro to Solid-State Chemistry)
+- Catalytic Converters (Intro to Solid-State Chemistry)
+- Closing Speech (Intro to Solid-State Chemistry)
+- Crystals (Intro to Solid-State Chemistry)
+- Danish Wind and Ions (Intro to Solid-State Chemistry)
+- ** Danish Wind and Ions (Intro to Solid-State Chemistry)
+- Drinking Water (Intro to Solid-State Chemistry)
+- Grid-scale Energy Storage (Intro to Solid-State Chemistry)
+- Haber-Bosch and Human Population (Intro to Solid-State Chemistry)
+- ** Haber-Bosch and Human Population (Intro to Solid-State Chemistry)
+- Hard and Soft Water (Intro to Solid-State Chemistry)
+- Hemodialysis (Intro to Solid-State Chemistry)
+- High Tech Concrete (Intro to Solid-State Chemistry)
+- ** High Tech Concrete (Intro to Solid-State Chemistry)
+- How to Make Blue LEDs (Intro to Solid-State Chemistry)
+- Imaging with Electrons (Intro to Solid-State Chemistry)
+- Materials Problems (Intro to Solid-State Chemistry)
+- ** Materials Problems (Intro to Solid-State Chemistry)
+- Moseley's Law (Intro to Solid-State Chemistry)
+- Nature + Arrhenius (Intro to Solid-State Chemistry)
+- Ocean Acidification (Intro to Solid-State Chemistry)
+- Personal Energy Storage (Intro to Solid-State Chemistry)
+- Polymer Strength (Intro to Solid-State Chemistry)
+- Properties of Benzene (Intro to Solid-State Chemistry)
+- ** Properties of Benzene (Intro to Solid-State Chemistry)
+- Quantum Domination (Intro to Solid-State Chemistry)
+- Refrigerators and CFCs (Intro to Solid-State Chemistry)
+- ... and 13 more
+

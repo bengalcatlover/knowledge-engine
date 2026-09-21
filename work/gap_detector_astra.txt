@@ -1,0 +1,592 @@
+```yaml
+gap_detector_design:
+  core_principle: >
+    gap detectorは「辺が少ない場所」を探す機構ではなく、
+    スコープ付きの充足条件を満たしていない箇所を検出する機構とする。
+    各gapに検出根拠、対象revision、充填条件、再検査関数を持たせる。
+    evidenceが増えたことではなく、充足条件が成立したことでgapを閉じる。
+
+  assumptions:
+    - "19ノードの段階では、中心性や埋め込み密度より、明示ルールとSQLを優先する。"
+    - "未登録は未知を意味する。現実世界での不存在や主張の偽を意味しない。"
+    - "5層すべてへの接続、全クラスへのインスタンス生成を一律に要求しない。"
+    - "DOI実在、引用数、OA取得は、claimの正しさや含意関係の保証ではない。"
+    - "探索対象は明示されたドメインと予算内に限定する。世界全体の完全性は目標にしない。"
+
+  schema_contract:
+    revision_binding:
+      - >
+        判定単位はnode単体ではなくclaim@node_revision。
+        support_assessmentも、その組に一意に結び付いている必要がある。
+      - >
+        target_claimから対象revisionを一意に復元できるなら既存スキーマを利用する。
+        できない場合だけtarget_node_revisionを追加する。
+        既存assessmentの曖昧な対応は推測せず、未確定として扱う。
+    adapter_views:
+      current_node: >
+        policy engineが現行として公開するnode revision。
+        単純なMAX(revision)ではなく、未承認revisionを除外した公開ポインタに従う。
+      usable_support: >
+        evidence_id、target_node、target_claim、target_node_revisionを返すビュー。
+        revision対応、support_role、locator、content_hash、対象claimへの適合性、
+        stale状態、claim種別ごとの品質基準を満たすassessmentのみ含める。
+        書誌確認だけで通過したevidenceは含めない。
+    edge_semantics:
+      - "以下ではDERIVES_FROMを導出先→前提、HAS_SCOPED_INSTANCEをクラス→事例として記述する。"
+      - "実ストアの方向規約が異なる場合はアダプタで変換する。"
+      - "古いrevisionへの辺は、それだけでは破損ではない。参照先の存在とpolicy上の有効性で判定する。"
+      - "依存伝播には宣言済みの依存辺だけを用い、SIMILAR_TOやABOUTを根拠依存とみなさない。"
+
+  gap_types:
+    - id: broken_trace
+      priority: P0
+      description: "claimから根拠・参照revisionまでの追跡経路が壊れている。"
+      examples:
+        - "support_assessmentが存在しないevidenceを指す。"
+        - "edgeの参照先node@revisionが存在しない。"
+        - "locatorやcontent_hashが不足し、根拠箇所を再現できない。"
+      repair: "まずローカル修復。復元不能な出典のみ再取得する。"
+      closes_when: "追跡経路と根拠箇所が再現可能になる。"
+
+    - id: stale_support
+      priority: P0
+      description: "前提更新や出典変更で、現行claimの根拠が無効化されている。"
+      repair: "policy engineのstale理由に対応した再検証・再検索。"
+      closes_when: "対象revisionへの再評価が完了し、policy engineがstaleを解除する。"
+      caution: "古い論文という理由だけではstaleにしない。"
+
+    - id: scoped_conflict
+      priority: P0
+      description: "同一対象・条件・時点で両立しないclaimが存在する。"
+      repair: "支持・反証の双方と、食い違いを説明する条件を探索する。"
+      closes_when: "適用条件の分離、訂正、または未解決論争としての明示的モデル化が完了する。"
+      caution: "未解決論争のモデル化は運用上の処理完了であり、真偽の決着ではない。"
+
+    - id: unsupported_claim
+      priority: P1
+      description: "外部根拠を要求する公開claimに、利用可能なsupportがない。"
+      repair: "対象claimを直接扱う根拠を探索する。"
+      closes_when: "同じclaim@revisionに有効なsupportが付く。"
+      exclusions:
+        - "定義・仮説・問いを、外部根拠のない断言と混同しない。"
+        - "独自証明は専用の証明検査に回し、外部論文で置き換えない。"
+
+    - id: missing_dependency_or_scope
+      priority: P1
+      description: "主張に必要な前提、適用条件、単位、定義、導出関係が欠落している。"
+      examples:
+        - "第二価格オークションの性質に、効用モデルや制約条件が記載されていない。"
+        - "エントロピーについて、離散・連続や対数の底が区別されていない。"
+      repair: "原典の仮定、定義、証明の依存関係を取得する。"
+      closes_when: "必要条件が構造化され、claimまたは依存辺から追跡できる。"
+
+    - id: missing_test_or_counterevidence
+      priority: P2
+      description: "重要な一般化に、検証方法、反例探索、適用限界の検討がない。"
+      repair: "反例・再現研究・失敗条件・識別可能なテストを探索する。"
+      closes_when: "要求された検証項目を記録する。反例が見つからないことは証明としない。"
+      applicability: "claim種別とリスクに応じた明示ルールがある場合のみ検出する。"
+
+    - id: missing_scoped_instance
+      priority: P2
+      description: "具体例を要求されたクラスに、指定スコープを満たす根拠付き事例がない。"
+      repair: "パラメータ、結果、出典が取得できる事例を探索する。"
+      closes_when: "条件を満たすinstanceと、その根拠claim、HAS_SCOPED_INSTANCEが登録される。"
+      caution: "任意の例を一つ作っても、要求スコープを満たさなければ閉じない。"
+
+    - id: uncompared_instances
+      priority: P2
+      description: "比較可能な複数事例があるが、共通性・差異・境界条件が抽出されていない。"
+      repair: "まずローカル比較し、比較に足りない属性だけ追加検索する。"
+      closes_when: "比較結果と、共通則候補または比較不能理由が追跡可能な形で保存される。"
+
+    - id: missing_abstraction
+      priority: P2
+      description: "複数事例に再利用可能な共通構造があるが、それを表すクラスやルールがない。"
+      repair: "既存クラスとの照合後、候補クラス・属性契約・適用条件を提案する。"
+      closes_when: "既存クラスへの統合、候補クラス登録、または棄却理由の記録が完了する。"
+      caution: "候補クラス登録と、そのクラスに関する一般法則の承認を分離する。"
+
+    - id: unexplored_bridge
+      priority: P3
+      description: "異なる領域に形式的共通点があるが、対応関係の検討がない。"
+      repair: "対応する対象・操作・保存される性質を限定して調べる。"
+      closes_when: "根拠付き対応、限定的類似、または不成立理由を記録する。"
+      caution: "語彙の類似やLLMの連想だけでDERIVES_FROMやFORMALIZED_BYを追加しない。"
+
+  prioritization:
+    order: "P0 → P1 → P2 → P3"
+    within_priority: >
+      影響する公開claim数、ask_knowledgeでの参照頻度、深刻度、
+      解決見込み、見積コスト、過去の失敗回数で順位付けする。
+      MVPでは設定値と実測値による決定的スコアを使う。
+    impact_measurement: "policy engineの依存辺に沿った逆向き走査で下流への影響を数える。"
+    scheduling:
+      - "P0でも、ローカル修復で済むものはamplifierに送らない。"
+      - "P0のうち未解決のものは影響範囲だけを保留し、無関係な領域まで停止しない。"
+      - "P3には探索予算の最大10%など独立した小枠を設定する。"
+      - "ノード数・エッジ数の増加を優先度や成功報酬にしない。"
+
+  detection_methods:
+    - gap_type: broken_trace
+      primary: SQL
+      sql: |
+        SELECT e.edge_id
+        FROM edge e
+        WHERE NOT EXISTS (
+          SELECT 1 FROM node n
+          WHERE n.id = e.from_node
+            AND n.revision = e.from_revision
+        )
+        OR NOT EXISTS (
+          SELECT 1 FROM node n
+          WHERE n.id = e.to_node
+            AND n.revision = e.to_revision
+        );
+      additional_checks:
+        - "assessment→evidence、assessment→claim@revisionの外部参照検査。"
+        - "locatorの解決、取得内容のhash検査はPython側で行う。"
+        - "公開グラフへの影響と、履歴内部だけの破損を区別する。"
+
+    - gap_type: stale_support
+      primary: "policy engine + 依存グラフ走査"
+      procedure: >
+        staleイベントを起点に対象claimを取得する。
+        stale理由と前提revisionの変更差分をgapに添付する。
+        detector側で別のstale伝播規則を実装しない。
+
+    - gap_type: scoped_conflict
+      primary: "SQLによる候補絞り込み → 型付き比較 → 必要時LLM"
+      procedure:
+        - "entity、predicate、適用条件、時点が重なるclaimを候補対にする。"
+        - "数値・単位・区間・否定関係は決定的に比較する。"
+        - "文章的な矛盾はLLMに根拠箇所と不一致点を出させ、conflict_candidateとして保存する。"
+        - "スコープ差・用語差を排除できるまで、自動的に既存claimを偽としない。"
+
+    - gap_type: unsupported_claim
+      primary: SQL
+      sql: |
+        SELECT
+          n.id AS node_id,
+          n.revision AS node_revision,
+          c.claim_id,
+          c.statement,
+          c.kind,
+          c.epistemic_status
+        FROM current_node n
+        JOIN claim c
+          ON c.node_id = n.id
+         AND c.node_revision = n.revision
+        WHERE c.kind = :external_claim_kind
+          AND c.epistemic_status = :asserted_status
+          AND NOT EXISTS (
+            SELECT 1
+            FROM usable_support s
+            WHERE s.target_node = n.id
+              AND s.target_claim = c.claim_id
+              AND s.target_node_revision = n.revision
+          );
+      parameters: >
+        kindとepistemic_statusの実際の列挙値は既存ストアに合わせて設定する。
+        外部根拠が必要な組合せごとに実行する。
+
+    - gap_type: missing_dependency_or_scope
+      primary: "ルール検査 + 局所グラフ走査"
+      procedure:
+        - "claim種別ごとのrequired_fields、required_relationsを検査する。"
+        - "例として数値claimには単位、定理には仮定、実験結果には実験条件を要求する。"
+        - "LLMは原典から不足条件を提案する補助に限定する。"
+        - "LLMが提案した前提を、根拠なしに必須条件として登録しない。"
+
+    - gap_type: missing_test_or_counterevidence
+      primary: "coverageルール + SQL"
+      procedure: >
+        テスト・反証検討を要求されたclaimに限定し、
+        対応する検証claim、support_role、必要なワークフロー辺の有無を調べる。
+        テスト案の生成はLLM、実施済みかどうかの判定は記録に基づく。
+
+    - gap_type: missing_scoped_instance
+      primary: "設定駆動の局所グラフ走査"
+      procedure:
+        - "coverage ruleからclass@revision、要求scope、最低件数を読む。"
+        - "HAS_SCOPED_INSTANCEを1-hop走査し、辺が指す正確なrevisionを解決する。"
+        - "各instanceのscope、必須属性、根拠、有効性を検査する。"
+        - "適格なinstance数が最低件数未満ならgapを作る。"
+      note: "次数ゼロだけで判定すると、不要な事例生成やスコープ違いの充填が起きる。"
+
+    - gap_type: uncompared_instances
+      primary: "型・スコープによるblocking + 属性比較"
+      procedure:
+        - "同一クラスまたは互換スキーマ、比較可能な条件のinstanceだけを組にする。"
+        - "単位を変換し、時間・集団・測定方法・欠測を揃える。"
+        - "comparisonの既存記録がない組だけ処理する。"
+        - "LLMには構造化された差分から仮説を提案させる。"
+      pair_limit: "1クラス・1サイクルあたり最大20組。全組合せ展開はしない。"
+
+    - gap_type: missing_abstraction
+      primary: "属性シグネチャ照合 + LLM候補生成"
+      procedure:
+        - "MVP規模では既存クラスを全件照合し、同義クラスの増殖を避ける。"
+        - "複数事例で繰り返す属性・関係を抽出する。"
+        - "新クラスの識別条件、既存クラスとの差、反例候補を要求する。"
+      heuristic: >
+        例えば3事例・2独立ソース以上を提案開始条件にできるが、
+        これはコスト抑制の閾値であって一般化の正しさの証明ではない。
+
+    - gap_type: unexplored_bridge
+      primary: "明示された形式シグネチャ照合 + LLM"
+      procedure: >
+        入出力型、演算、保存量などが対応する候補だけを調べる。
+        埋め込み検索は規模拡大後の候補生成に限定し、関係成立の根拠にはしない。
+
+  amplifier_integration:
+    gap_record:
+      required_fields:
+        - gap_id
+        - gap_type
+        - "anchor_refs: node_id、revision、必要ならclaim_id"
+        - scope
+        - detection_basis
+        - required_artifact
+        - closure_predicate
+        - priority
+        - fingerprint
+        - attempts
+        - state
+      fingerprint: >
+        hash(gap_type、正規化したanchor_refs、scope、欠落slot、ルールversion)。
+        topic文字列ではなく意味的な探索課題を重複排除単位にする。
+
+    routing:
+      local_repair: ["broken_traceの一部", "既知属性だけで可能なinstance比較"]
+      retrieval: ["不足根拠", "原典の条件", "不足instance", "反例", "欠測属性"]
+      protected_workflow: ["独自証明の変更", "高影響claimの撤回", "未解決の重大な矛盾"]
+      rule: "すべてのgapを無条件にamplifierへ送らない。"
+
+    topic_generation:
+      approach: "決定的テンプレートを基本とし、必要時のみLLMで学術検索語へ言い換える。"
+      input_fields:
+        - "対象claimまたはクラスの名称・記述"
+        - "既知の条件と、不明な条件"
+        - "欲しい成果物"
+        - "支持・反証・境界条件のいずれを求めるか"
+        - "既取得DOI・既知の同義語"
+      template: |
+        Topic: {canonical_subject}
+        Existing claim or class definition: {anchor_statement}
+        Known scope: {known_scope}
+        Unknown or missing: {missing_slot}
+        Find: {required_artifact}
+        Examine supporting evidence, counterexamples, and boundary conditions.
+        Prefer primary sources with identifiable supporting passages.
+        Treat the existing claim as a hypothesis, not an established fact.
+      examples:
+        unsupported_claim: >
+          Second-price sealed-bid auctions: examine the claim that truthful bidding
+          is weakly dominant for a single item with private values and quasilinear
+          utility. Find an original theorem or proof, its exact assumptions,
+          and relevant limitations. Return identifiable supporting passages.
+        missing_scoped_instance: >
+          Find a documented finite discrete distribution with explicit probabilities,
+          Shannon entropy computed with logarithm base 2, calculation steps,
+          and a citable source. The required instance must include units in bits.
+        missing_comparison_attribute: >
+          For the two specified auction studies, find the payment rule,
+          information available to bidders, and budget constraints.
+          Retrieve only these missing attributes with source passages.
+      restrictions:
+        - "アンカーは最大3件、topic長にも上限を設ける。"
+        - "scopeや否定条件を言い換え時に落とさない。"
+        - "DOIはLLM生成値を信用せず、既存検証パイプラインで確認する。"
+        - "DOIがない原典・形式証明も存在するため、DOI未発見を知識不存在と判定しない。"
+
+    call_contract:
+      compatible_call: "knowledge_amplifier(topic=topic, depth=0)"
+      wrapper_metadata:
+        - gap_id
+        - run_id
+        - anchor_revision
+        - budget
+        - idempotency_key
+      minimal_change: >
+        amplifierが登録したevidence_id一覧と、抽出claim・根拠箇所・検証結果を返す。
+        evidenceの自動登録は維持してよいが、ノード承認やsupport確定とは分離する。
+        自律ループ内では芋づる探索を無効化し、探索深さを外側のschedulerで管理する。
+
+    evidence_to_graph:
+      steps:
+        - "取得資料を既存4層で検証し、evidenceとして登録する。"
+        - "実際に取得した本文またはabstractから根拠箇所を固定し、locatorとhashを保存する。"
+        - "対象claimへの支持・反証・限定・無関係をassessment候補として作る。"
+        - "既存node/claimとの同一性を確認し、重複なら既存対象へのsupport追加を優先する。"
+        - "新規情報ならnode、claim、edgeの変更案をステージングする。"
+        - "scope、型、revision、独自証明保護、承認前チェックを通す。"
+        - "許可された変更だけをトランザクションで反映し、eventへ記録する。"
+      acceptance_rules:
+        - "abstractまでしか取得できない場合、そのabstractが述べる範囲だけを支持対象にする。"
+        - "書誌情報だけでは、本文の具体的主張や証明を支持済みにしない。"
+        - "引用数やreliability_gradeだけでclaim適合性を代替しない。"
+        - "同じ主張への根拠追加だけなら、不要なnode revisionを作らない。"
+        - "主張の変更が必要なら新revisionを作り、既存のstale伝播を起動する。"
+        - "LLMによる意味一致判定は誤り得るため、判定方法と不確実性を残す。"
+        - "低リスクでpolicyが明示許可した変更だけ自動承認し、それ以外はcandidateに留める。"
+
+  safety_controls:
+    - name: quality_boundary
+      controls:
+        - "検索結果、evidence登録、support成立、公開承認の4段階を混同しない。"
+        - "candidateはask_knowledgeの通常回答根拠から除外する。"
+        - "保護対象の独自証明は探索結果で上書きしない。"
+        - "矛盾する根拠は削除せず、対立assessmentと影響範囲を保存する。"
+
+    - name: bounded_expansion
+      initial_defaults:
+        gaps_per_cycle: 2
+        topics_per_gap: 1
+        amplifier_depth: 0
+        new_nodes_per_cycle: 3
+        new_edges_per_cycle: 6
+        autonomous_lineage_depth: 2
+      controls:
+        - "新規ノード由来のgapには親gapと探索世代を継承させる。"
+        - "1サイクルで生成されたgapは次サイクルへ回し、その場で再帰実行しない。"
+        - "深さ上限到達は欠落を無視することではなく、探索待ちとして残すことを意味する。"
+        - "新規トピックを自動的に無制限の探索ルートへ昇格させない。"
+
+    - name: global_budget
+      example_limits:
+        documents_per_topic: 5
+        external_requests_per_cycle: 50
+        llm_calls_per_cycle: 8
+        total_llm_tokens_per_cycle: 30000
+        wall_time_seconds: 300
+        usd_per_cycle: 1.0
+      controls:
+        - "数値は初期運用例。利用モデルとAPI料金に合わせて設定する。"
+        - "全モジュールで同一の予算台帳を使い、再試行やPDF解析も課金対象に含める。"
+        - "呼び出し前に見積額を予約し、応答後に実績精算する。"
+        - "日次・月次予算も設け、プロセス再起動で予算をリセットしない。"
+        - "DOIメタデータ、本文hash、検索結果、意味照合結果をキャッシュする。"
+
+    - name: dedup_and_retry
+      controls:
+        - "gap fingerprintで同一課題の同時実行を防止する。"
+        - "DOIの正規化と本文hashで重複取得を抑える。"
+        - "同一ソースからの複数抽出を、独立した裏付け複数件と数えない。"
+        - "同一gapへの自動探索は原則2回まで。失敗理由を分類してbackoffする。"
+        - "情報が得られなければexhaustedまたはneeds_reviewとし、新イベントまで再実行しない。"
+
+    - name: stop_on_no_progress
+      progress_definition:
+        - "現行claimへの有効supportが増えた。"
+        - "明示されたcoverage slotが充足した。"
+        - "破損・stale・適用条件の問題が解消した。"
+      stop_conditions:
+        - "予算上限、時間上限、探索世代上限に到達。"
+        - "実行可能なgapがない。"
+        - "3サイクル連続で有効な進捗がない。"
+      caution: "evidence件数だけ増えても進捗としない。"
+
+    - name: transaction_and_race_safety
+      controls:
+        - "検索前にanchor revisionを固定し、commit直前に再確認する。"
+        - "anchorが更新されていたら、その結果を新revisionへ自動流用しない。"
+        - "gap更新、グラフ変更、監査eventを整合的に保存する。"
+        - "外部検索中は長時間DBトランザクションを保持しない。"
+        - "再実行しても同じnode・edge・assessmentを重複作成しない。"
+
+    - name: untrusted_source_handling
+      controls:
+        - "論文本文や取得ページ内の命令を、エージェントへの指示として実行しない。"
+        - "取得先、リダイレクト、本文サイズ、PDF解析時間に制限を設ける。"
+        - "著作権・利用条件を守り、取得不能な本文の内容を補完生成しない。"
+
+  mvp_implementation:
+    scope: >
+      最初はunsupported_claimとmissing_scoped_instanceの2種類だけを実装する。
+      前者だけでも根拠補完ループは検証できるが、
+      後者を加えることで新規node・edge生成と再検出まで確認できる。
+      クラス自動発見、領域間ブリッジ、大規模類似検索は後回しにする。
+
+    files:
+      gap_detector_py:
+        responsibilities:
+          - "SQLによるunsupported_claim検出"
+          - "設定されたクラスのinstance coverage検査"
+          - "fingerprint生成、upsert、優先順位付け"
+          - "gap種別ごとのclosure_predicate"
+      gap_runner_py:
+        responsibilities:
+          - "予算付き選択、topic生成、amplifier呼び出し"
+          - "変更案の生成、policy評価、commit"
+          - "対象と近傍の再検出、監査記録"
+      amplifier_patch:
+        responsibilities:
+          - "evidence_idと検証詳細を返す"
+          - "depth=0と共有予算・キャンセルを尊重する"
+
+    persistence:
+      new_table: gap
+      columns:
+        - "gap_id PRIMARY KEY"
+        - "fingerprint UNIQUE"
+        - gap_type
+        - anchor_refs_json
+        - scope_json
+        - payload_json
+        - state
+        - attempts
+        - next_retry_at
+        - result_json
+        - created_at
+        - updated_at
+      additional_changes:
+        - "必要な場合のみsupport_assessmentのrevision対応を補強する。"
+        - "coverage ruleは最初はYAML設定とし、ルール管理用テーブルは作らない。"
+        - "変更案はgap.result_jsonに保存し、別の候補管理基盤は作らない。"
+        - "単一workerで開始し、既存append-only eventを監査・予算記録に利用する。"
+      states:
+        - open
+        - running
+        - candidate_ready
+        - resolved
+        - retry_wait
+        - exhausted
+        - needs_review
+        - superseded
+
+    coverage_rule_example:
+      class_node: "<既存の適切な概念ノードID>"
+      class_revision: "<公開revision>"
+      slot: "finite_discrete_entropy_example"
+      min_instances: 1
+      required_scope:
+        distribution_type: finite_discrete
+        logarithm_base: 2
+      required_attributes:
+        - probabilities
+        - entropy_value
+        - entropy_unit
+      evidence_required: true
+      note: "ルールは既存ノードの実際の意味を確認して1件だけ設定する。"
+
+    one_cycle_pseudocode: |
+      def run_one_cycle(store, config, budget):
+          # 検出時点を固定。サイクル途中で増えたgapは今回選ばない。
+          snapshot = store.public_snapshot()
+          found = detect_unsupported(snapshot)
+          found += detect_missing_instances(snapshot, config.coverage_rules)
+          upsert_gaps(found)
+
+          selected = select_open_gaps(limit=2, budget=budget)
+
+          for gap in selected:
+              if not anchors_still_current(gap):
+                  mark_superseded(gap)
+                  continue
+
+              topic = render_topic(gap)
+              result = amplifier.search(
+                  topic=topic,
+                  depth=0,
+                  budget=budget,
+                  idempotency_key=gap.fingerprint,
+              )
+              proposal = build_graph_proposal(gap, result)
+              save_staged_proposal(gap, proposal)
+
+              with store.transaction():
+                  if not anchors_still_current(gap):
+                      mark_superseded(gap)
+                      continue
+
+                  decision = policy.precommit_check(proposal)
+                  if decision.auto_commit_allowed:
+                      commit_idempotently(proposal)
+                  else:
+                      mark_needs_review_or_retry(gap, decision)
+
+                  # 取得件数やLLMの「解決した」という返答を使わない。
+                  if closure_predicate(gap, store):
+                      mark_resolved(gap)
+                  else:
+                      classify_unresolved(gap, result, decision)
+
+          affected = committed_nodes_and_policy_dependents(selected)
+          upsert_gaps(detect_on(affected))
+          write_cycle_summary()
+
+    expected_single_cycle:
+      before: "根拠付きの有限離散エントロピー事例を要求されたクラスに、適格instanceがない。"
+      search: "確率分布・計算値・単位・根拠箇所を取得する。"
+      proposal:
+        - "具体的な分布とエントロピーを持つinstance nodeを作る。"
+        - "属性値を主張するclaimとsupport_assessmentを作る。"
+        - "クラスからinstanceへのHAS_SCOPED_INSTANCEを作る。"
+      after: >
+        policyが自動承認を許可し、coverage検査が通れば元gapを閉じる。
+        新instanceの別claimに根拠不足があれば、次サイクル用gapとして登録する。
+        承認待ちなら元gapは閉じない。新しいgapがゼロでも正常終了とする。
+
+    tests_to_add:
+      - "支持なしclaimでgapが1件生成され、再検出しても重複しない。"
+      - "定義・仮説・保護された独自証明を外部根拠不足として誤検出しない。"
+      - "旧revisionへのsupportで新revisionのgapを閉じない。"
+      - "DOI実在のみ、意味不一致、locator欠落ではgapを閉じない。"
+      - "スコープ違いのinstanceではcoverageを満たさない。"
+      - "有効な充填後に再検査で閉じ、新nodeも検査対象になる。"
+      - "検索中のrevision変更、予算超過、再実行で不整合や重複が発生しない。"
+      - "既存の契約テスト9本を維持する。"
+
+  oop_mapping:
+    basic_mapping:
+      class: >
+        共通属性、関係、適用条件を定義する概念node。
+        Pythonクラスを動的生成する必要はなく、最初はnode.dataに
+        knowledge_role、attribute_schema、scope_constraintsを保持する。
+      instance: >
+        特定の対象・条件・時点・パラメータを持つnode。
+        クラスとの対応はHAS_SCOPED_INSTANCEで表現する。
+      interface: "必須属性、単位、許される関係、検査条件からなるデータ契約。"
+      method: "比較・計算・検証手続き。必要に応じてpractice層の手続きnodeとして表現する。"
+      inheritance: >
+        REFINESは意味が適合する場合だけ使用する。
+        REFINESやABSTRACTS_FROMだけを理由に、親claimを子へ自動継承しない。
+      provenance: >
+        属性値を裸のJSON値だけで持たず、対応するclaim@revisionへ結び付ける。
+        そこからevidence locatorまで追跡できるようにする。
+
+    layer_relation: >
+      foundation→science→universe→object→practiceは配置軸であり、
+      class→instanceの継承階層ではない。クラス性・事例性とは直交させる。
+
+    grow_classes:
+      pipeline:
+        - "根拠付きinstanceを収集する。"
+        - "型・単位・条件を揃えて比較する。"
+        - "共通構造と、共通化できない条件を抽出する。"
+        - "既存クラスで表現できるかを先に確認する。"
+        - "できなければ候補クラスと属性契約を作る。"
+        - "必要なら候補クラスから元instanceへABSTRACTS_FROMを張り、生成根拠を残す。"
+        - "新クラスのcoverage ruleから、次に必要な事例・境界条件を検出する。"
+
+    extract_knowledge:
+      outputs:
+        - "事例間の共通属性"
+        - "条件依存の差異"
+        - "反例と適用限界"
+        - "候補一般則"
+        - "検証可能な予測とテスト案"
+      epistemic_rule: >
+        複数instanceの一致は候補一般則を生むが、普遍命題を証明しない。
+        帰納的支持、統計的推定、形式的導出をclaim.kindとepistemic_statusで区別する。
+        新しい一般則にも、元instance・比較操作・出典への追跡経路を残す。
+
+    intended_loop: >
+      クラスが要求する未充足slotを検出
+      → 根拠付きinstanceを収集
+      → instanceを比較
+      → 条件付き知識や候補クラスを抽出
+      → 新たな検証要求を生成。
+      これを予算付き・revision固定・承認制のループとして実装する。
+```

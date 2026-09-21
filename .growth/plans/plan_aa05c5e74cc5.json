@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T09:08:59.134543+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_88882fae10dcd10a",
+      "question_id": "q_c0df656c7bc53f42",
+      "question": "情報過多の中での意思決定で、ナッシュ均衡と戦略的相互作用は何を説明し、どこで使えないか",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_c0df656c7bc53f42",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0003"
+      ],
+      "external_query": null
+    },
+    {
+      "gap_id": "gap_eee3a02f63da700e",
+      "question_id": "q_9e2d2f325ef595ee",
+      "question": "ナッジとデフォルト効果はどの因果的または論理的な仕組みで働くか",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_9e2d2f325ef595ee",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0005"
+      ],
+      "external_query": null
+    },
+    {
+      "gap_id": "gap_038c77d55bb273d8",
+      "question_id": "q_b32f09766d855ac5",
+      "question": "情報を圧縮して共有しても、重要な例外条件や否定条件を失わない設計はどう作るか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_b32f09766d855ac5",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存草案のcanonical_nameと英語探索語が明確に一致した。新規カードではなく根拠レビューへ送る。",
+      "related_cards": [
+        "K-0017"
+      ],
+      "external_query": "information compression distortion"
+    }
+  ],
+  "plan_id": "plan_aa05c5e74cc5",
+  "input_hash": "aa05c5e74cc52d5b9bf7ff7cc949341175b4df16739c192764515f86f3008fde"
+}

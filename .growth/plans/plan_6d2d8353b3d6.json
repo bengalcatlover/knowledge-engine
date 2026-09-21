@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T09:15:27.554222+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_f2977738465f06ff",
+      "question_id": "q_ab8cd12f9d7762d6",
+      "question": "担当者だけが知る判断基準が退職で失われないように、組織は何を記録・更新すべきか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_ab8cd12f9d7762d6",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "organizational memory knowledge"
+    },
+    {
+      "gap_id": "gap_3fe194459b80e671",
+      "question_id": "q_b24c35f1b3bb7239",
+      "question": "同じ指標を共有する複数チームが、責任の押し付け合いをせず協力する条件は何か。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_b24c35f1b3bb7239",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "collective action incentives"
+    },
+    {
+      "gap_id": "gap_3f9c3e3aba2c4603",
+      "question_id": "q_9c10c252e6500356",
+      "question": "利用履歴を分析に使いながら個人への影響を最小化するには、どこで情報を削るべきか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_9c10c252e6500356",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "privacy data minimization"
+    }
+  ],
+  "plan_id": "plan_6d2d8353b3d6",
+  "input_hash": "6d2d8353b3d6aabf1d7b677568704d41e2b3249dc199f00a6a8dc6ec700497f1"
+}

@@ -1,0 +1,151 @@
+# P-0003 (次世代RAG: GraphRAG / ハイブリッドリトリーバル) 接続マップ
+# Generated: 2026-09-09
+# Structure: Perspective → Concept Card → MIT Lecture (三層リンク)
+
+# ============================================================
+# Layer 1: P-0003 → Concept Cards
+# ============================================================
+
+- edge_id: "E-0012"
+  from_node: "P-0003"
+  to_node: "K-0013"
+  relation_type: "operationalizes"
+  claim: "ナレッジグラフ上のエンティティ探索・関係性追跡は、グラフ探索アルゴリズム（BFS/DFS/A*）の直接的な適用領域である。GraphRAGの「点ではなく網で知識を引く」構想は、K-0013のグラフ走査技術を前提とする。"
+  source_locator: "K-0013#definition"
+  quote: ""
+  confidence: "high"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+- edge_id: "E-0013"
+  from_node: "K-0013"
+  to_node: "P-0003"
+  relation_type: "constrains"
+  claim: "グラフ探索の境界条件「状態空間が指数爆発するとメモリに乗らない」は、大規模ナレッジグラフでのリアルタイム探索に直接制約を課す。GraphRAGではグラフ全体の走査ではなく、局所的な部分グラフ取得が現実的である。"
+  source_locator: "K-0013#boundary_conditions"
+  quote: ""
+  confidence: "high"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+- edge_id: "E-0014"
+  from_node: "P-0003"
+  to_node: "K-0014"
+  relation_type: "operationalizes"
+  claim: "クエリの意図に応じて参照レイヤーを動的に切り替えるには、クエリ意図の確率的推定が必要であり、K-0014のベイズ推論がリランキングとレイヤー選択の理論的基盤を与える。"
+  source_locator: "K-0014#definition"
+  quote: ""
+  confidence: "medium"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+- edge_id: "E-0015"
+  from_node: "K-0014"
+  to_node: "P-0003"
+  relation_type: "constrains"
+  claim: "ベイズ推論の境界条件「事前分布の選択が恣意的な場合、データが少ないと事後が事前に引きずられる」は、クエリ履歴が少ないユーザーに対するリランキングの精度限界を示す。"
+  source_locator: "K-0014#boundary_conditions"
+  quote: ""
+  confidence: "medium"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+- edge_id: "E-0016"
+  from_node: "P-0003"
+  to_node: "K-0015"
+  relation_type: "analogy"
+  claim: "RAGのハイブリッドリトリーバル（複数検索戦略の組合せ最適化）は、動的計画法の「状態ごとの最適行動選択」と構造的に類似する。検索パイプラインの各段階を状態とし、次のリトリーバル戦略を価値関数で選択できる。"
+  source_locator: "K-0015#definition"
+  quote: ""
+  confidence: "low"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+# E-0017 削除: P→K-0003(ゲーム理論)のanalogyは接続が薄すぎ、confidence: lowで実用価値なし
+
+# ============================================================
+# Layer 2: Concept Cards → MIT Lectures
+# ============================================================
+
+- edge_id: "E-0018"
+  from_node: "K-0013"
+  to_node: "D-vCIa2h1C9UQ"
+  relation_type: "supports"
+  claim: "MIT 6.006のグラフアルゴリズムレビューが、BFS/DFS/最短路アルゴリズムの計算量と適用条件を体系的に整理しており、GraphRAGのグラフ走査設計に必要な理論的知識を提供する。"
+  source_locator: "D-vCIa2h1C9UQ:chunk_1"
+  quote: ""
+  confidence: "medium"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+- edge_id: "E-0019"
+  from_node: "K-0014"
+  to_node: "D-1jDBM9UM9xk"
+  relation_type: "supports"
+  claim: "MIT 6.041SCの「Bayesian Statistical Inference I」が、事前分布→尤度→事後分布の更新プロセスを数学的に定式化しており、RAGのリランキングスコア計算の理論的根拠を与える。"
+  source_locator: "D-1jDBM9UM9xk:chunk_1"
+  quote: "A single point estimate (MAP or conditional expectation) never conveys as much information as the full posterior distribution; when possible, reporting the entire posterior is more informative than a single number."
+  confidence: "high"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+# E-0020, E-0021: 三層構造違反を修正。P→Dの直接リンクをK経由に変更。
+
+- edge_id: "E-0020"
+  from_node: "K-0014"
+  to_node: "D-dfsPKoHv_F4"
+  relation_type: "supports"
+  claim: "Tenenbaum講義が、ベイズネットワークを「因果構造と確率推論を結合する汎用言語」と位置付けており、K-0014の確率的推論の概念を具体的なグラフ構造上の推論として裏付ける。"
+  source_locator: "D-dfsPKoHv_F4:chunk_1"
+  quote: "Bayesian networks provide general-purpose languages for representing causal structure and general-purpose algorithms for performing probabilistic inference."
+  confidence: "high"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+- edge_id: "E-0021"
+  from_node: "K-0013"
+  to_node: "D-IeF7aATDaw4"
+  relation_type: "supports"
+  claim: "MIT「Transformers」講義が、self-attentionによる文脈依存の表現学習を説明しており、GraphRAGのノード埋め込み・リランキングに使うニューラル手法の理論的基盤をK-0013のグラフ表現と接続する。"
+  source_locator: "D-IeF7aATDaw4:chunk_1"
+  quote: "Tunable self-attention introduces learned projection matrices for keys, queries, and values... Attention(Q,K,V) = softmax(QK^T / sqrt(d_K))V"
+  confidence: "medium"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+# ============================================================
+# Gaps: MIT OCWで不足している領域
+# ============================================================
+
+- edge_id: "E-0022"
+  from_node: "P-0003"
+  to_node: "K-0013"
+  relation_type: "gap"
+  claim: "MIT OCWにはRAG（Retrieval-Augmented Generation）やLLMとの検索統合に特化した講義が存在しない。グラフ理論やNLPの基礎はあるが、ベクトル検索とグラフ検索のハイブリッド設計は講義範囲外であり、実装知識は外部資料が必要である。"
+  source_locator: "P-0003#未確定事項"
+  quote: ""
+  confidence: "high"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"
+
+- edge_id: "E-0023"
+  from_node: "P-0003"
+  to_node: "K-0014"
+  relation_type: "gap"
+  claim: "MIT OCWのベイズ推論講義は古典的な統計推論が中心で、LLM出力のリランキングや検索結果の確信度推定への応用は扱われていない。Cross-encoderやBi-encoderによるニューラルリランキングの知識は別途必要。"
+  source_locator: "P-0003#未確定事項"
+  quote: ""
+  confidence: "medium"
+  review_status: "generated"
+  generated_by: "claude-opus-4-6"
+  generated_at: "2026-09-09T00:00:00Z"

@@ -1,0 +1,77 @@
+---
+kind: existing_card_evidence_proposal
+status: review_required
+card_id: "K-0003"
+gap_id: "gap_3ffb83d2d3dfb3ac"
+plan_id: "plan_ef2a1f5e3371"
+origin: "synthetic"
+generated_by: "kb_grow"
+generated_at: "2026-09-11T08:57:05.881447+00:00"
+---
+
+# Evidence proposal for K-0003
+
+## Trigger question
+
+ナッシュ均衡と戦略的相互作用とは何で、近い概念と何が違うか
+
+## Review instruction
+
+既存草案の本文は変更していません。以下はMIT検索で実際に返った断片です。草案の定義・機構・境界条件を支持するか、人間が確認してください。検索断片は候補発見用であり、ここから自動承認しません。
+
+## Verified search excerpts
+
+### ev_33752e3f06e7ab79 — Lecture 8: Backward Induction
+
+- Source ID: `mitocw:VHex0a2JFWI`
+- Video ID: `VHex0a2JFWI`
+- URL: https://www.youtube.com/watch?v=VHex0a2JFWI
+
+TITLE: Lecture 8: Backward Induction
+SOURCE: MIT OpenCourseWare / YouTube
+URL: https://www.youtube.com/watch?v=VHex0a2JFWI
+VIDEO_ID: VHex0a2JFWI
+
+a pure strategy Nash equilibrium?
+
+**Student:** Rock, paper, scissors.
+
+**Professor:** Rock, paper, scissors is a great example, right? So, it's unique Nash equilibrium is for each mix 1/3, 1/3, 1/3.
+
+So, wait a second. Rock, paper, scissors doesn't have a pure strategy Nash equilibrium, but here I have an algorithm that always gives us a pure strategy Nash equilibrium. So, what's going on here?
+
+Well, the input to our algorithm is a finite extensive form game with perfect information. So, notice rock, paper, scissors is a simultaneous move game. If we wanted to represent rock, paper, scissors in extensive form, we'd have an information set with multiple nodes, and therefore this would not be a game of perfect information, and therefore this algorithm would not apply.
+
+So, one implication of this algorithm, you can think of it as a theorem, is that **every extensive form game with perfect information has a pure strategy Nash equilibrium**. Right? So, Nash's theorem told us that any game has a mixed strategy Nash equilibrium. Some games only have mixed strategy Nash equilibria, but for this special class of games with perfect information, we always have a pure strategy Nash equilibrium.
+
+So maybe I'll say, what's the answer here? **Perfect information games are special**. And in fact, what's nice about this algorithm, it doesn't just show that a pure strategy Nash equilibrium exists, it gives us an algorithm for finding it. Whereas
+
+### ev_4159776798a0b722 — Lecture 5: Nash Equilibrium
+
+- Source ID: `mitocw:ftCXguW2k4o`
+- Video ID: `ftCXguW2k4o`
+- URL: https://www.youtube.com/watch?v=ftCXguW2k4o
+
+TITLE: Lecture 5: Nash Equilibrium
+SOURCE: MIT OpenCourseWare / YouTube
+URL: https://www.youtube.com/watch?v=ftCXguW2k4o
+VIDEO_ID: ftCXguW2k4o
+
+ers.
+Step 2: Check which cells (strategy profiles) in the matrix have both numbers underlined.
+If both numbers are underlined, that exactly means both players are playing a best response to each other's strategy, which is the definition of a Nash equilibrium in a two-player game.
+
+### 3. Relationship Between Solution Concepts
+[日本語要点：支配戦略均衡 (DSE)、ナッシュ均衡 (NE)、合理化可能性 (S_infinity) の関係を説明し、数学的な証明を行う。]
+
+Let's try to understand the relationship between the solution concepts we've given so far. 
+- Rationalizable strategy profiles: S_infinity
+- Nash equilibrium strategy profiles: NE
+- Dominant strategy equilibrium: DSE
+
+In general, the relationship is: DSE ⊆ NE ⊆ S_infinity.
+Every dominant strategy equilibrium is necessarily a Nash equilibrium. The converse isn't necessarily true. And every Nash equilibrium is rationalizable, but some rationalizable strategy profiles are not Nash equilibria.
+
+Let's do the first proof: DSE ⊆ NE.
+Suppose $S^*$ is a DSE. To show that it's a Nash equilibrium, we have to check that no player has a profitable unilateral deviation. For each player $i$ and each strategy $S_i'$, we want to show that $u_i(S_i^*, S_{-i}^*) \geq u_i(S_i', S_{-i}^*)$. 
+Because $S^*$ is a DSE, we know that $S_i^*$ is weakly dominant. This means $S_i^*$ weakly dominates every other strategy of player $i$, in particular $S_i'$. So $S_i^*$ always does weakly better than $S_i'$ no matter how my opponents are playing. If that's true no matter

@@ -1,0 +1,46 @@
+You are creating a discipline knowledge index for: Science, Technology & Society
+Broad category: Social Sciences
+Total courses: 3
+Total lecture units: 26
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT STS.050 The History of MIT, Spring 2011 (18 lectures)
+- 1. Introduction, Course Overview, What is Technology?
+- 10. World War II and the Aftermath
+- 11. Sputnik and the Cold War
+- 12. Aerospace and Computing in the 1960s, Lab Life in the 1970s, The Past Three Decades
+- 2. America in 1850: The Age of Transformation
+- ** 2. America in 1850: The Age of Transformation
+- 3. William Barton Rogers & The Foundational Years, 1861-1896
+- 4. Harvard, MIT, and Building a New Campus
+- 5. MIT and the corporate world in the age of big business, 1890-1930
+- 6. World War I, the 1920s, and the 1930s
+
+### MIT STS.069 Technology in a Dangerous World, Fall 2002 (6 lectures)
+- Lec 1 | MIT STS.069 Technology in a Dangerous World
+- Lec 3 | MIT STS.069 Technology in a Dangerous World
+- ** Lec 3 | MIT STS.069 Technology in a Dangerous World
+- Lec 4 | MIT STS.069 Technology in a Dangerous World
+
+### MIT： Joint Fact Finding in Science Intensive Policy Disputes (2 lectures)
+- MIT: Joint Fact Finding in Science Intensive Policy Disputes
+

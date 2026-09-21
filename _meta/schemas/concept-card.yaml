@@ -1,0 +1,145 @@
+# Concept Card Schema — v1.0
+# Every field marked (required) must be present. Fields marked (optional) may be omitted
+# but MUST be included as empty lists or null when the artifact is first created,
+# so downstream tooling does not need to handle missing keys.
+#
+# Agents: do not promote status from draft → reviewed or reviewed → accepted.
+# Only the user may do that. AI sets status: draft and authorship: ai_draft.
+
+$schema: concept-card/v1.0
+
+# ---------------------------------------------------------------------------
+# Identity
+# ---------------------------------------------------------------------------
+
+concept_id: ""           # (required) K-NNNN — read from _meta/counters.yaml before writing
+canonical_name: ""       # (required) The single authoritative name for this concept.
+                         # Use the most common English technical term. No abbreviations here.
+aliases: []              # (optional) List of strings: alternative names, abbreviations,
+                         # translations. E.g. ["RL", "reinforcement learning", "強化学習"]
+
+# ---------------------------------------------------------------------------
+# Conceptual Content
+# ---------------------------------------------------------------------------
+
+definition: ""           # (required) One paragraph (3–6 sentences). State what the concept IS,
+                         # not just what it does. No bullet points inside this field.
+
+mechanism: ""            # (required) How it works — the causal or logical chain.
+                         # Write in plain prose. Mathematical notation is allowed but must be
+                         # accompanied by natural-language explanation.
+
+assumptions: []          # (required) List of strings. Conditions that must hold for the
+                         # concept to apply as stated. Be explicit about what the mechanism
+                         # takes for granted (e.g., stationarity, rationality, linearity).
+
+boundary_conditions: []  # (required) List of strings. The precise conditions under which
+                         # the concept breaks down, inverts, or becomes inapplicable.
+                         # THIS IS CRITICAL for preventing business-application mistakes.
+                         # Each entry should be a falsifiable condition, not a vague caveat.
+
+failure_modes: []        # (required) List of strings. What goes wrong when the concept is
+                         # misapplied — not just "it fails" but the specific observable error
+                         # (e.g., "overfit to training distribution", "reward hacking").
+
+# ---------------------------------------------------------------------------
+# Transfer
+# ---------------------------------------------------------------------------
+
+business_transfer: []    # (required) List of objects. Concrete application scenarios.
+                         # Each entry:
+                         #   scenario: string (one sentence, present tense)
+                         #   domain: string (e.g., "e-commerce", "hiring", "supply chain")
+                         #   caveat: string (what can go wrong in this specific transfer)
+                         # Example:
+                         #   - scenario: "Use exploration-exploitation tradeoff to set A/B test stopping rules."
+                         #     domain: "product analytics"
+                         #     caveat: "Assumes reward signal (conversion) is observed quickly; invalid for long sales cycles."
+
+examples: []             # (required) List of strings. Concrete instances where the concept
+                         # clearly applies. At least one must come from source_refs.
+
+non_examples: []         # (required) List of strings. Things that look like this concept
+                         # but are not. Forces explicit boundary-drawing.
+                         # E.g. for "Markov Decision Process": "A supervised classification task
+                         # is not an MDP because there is no sequential action-state dynamic."
+
+# ---------------------------------------------------------------------------
+# Provenance
+# ---------------------------------------------------------------------------
+
+source_refs: []          # (required) List of objects. All sources that support this card.
+                         # Each entry:
+                         #   doc_id: string  (D-{video_id} or other artifact ID)
+                         #   locator: string (chunk number, section heading, or timestamp)
+                         #   quote: string   (verbatim excerpt, max 3 sentences)
+                         #   relevance: string ("primary" | "supporting" | "contrasting")
+                         # Example:
+                         #   - doc_id: "D-EFg3wF_GUX8"
+                         #     locator: "chunk_4"
+                         #     quote: "The agent selects actions to maximize cumulative reward..."
+                         #     relevance: "primary"
+
+related_concepts: []     # (optional) List of objects.
+                         #   concept_id: string (K-NNNN)
+                         #   relation_type: string
+                         #     Allowed values:
+                         #       "prerequisite"   — must understand this first
+                         #       "specialization" — this card is a special case of that one
+                         #       "generalization" — that card generalizes this one
+                         #       "contrast"       — commonly confused; key differences matter
+                         #       "complement"     — used together in practice
+                         #       "application_of" — this card applies that concept
+
+# ---------------------------------------------------------------------------
+# Tagging
+# ---------------------------------------------------------------------------
+
+pillar_tags: []          # (optional) List of strings. Allowed values:
+                         #   "agent_loop"         — perception → reasoning → action cycles
+                         #   "hybrid_control"     — combining learned and rule-based control
+                         #   "next_gen_rag"       — retrieval-augmented generation architectures
+                         #   "physical_grounding" — connecting symbols/models to physical reality
+                         # A card may have zero, one, or multiple tags.
+
+field_ids: []            # (optional) List of F-* IDs for the disciplines this concept belongs to.
+course_ids: []           # (optional) List of C-* IDs for courses this concept appears in.
+
+# ---------------------------------------------------------------------------
+# Review Status and Authorship
+# ---------------------------------------------------------------------------
+
+status: "draft"          # (required) Lifecycle stage.
+                         # Allowed values (in order):
+                         #   "draft"      — AI-generated, unreviewed
+                         #   "reviewed"   — User has read it; may have commented
+                         #   "accepted"   — User has confirmed as correct and usable
+                         #   "deprecated" — Superseded or found incorrect; keep for audit trail
+                         # IMPORTANT: AI sets "draft". Only user promotes to "reviewed"/"accepted".
+
+authorship: "ai_draft"   # (required) Who authored the substantive content.
+                         # Allowed values:
+                         #   "ai_draft"       — AI generated the content
+                         #   "user_confirmed" — User has edited or confirmed the content
+                         # This field tracks intellectual ownership, not just workflow state.
+
+generated_by: ""         # (required) Model name and version that created this card.
+                         # E.g. "claude-sonnet-4-6", "gpt-4o-2025-07", "fable-5"
+generated_at: ""         # (required) ISO 8601 datetime in UTC. E.g. "2026-09-09T14:32:00Z"
+prompt_version: ""       # (required) Version string of the extraction prompt used.
+                         # E.g. "concept-extraction-v1.2". Enables reproducibility audits.
+
+reviewed_by: null        # (optional) Model or human who performed the review.
+reviewed_at: null        # (optional) ISO 8601 datetime in UTC.
+confirmed_by: null       # (optional) Always a human username or "user" for the knowledge owner.
+confirmed_at: null       # (optional) ISO 8601 datetime in UTC.
+
+# ---------------------------------------------------------------------------
+# Change Log
+# ---------------------------------------------------------------------------
+
+changelog: []            # (optional) List of objects tracking significant edits.
+                         # Each entry:
+                         #   at: ISO 8601 datetime
+                         #   by: model or user identifier
+                         #   note: one-sentence description of the change

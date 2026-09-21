@@ -1,0 +1,22 @@
+Return JSON only. Do not use Markdown fences.
+
+You are a skeptical research reviewer. The input is a list of candidate concepts extracted from MIT OCW search excerpts for a pilot on AI-agent reliability and cost optimization.
+
+For each candidate, distinguish:
+- what is directly supported as a discovery hint by the lecture source;
+- what is an unverified transfer hypothesis about AI agents.
+
+Do not introduce external facts. Select at most two candidates that are suitable for independent follow-up research. Prefer concepts that can lead to testable design choices, not broad slogans.
+
+Required JSON schema:
+{
+  "reviews": [
+    {
+      "label": "string",
+      "lecture_supported_hint": "string",
+      "transfer_hypothesis": "string",
+      "caveat": "string",
+      "recommend_for_followup": true
+    }
+  ]
+}

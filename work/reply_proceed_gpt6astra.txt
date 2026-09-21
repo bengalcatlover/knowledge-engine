@@ -1,0 +1,1262 @@
+# 結論：検索を直してから、知識表現を高度化する
+
+実装順は次です。
+
+1. **検索Recallを回復する**
+2. **カードをバージョン付き・由来付きデータへ移行する**
+3. **文脈付き検索・引用付き回答を完成させる**
+4. **安全な自動増殖と共活性化マイニングを入れる**
+5. **型付き不確実性と実行可能モデルを追加する**
+6. **CompositionCardと創発Claimを再実行可能にする**
+7. **認証・監視・バックアップを加えて製品化する**
+
+最初からRDF、確率推論、シミュレータへ進むべきではありません。現在のボトルネックは明確に検索です。Recall@6が6%の状態では、その上にどれだけ高度な知識表現を作ってもユーザーから見えません。
+
+---
+
+# 1. 推奨する全体構成
+
+当面はSQLiteと既存ファイル構造を維持します。
+
+```text
+knowledge/
+  concepts/              # accepted
+  _inbox/                # candidate
+  perspectives/
+  models/                # 実行可能モデル定義
+  schemas/               # JSON Schema / Pydantic
+  snapshots/             # スナップショットmanifest
+
+indexes/
+  <snapshot_id>/
+    lexical.sqlite
+    vectors.npy
+    vector_meta.json
+
+artifacts/
+  trajectories/
+  simulations/
+
+state/
+  runtime.sqlite         # event/query/evidence/usageログ
+```
+
+役割を次のように分離します。
+
+- **YAML/Markdown + Git**：人間が編集するCanonical Knowledge
+- **SQLite**：検索投影、Assertion、イベント、由来、クエリログ
+- **ベクトルファイル**：意味検索
+- **Artifacts**：シミュレーション・軌道・実行結果
+- **Snapshot manifest**：どのカード・索引・モデルで回答したか
+
+現段階では、グラフDBや完全なイベントソーシングは不要です。
+
+---
+
+# 2. 実装フェーズ一覧
+
+工数は、1人のフルスタックエンジニアがAIコーディングツールを利用し、既存コードが極端に複雑でない前提です。ドメイン知識の人手レビュー時間は別です。
+
+| フェーズ | 内容 | 工数 | 累積目安 |
+|---|---|---:|---:|
+| 1 | 検索Recallの救済 | 8〜12人日 | 2週間 |
+| 2 | バージョン・Assertion・由来基盤 | 10〜15人日 | 4〜5週間 |
+| 3 | 文脈付き検索・引用付き回答 | 12〜18人日 | 7〜9週間 |
+| 4 | 統制された自動増殖・共活性化 | 12〜18人日 | 10〜13週間 |
+| 5 | TruthValue・実行可能モデル | 15〜25人日 | 14〜18週間 |
+| 6 | CompositionCard・創発Claim | 20〜35人日 | 18〜25週間 |
+| 7 | 製品運用・セキュリティ | 10〜20人日 | 21〜29週間 |
+
+フェーズ7はフェーズ3以降に製品化トラックとして前倒し可能です。
+
+---
+
+# Phase 1：検索Recallを救済する
+
+## 目的
+
+**今のシステムを最小限変えて、言い換え・シナリオ・日英横断検索を動かす。**
+
+カードスキーマはまだ変えません。変更対象は検索パイプラインだけです。
+
+## 何が動くようになるか
+
+- ANDに一致しない言い換えでも候補が出る
+- 日本語の質問から英語のMIT OCW講義を検索できる
+- シナリオ問題から関連概念を経由して講義へ到達できる
+- すべての検索結果にretriever versionを記録できる
+
+## 実装順
+
+### 1. AND検索を「複数経路検索」に変更する
+
+一つの検索式にすべてを詰め込まず、以下を別々に実行します。
+
+1. 完全フレーズ検索
+2. OR-BM25検索
+3. 英訳・同義語展開後のBM25検索
+4. ベクトル検索
+5. Concept → Lectureリンクによるブースト
+
+各検索結果は生スコアではなく、RRFで統合します。
+
+```python
+def reciprocal_rank_fusion(result_sets, k=60):
+    scores = {}
+
+    # result_sets = [(weight, [doc_id, ...]), ...]
+    for weight, ranked_ids in result_sets:
+        for rank, doc_id in enumerate(ranked_ids, start=1):
+            scores[doc_id] = scores.get(doc_id, 0.0) + \
+                             weight / (k + rank)
+
+    return sorted(scores.items(), key=lambda x: x[1], reverse=True)
+```
+
+BM25の生スコアは、クエリ変形ごとに分布が違うため直接足し合わせない方が安全です。
+
+### 2. FTSをフィールド別に重み付けする
+
+```sql
+CREATE VIRTUAL TABLE documents_fts USING fts5(
+    title,
+    aliases,
+    summary,
+    mechanism,
+    body,
+    doc_id UNINDEXED,
+    doc_kind UNINDEXED,
+    tokenize = 'unicode61 remove_diacritics 2'
+);
+```
+
+検索例：
+
+```sql
+SELECT
+    doc_id,
+    doc_kind,
+    bm25(documents_fts, 10.0, 8.0, 4.0, 2.0, 1.0) AS score
+FROM documents_fts
+WHERE documents_fts MATCH ?
+ORDER BY score
+LIMIT 50;
+```
+
+FTS5の`bm25()`は小さい値ほど上位です。
+
+安全なORクエリ生成：
+
+```python
+import re
+
+def fts_escape(term: str) -> str:
+    term = re.sub(r'["*:^()]', ' ', term)
+    term = re.sub(r'\s+', ' ', term).strip()
+    return f'"{term}"'
+
+def make_or_query(terms: list[str]) -> str:
+    terms = [t for t in terms if len(t.strip()) >= 2]
+    return " OR ".join(fts_escape(t) for t in terms)
+```
+
+### 3. 日本語対策を入れる
+
+`unicode61`だけでは日本語の分かち書きが弱いため、次のどちらかを使います。
+
+- 最小実装：日本語質問を英語へ翻訳してMIT OCW検索
+- 改善実装：SudachiPyで日本語を分かち書きしてから格納・検索
+
+4,258講義程度なら、以下の構成で十分です。
+
+- 日本語カード：Sudachiで分かち書き
+- MIT OCW：英語の原文
+- 質問：日本語原文、分かち書き、英訳の3種類を生成
+- ベクトル：多言語埋め込みを1種類
+
+### 4. ベクトル検索を追加する
+
+4,258講義＋カード数百程度なら、まだ専用ベクトルDBは不要です。
+
+- 埋め込みをNumPy/FAISS/sqlite-vecのいずれかに保存
+- `title + course title + summary + keywords`を埋め込む
+- モデル名・バージョン・生成日を必ず記録
+
+```python
+def build_embedding_text(doc):
+    return "\n".join([
+        f"title: {doc.title}",
+        f"aliases: {'; '.join(doc.aliases)}",
+        f"summary: {doc.summary}",
+        f"concepts: {'; '.join(doc.related_concepts)}",
+    ])
+```
+
+### 5. 上位30〜50件のみrerankする
+
+検索全件をLLMへ渡さず、RRF上位30〜50件だけをrerankします。
+
+最終フロー：
+
+```text
+質問
+  ├─ 原文OR-BM25
+  ├─ キーワード展開BM25
+  ├─ 英訳BM25
+  ├─ 多言語ベクトル検索
+  └─ Concept/Lectureリンク展開
+          ↓
+         RRF
+          ↓
+      上位30〜50件
+          ↓
+      reranker
+          ↓
+        上位6件
+```
+
+## 評価基準
+
+元の50問は変更せず回帰テストとして固定します。ただし50問だけでは小さすぎるため、フェーズ3までに200問へ増やします。
+
+フェーズ1の終了条件：
+
+- Recall@6：**6% → 最低45%**
+- Recall@20：**70%以上**
+- シナリオ問題サブセット：Recall@6 **35%以上**
+- 検索結果0件率：**5%未満**
+- p95レイテンシ：reranker込みで**3秒以内**
+- 各結果に検索経路とスコア内訳が残る
+
+45%に到達しなければ、次の知識基盤改修へ進まずエラー分類を続けます。
+
+## 工数
+
+8〜12人日。
+
+---
+
+# Phase 2：バージョン付き知識基盤へ移行する
+
+## 目的
+
+カード、主張、由来、候補、スナップショットを分離する。
+
+完全なRDF化ではなく、既存カードを壊さずに包む形で移行します。
+
+## 何が動くようになるか
+
+- 「どのバージョンの知識で回答したか」を再現できる
+- CandidateとAcceptedを検索時に明確に分離できる
+- 主張ごとにTruthValue、由来、文脈を持てる
+- 自動生成物が独立証拠として自己増殖するのを防げる
+- カード変更をロールバックできる
+
+## 最小スキーマ
+
+```sql
+CREATE TABLE card (
+    card_id TEXT PRIMARY KEY,
+    kind TEXT NOT NULL,
+    status TEXT NOT NULL CHECK (
+        status IN ('ephemeral', 'candidate', 'validated',
+                   'accepted', 'deprecated', 'retracted')
+    ),
+    current_revision_id TEXT,
+    created_at TEXT NOT NULL
+);
+
+CREATE TABLE card_revision (
+    revision_id TEXT PRIMARY KEY,
+    card_id TEXT NOT NULL,
+    schema_version INTEGER NOT NULL,
+    payload_json TEXT NOT NULL CHECK(json_valid(payload_json)),
+    content_hash TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    created_by TEXT NOT NULL,
+    FOREIGN KEY(card_id) REFERENCES card(card_id)
+);
+
+CREATE TABLE assertion (
+    assertion_id TEXT PRIMARY KEY,
+    subject_ref TEXT NOT NULL,
+    predicate TEXT NOT NULL,
+    object_ref TEXT,
+    object_literal_json TEXT,
+
+    context_json TEXT CHECK(
+        context_json IS NULL OR json_valid(context_json)
+    ),
+
+    valuation_kind TEXT NOT NULL CHECK (
+        valuation_kind IN (
+            'boolean', 'probability', 'fuzzy',
+            'interval', 'unknown'
+        )
+    ),
+    valuation_json TEXT NOT NULL CHECK(json_valid(valuation_json)),
+
+    epistemic_status TEXT NOT NULL CHECK (
+        epistemic_status IN (
+            'observed', 'imported', 'inferred',
+            'simulated', 'generated', 'analogy'
+        )
+    ),
+
+    valid_from TEXT,
+    valid_to TEXT,
+    transaction_time TEXT NOT NULL,
+    lifecycle_status TEXT NOT NULL
+);
+
+CREATE TABLE evidence (
+    evidence_id TEXT PRIMARY KEY,
+    origin_kind TEXT NOT NULL,
+    uri TEXT,
+    content_hash TEXT,
+    source_group TEXT NOT NULL,
+    captured_at TEXT NOT NULL,
+    metadata_json TEXT CHECK(json_valid(metadata_json))
+);
+
+CREATE TABLE assertion_evidence (
+    assertion_id TEXT NOT NULL,
+    evidence_id TEXT NOT NULL,
+    role TEXT NOT NULL,
+    PRIMARY KEY(assertion_id, evidence_id, role)
+);
+
+CREATE TABLE provenance_edge (
+    parent_evidence_id TEXT NOT NULL,
+    child_evidence_id TEXT NOT NULL,
+    PRIMARY KEY(parent_evidence_id, child_evidence_id)
+);
+```
+
+イベントとスナップショット：
+
+```sql
+CREATE TABLE event (
+    event_id TEXT PRIMARY KEY,
+    event_type TEXT NOT NULL,
+    entity_ref TEXT,
+    payload_json TEXT NOT NULL CHECK(json_valid(payload_json)),
+    occurred_at TEXT NOT NULL,
+    actor TEXT NOT NULL
+);
+
+CREATE TRIGGER event_no_update
+BEFORE UPDATE ON event
+BEGIN
+    SELECT RAISE(ABORT, 'event table is append-only');
+END;
+
+CREATE TRIGGER event_no_delete
+BEFORE DELETE ON event
+BEGIN
+    SELECT RAISE(ABORT, 'event table is append-only');
+END;
+
+CREATE TABLE snapshot (
+    snapshot_id TEXT PRIMARY KEY,
+    manifest_hash TEXT NOT NULL,
+    git_commit TEXT,
+    index_version TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+CREATE TABLE snapshot_member (
+    snapshot_id TEXT NOT NULL,
+    card_id TEXT NOT NULL,
+    revision_id TEXT NOT NULL,
+    PRIMARY KEY(snapshot_id, card_id)
+);
+```
+
+## TruthValueで混ぜてはいけないもの
+
+以下は別フィールドにします。
+
+```yaml
+valuation:
+  kind: probability
+  p: 0.30
+  conditioning_set:
+    - machine_age_gt_5_years
+  model_ref: model:failure-v2
+
+source_assessment:
+  reliability: 0.85
+  independent_source_group: manufacturer-dataset-2024
+
+decision_policy:
+  review_if: "p >= 0.20"
+  stop_operation_if: "p >= 0.50"
+```
+
+- `p=0.30`：命題の確率
+- `reliability=0.85`：証拠源の品質
+- `review_if`：業務判断
+
+これらを一つの`confidence`に入れてはいけません。
+
+## 既存33カードの移行
+
+既存フィールドはそのまま`core`へ包みます。
+
+```yaml
+schema_version: 2
+id: concept:network-effect
+kind: Concept
+status: accepted
+
+core:
+  definition: "..."
+  mechanism: "..."
+  boundary_conditions:
+    - "..."
+  failure_modes:
+    - "..."
+  business_transfer:
+    - "..."
+  related_concepts:
+    - concept:positive-feedback
+
+facets: {}
+model_bindings: []
+
+provenance:
+  migration_source: legacy-card-v1
+  migrated_at: 2026-...
+```
+
+全文章を直ちに原子Assertionへ分解する必要はありません。まず以下だけをAssertion化します。
+
+- カード間Relation
+- Boundary Condition
+- 回答で引用する重要主張
+- 数値・因果・確率を含む主張
+
+## スナップショットの作り方
+
+フルイベントソーシングで状態を再構築するのではなく、当面は以下で十分です。
+
+```text
+Canonical YAML
+    ↓ hash
+CardRevision
+    ↓
+Snapshot manifest
+    ↓
+検索インデックス
+```
+
+すべての回答に記録します。
+
+```json
+{
+  "query_id": "q_123",
+  "snapshot_id": "snap_a94f...",
+  "retriever_version": "hybrid-v2",
+  "reranker_version": "rerank-v1",
+  "result_ids": ["concept:x", "lecture:y"]
+}
+```
+
+## 工数
+
+10〜15人日。
+
+---
+
+# Phase 3：文脈付き検索と引用付き回答
+
+## 目的
+
+`core + delta + Facet/Lens`を実際の回答パイプラインへ接続する。
+
+## 何が動くようになるか
+
+- 科学・工学・ビジネス・日常の意味差を分離できる
+- 比喩を科学的事実として混入させない
+- 回答中の主張をカード・講義・外部証拠まで追跡できる
+- `as_of`を指定して過去の知識状態で再実行できる
+- この段階で限定用途の有償パイロットが可能になる
+
+## 文脈は最初から細分化しない
+
+初期Contextは以下だけで十分です。
+
+```yaml
+Context:
+  domain: science | engineering | business | everyday
+  task: learn | explain | decide | troubleshoot
+  audience: beginner | practitioner | expert
+  locale: ja-JP | en-US
+```
+
+## Facet例
+
+```yaml
+id: concept:entropy
+
+core:
+  semantic_signature:
+    - uncertainty_or_state_multiplicity_measure
+
+facets:
+  physics:
+    definition_delta: "S = k_B ln W..."
+    epistemic_status: scientific
+    salience:
+      temperature: 0.9
+      reversibility: 0.9
+
+  information_theory:
+    definition_delta: "H = -Σp log p..."
+    epistemic_status: scientific
+    salience:
+      probability_distribution: 0.9
+      compression: 0.9
+
+  business:
+    definition_delta: "組織や工程の無秩序化を説明する比喩"
+    epistemic_status: analogy
+    salience:
+      process_degradation: 0.8
+```
+
+## Facet解決
+
+```python
+def resolve_facet(card, context):
+    candidates = []
+
+    for facet in card.get("facets", {}).values():
+        condition = facet.get("applies_when", {})
+        matched = sum(
+            context.get(k) == v for k, v in condition.items()
+        )
+        if matched == len(condition):
+            candidates.append((matched, facet))
+
+    candidates.sort(key=lambda x: x[0], reverse=True)
+
+    if len(candidates) >= 2 and candidates[0][0] == candidates[1][0]:
+        return {
+            "kind": "ambiguous",
+            "candidates": [candidates[0][1], candidates[1][1]]
+        }
+
+    return candidates[0][1] if candidates else card["core"]
+```
+
+同順位の場合、暗黙に一方を選ばず`Ambiguous`を返します。
+
+## 回答パイプライン
+
+```text
+Query
+  → Context推定
+  → Snapshot固定
+  → Hybrid Retrieval
+  → Facet解決
+  → Claim/Evidence Pack生成
+  → 回答生成
+  → 文単位の引用検査
+  → QueryServedイベント
+```
+
+APIレスポンス例：
+
+```json
+{
+  "answer": "...",
+  "snapshot_id": "snap_a94f",
+  "context": {
+    "domain": "business",
+    "task": "troubleshoot",
+    "audience": "practitioner",
+    "locale": "ja-JP"
+  },
+  "claims": [
+    {
+      "text_span": "ネットワーク効果は初期流動性が不足すると成立しにくい",
+      "assertion_id": "assertion:981",
+      "evidence_ids": ["evidence:ocw-14-01"],
+      "epistemic_status": "imported"
+    }
+  ]
+}
+```
+
+## 終了条件
+
+- 回答中の検証可能な主張の引用付与率：95%以上
+- `snapshot_id`から回答材料を再構築できる
+- Candidateが回答に入った場合は明示表示
+- businessの`analogy`がscience回答へ混入する率：評価セット上5%未満
+- 評価セットを最低200問へ拡張
+
+## 工数
+
+12〜18人日。
+
+---
+
+# Phase 4：統制された自動増殖と共活性化
+
+## 目的
+
+現在の `_inbox/` 自動生成を、安全な成長パイプラインへ変える。
+
+## 何が動くようになるか
+
+- 不足概念を回答後に非同期生成できる
+- 重複カードや自己引用を検出できる
+- 人間が差分を見て昇格できる
+- 共活性化から「概念の穴」やCompositionCard候補を発見できる
+- 使用頻度と真理性を分離できる
+
+## クエリと更新を同じトランザクションにしない
+
+```python
+def answer_query(request):
+    snapshot = acquire_snapshot(request.as_of)
+    result = execute_query(request, snapshot)
+
+    append_event({
+        "type": "QueryServed",
+        "snapshot_id": snapshot.id,
+        "query_id": request.id,
+        "result_ids": result.ids
+    })
+
+    enqueue_gap_analysis(request.id)  # 非同期
+    return result
+```
+
+## Candidate生成条件
+
+すべての質問からカードを作らないでください。例えば次を満たした場合だけ候補化します。
+
+```text
+以下のいずれか:
+- top retrieval scoreが閾値未満
+- 回答に引用できない重要概念がある
+- 同一概念クラスタが3つ以上の独立セッションで出現
+- ユーザーが「概念化して」と指定
+
+かつ:
+- 既存カードとの類似度が0.90未満
+- 少なくとも1つ外部証拠がある
+- 生成連鎖深度が2以下
+```
+
+Candidate例：
+
+```yaml
+id: candidate:inventory-oscillation
+status: candidate
+based_on_snapshot: snap_a94f
+trigger_queries:
+  - q_101
+  - q_148
+  - q_203
+
+generation:
+  model: generator-v3
+  chain_depth: 1
+
+independent_evidence:
+  - evidence:ocw-control-lecture-12
+
+duplicate_candidates:
+  - concept:bullwhip-effect
+
+review:
+  schema_valid: true
+  evidence_valid: true
+  contradiction_warnings: []
+  human_approved: false
+```
+
+## 昇格コマンド
+
+```bash
+kb candidate validate candidate:inventory-oscillation
+kb candidate diff candidate:inventory-oscillation
+kb candidate promote candidate:inventory-oscillation \
+  --approved-by=user:owner
+kb snapshot create
+kb index build --snapshot latest
+```
+
+## 共活性化マイニング
+
+Phase 1から次を記録しておきます。
+
+```sql
+CREATE TABLE activation (
+    query_id TEXT NOT NULL,
+    card_id TEXT NOT NULL,
+    rank INTEGER,
+    selected INTEGER NOT NULL DEFAULT 0,
+    context_domain TEXT,
+    PRIMARY KEY(query_id, card_id)
+);
+```
+
+週次バッチで以下を抽出します。
+
+- 同時に選択されたカード集合
+- 文脈別の共起頻度
+- 共通上位概念を持たない集合
+- 既存CompositionCardがない集合
+
+```python
+if (
+    support(card_set) >= 3
+    and independent_sessions(card_set) >= 3
+    and not existing_composition(card_set)
+):
+    create_composition_candidate(card_set)
+```
+
+ここではまだ「創発した」とは主張しません。作るのはあくまで**組成候補**です。
+
+## 重要なルール
+
+- 検索回数は証拠ではない
+- AI生成カードは、そのカード自身の独立証拠にならない
+- 同じ元資料を引用する複数生成物は1証拠群として数える
+- 人気度はランキングに最大10〜15%だけ寄与させる
+- 人気度には時間減衰を入れる
+- Acceptedへの更新は必ず次Snapshotから反映する
+
+## 工数
+
+12〜18人日。
+
+---
+
+# Phase 5：TruthValueと実行可能モデル
+
+## 目的
+
+連続性・確率・不確実性を、説明文ではなく実行可能なインターフェースとして扱う。
+
+## 何が動くようになるか
+
+- 「増加中」「定常状態」「閾値超過」などを定性的に推論できる
+- 数値入力が揃えば外部モデルを実行できる
+- Probability、Fuzzy、Interval、Unknownを区別して返せる
+- 実行結果をArtifactとして保存し、再実行できる
+
+## 最初に対応するTruthValue
+
+以下だけで十分です。
+
+```text
+Boolean
+Probability
+FuzzyMembership
+Interval
+Unknown
+```
+
+Belief Mass、四値論理、全体ベイズネットは後回しです。
+
+## モデル定義例
+
+```yaml
+id: model:logistic-growth
+version: 1
+kind: continuous_dynamic_model
+
+entrypoint: models/logistic.py:run
+code_hash: sha256:...
+
+inputs:
+  N0: {type: number, unit: count}
+  r:  {type: number, unit: 1/day}
+  K:  {type: number, unit: count}
+  days: {type: integer, unit: day}
+
+outputs:
+  trajectory:
+    type: timeseries
+    unit: count
+
+qualitative_regimes:
+  - id: early_growth
+    condition: "N < 0.2 * K"
+    trend: increasing_accelerating
+
+  - id: saturation
+    condition: "N >= 0.9 * K"
+    trend: increasing_decelerating
+
+validity_conditions:
+  - "K changes slower than N"
+  - "population is approximately homogeneous"
+
+resource_policy:
+  timeout_seconds: 10
+  network_access: false
+  max_memory_mb: 256
+```
+
+カード側はモデルを参照します。
+
+```yaml
+id: concept:logistic-growth
+model_bindings:
+  - model_ref: model:logistic-growth
+    applicability:
+      - "resource limitation exists"
+      - "carrying capacity can be approximated"
+```
+
+## 実行結果はカードへ書き戻さない
+
+```yaml
+artifact_id: trajectory:abc123
+model_ref: model:logistic-growth
+model_version: 1
+snapshot_id: snap_a94f
+
+inputs:
+  N0: 300
+  r: 0.12
+  K: 10000
+  days: 365
+
+storage_ref: artifacts/trajectories/abc123.parquet
+execution:
+  code_hash: sha256:...
+  started_at: ...
+  duration_ms: 42
+```
+
+カードに「365日後は9,999」と保存すると、入力条件が失われて知識と実行結果が混ざります。
+
+## セキュリティ
+
+- AI生成コードを直接実行しない
+- 許可済みentrypointだけをregistryへ登録
+- コンテナまたは制限付きsubprocess
+- ネットワーク遮断
+- CPU、メモリ、時間制限
+- 入出力JSON Schema検証
+- コードhash記録
+
+## 最初に実装するモデル
+
+3〜5個で十分です。
+
+- 指数成長
+- ロジスティック成長
+- ベイズ更新
+- 待ち行列
+- 単純なフィードバック／在庫振動
+
+全カードへモデルを付ける必要はありません。
+
+## 工数
+
+15〜25人日。
+
+---
+
+# Phase 6：CompositionCardと創発Claim
+
+## 目的
+
+創発を「説明文」ではなく「再実行可能な観測済みClaim」にする。
+
+## 何が動くようになるか
+
+- 構成要素、相互作用、更新方式を明示できる
+- パラメータ掃引・複数Seedで実験できる
+- マクロ観測量を検出できる
+- `emerges_from`を`has_part`と分離できる
+- 創発結果を再現可能な研究Artifactとして残せる
+
+## CompositionCard例
+
+```yaml
+id: composition:flocking-v1
+kind: Composition
+
+components:
+  - card_ref: agent:bird
+    multiplicity: 500
+
+interaction:
+  topology: dynamic_neighborhood
+  radius: 5.0
+
+rules:
+  - separation
+  - alignment
+  - cohesion
+
+scheduler: synchronous
+
+environment:
+  dimensions: 2
+  boundary: periodic
+
+parameters:
+  noise: [0.0, 0.3]
+  density: [0.2, 1.0]
+```
+
+## EmergenceClaim例
+
+```yaml
+id: emergence:collective-flocking
+kind: EmergenceClaim
+
+composition_ref: composition:flocking-v1
+
+macro_observable:
+  name: polarization
+  expression: "|sum(unit_velocity_i)| / N"
+
+detector:
+  condition: "polarization > 0.8"
+  persistence_steps: 100
+  null_model: random_motion
+
+parameter_region:
+  density: [0.4, 0.8]
+  noise: [0.0, 0.15]
+
+robustness:
+  runs: 100
+  success_rate: 0.91
+
+evidence:
+  simulation_artifacts:
+    - simulation:run-set-442
+
+relations:
+  - predicate: emerges_from
+    object: composition:flocking-v1
+```
+
+## 最初の検証対象
+
+既知の創発現象を使います。
+
+- Boidsの群れ
+- Schellingの分離
+- セルオートマトン
+- Bullwhip／在庫振動
+- 単純なネットワーク効果
+
+既知現象を再現できない状態で、未知創発の自動発見へ進んではいけません。
+
+## 工数
+
+20〜35人日。
+
+---
+
+# Phase 7：製品運用
+
+## 目的
+
+デモではなく、他人が継続利用できるシステムにする。
+
+## 何が動くようになるか
+
+- 複数ユーザーで利用できる
+- 誰が何を昇格したか監査できる
+- 障害・コスト・検索品質を監視できる
+- 顧客データを分離できる
+- バックアップと復元ができる
+
+## 必須項目
+
+- 認証・RBAC
+- Candidate承認権限
+- テナントまたはワークスペース分離
+- SQLiteバックアップまたはPostgreSQL移行
+- raw query保存のopt-inとPIIマスキング
+- API rate limit
+- LLM・埋め込みコスト計測
+- Snapshot単位のrollback
+- Recall、引用率、0件率のダッシュボード
+- nightly backupとrestore test
+
+SQLiteからPostgreSQLへの移行は、同時書き込みや複数テナントが実際に問題になってからで構いません。
+
+## 工数
+
+10〜20人日。
+
+---
+
+# 3. 依存関係
+
+```text
+Phase 1: Hybrid Retrieval
+   ├──────────────→ Phase 4: 共活性化ログ
+   │                    │
+   │                    └──────────────┐
+   ↓                                   ↓
+Phase 2: Revision / Assertion /       Phase 6: Composition /
+         Evidence / Snapshot           EmergenceClaim
+   ├──────────────→ Phase 3: Context       ↑
+   │                    │                  │
+   │                    └→ Phase 4 ───────┘
+   │
+   └──────────────→ Phase 5: TruthValue /
+                         Model Runtime ────┘
+
+Phase 3 ───────────→ Phase 7: 製品運用
+```
+
+重要な依存関係は以下です。
+
+- **共活性化マイニングはPhase 1のログに依存**
+- **自動昇格はPhase 2のRevision・Evidence・Snapshotに依存**
+- **FacetはPhase 2のAssertion/Context表現に依存**
+- **創発ClaimはPhase 4のComposition候補とPhase 5の実行基盤に依存**
+- **有償運用は最低でもPhase 3の引用・監査可能性に依存**
+
+---
+
+# 4. 「ここまで来たら売れる」
+
+## 有償パイロット：Phase 3完了時点
+
+ただし「世界のあらゆる知識基盤」としてではなく、用途を限定して売ります。
+
+売り方の例：
+
+- MIT OCW横断学習アシスタント
+- 経済学・CS・統計を横断する概念ナビゲータ
+- 企業内ナレッジの引用付き検索・回答
+- 属人知から科学概念への逆引き支援
+
+必要条件：
+
+- Recall@6が少なくとも50〜60%
+- 引用率95%以上
+- 回答のSnapshot再現
+- CandidateとAcceptedの明示
+- 1つの狭い領域で150〜300枚程度の検証済みカード
+- 顧客の代表質問100〜200件による受入評価
+
+現在の33枚だけで「汎用知識基盤」を販売するのは難しいです。Phase 3時点では**広さではなく、監査可能性と概念横断性**を売るべきです。
+
+## 差別化された製品：Phase 4完了時点
+
+ここで初めて、
+
+> 利用されながら不足概念を発見し、人間の統治下で成長する知識基盤
+
+という独自性を商品説明に使えます。
+
+## エンタープライズ販売：Phase 7完了時点
+
+認証、監査、データ分離、バックアップが揃ってからです。
+
+---
+
+# 5. 「ここまで来たら研究として発表できる」
+
+実装しただけでは研究になりません。仮説、比較対象、評価データが必要です。
+
+## ワークショップ／技術報告：Phase 4完了後
+
+発表可能な研究テーマ：
+
+> Provenance-gated self-growing knowledge baseが、無制御なLLM生成と比較して、検索Recallを改善しながら知識汚染を抑えられるか
+
+必要な実験：
+
+- AND-BM25
+- OR-BM25
+- Hybrid Retrieval
+- Hybrid + Facet
+- 無制御自動生成
+- Candidateゲート付き自動生成
+
+評価指標：
+
+- Recall@6
+- nDCG@6
+- 誤ったカード昇格率
+- 重複カード率
+- 引用可能主張率
+- 文脈コンタミネーション率
+- 人手レビュー時間
+
+最低でも200問、できれば2領域以上が必要です。
+
+## フルペーパー候補：Phase 6完了後
+
+研究主張の例：
+
+- 共活性化から生成したComposition候補の有用性
+- Snapshot固定と由来DAGによる自己強化ループ抑制
+- core + Facetによる文脈コンタミネーション削減
+- CompositionCardから生成した創発Claimの再現性
+
+必要なのは、コードだけでなく以下です。
+
+- 公開可能な評価セット
+- Snapshot
+- アブレーション
+- 複数Seedの実験
+- 人間評価者間一致度
+- ベースラインとの統計比較
+
+---
+
+# 6. やらなくてよいこと
+
+少なくとも現時点では、以下は過剰設計です。
+
+## データ基盤
+
+- RDF-starへの全面移行
+- Neo4jなどのグラフDB導入
+- すべてをイベントから再構築する完全Event Sourcing
+- 数十枚のカードに対する分散DB
+- 専用ベクトルDB
+
+SQLite、Git、ファイルArtifactで十分です。
+
+## 確率・論理
+
+- 全カードを結ぶ大域ベイジアンネット
+- Dempster–Shafer、Belnap四値論理の全面実装
+- 確率・検索スコア・証拠品質の統一
+- 厳密な確率キャリブレーションを全カードへ要求
+
+最初はBoolean、Probability、Fuzzy、Interval、Unknownだけにします。
+
+## 連続モデル
+
+- PDE一般ソルバ
+- Modelica/FMU全面統合
+- 自動数式発見
+- 全カードへの実行モデル付与
+- AIが生成した任意コードの直接実行
+
+需要の高い3〜5モデルから始めます。
+
+## 文脈
+
+- 完全な文脈論理
+- 無制限のマイクロセオリー
+- 地域・職種・年代ごとのFacetを事前生成
+- FacetをOOP継承ツリーにすること
+
+「実際に意味衝突が起きたときだけFacetを追加」が正解です。
+
+## 創発
+
+- 未知の創発現象の自動予測
+- マクロ観測量の完全自動発見
+- ε-machineやトポロジカルデータ解析の早期導入
+- 共起しただけで`emerges_from`を付けること
+
+共活性化はComposition候補であり、創発の証拠ではありません。
+
+## 自動成長
+
+- 自動生成カードの即時Accepted化
+- 利用回数を真理の証拠として使うこと
+- 自己生成物を独立証拠として数えること
+- 同一Snapshot内で検索結果を学習・反映すること
+- 複数AIエージェントによる無制限な自己増殖
+
+---
+
+# 7. 月曜日からの具体的な作業計画
+
+## 月曜日
+
+午前：
+
+1. 現行コードとDBをタグ付け
+2. 50問の質問、正解ID、現在順位をCSV化
+3. 失敗を分類する
+
+```text
+exact term mismatch
+paraphrase
+scenario
+Japanese-English mismatch
+concept found but lecture not found
+lecture found but top-6 outside
+no relevant indexed text
+```
+
+午後：
+
+4. AND検索を残したままOR検索経路を追加
+5. 両者をRRFで統合
+6. Recall@6を再計測
+
+## 火曜日
+
+- フィールド別FTS
+- aliases、related concepts、course titleを検索対象へ追加
+- 日本語質問の英訳検索
+- Concept → Lectureリンクブースト
+
+## 水曜日
+
+- 4,258講義＋カードの埋め込み生成
+- FAISSまたはNumPy cosine検索
+- RRFへ統合
+
+## 木曜日
+
+- 上位30件のreranking
+- スコア内訳のログ出力
+- `query_run`、`activation`テーブル追加
+
+## 金曜日
+
+- 50問を再評価
+- Recall@6、Recall@20、0件率、カテゴリ別Recallを確認
+- 失敗例を20件レビュー
+- retriever versionを固定してデプロイ
+
+## 2週目
+
+- 100問の追加評価セット作成
+- `_inbox`生成を同期処理から非同期キューへ変更
+- Candidateを通常検索から除外
+- Snapshot IDの簡易導入
+- Phase 2のmigration script作成
+
+---
+
+# 最終判断
+
+最短で価値を出すクリティカルパスは次です。
+
+```text
+検索修復
+ → 回答の引用・再現性
+ → 文脈分離
+ → 統制された自動成長
+```
+
+TruthValue、連続モデル、創発シミュレータは重要ですが、製品価値の最短経路ではありません。先に検索と統治を完成させるべきです。
+
+実務上の最初の成功状態は、
+
+> 質問すると関連概念とMIT講義が高い確率で見つかり、どの知識バージョン・文脈・証拠に基づく回答か追跡でき、不足概念は勝手に本番採用されずレビュー待ちになる
+
+という状態です。これはPhase 3、約7〜9週間で到達可能です。

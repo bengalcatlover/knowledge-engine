@@ -1,0 +1,74 @@
+縦串MVP（第二価格オークション）が完了した。次に何をすべきか判定せよ。
+
+## 完了した成果
+
+1. 統合blueprint v1確定（Fable+Astra一致判定）
+2. 契約テスト7本全通過（根拠到達性、DAG、HYP隔離、stale伝播、変異検出、架空引用拒否、独自証明保護）
+3. 縦串MVP: 11ノード/11エッジ/5根拠。9 approved, 1 blocked(K-0007), 1 proposed(H-0100)
+4. 共活性化ログ蓄積中（search_engine + brain_rag両方から記録開始済み）
+5. マイグレーション設計ドラフト: 36枚中25枚が直接変換、11枚が分割必要
+6. S-0100のスコープ修正（n>=2→n=2）、stale伝播の独自証明保護を実装
+
+## 現在の資産
+
+- 33枚のv2カード（旧スキーマ、未移行）
+- 101本の旧エッジ（107本: related 67, complement 26, prerequisite 9, specialization 3, contrast 1, application_of 1）
+- mvp_store.py: 新スキーマのノード・エッジ・根拠ストア + policy engine
+- test_mvp_contract.py: 7本の契約テスト
+- graph.py: Facet解決 + 比喩遮断 + 確信度打ち切りグラフ走査（旧スキーマ）
+- search_engine.py: ハイブリッド検索（BM25+Gemini埋め込み+RRF、Recall@6=100%）
+- kb.py: 台帳層（イベントログ、ライフサイクル、共活性化記録）
+- MIT OCW 4,258本の講義Markdown
+
+## 未完了・保留中の作業
+
+- Phase 4: 共活性化マイニング（ログ蓄積開始済み、抽出・合成は未実装）
+- Phase 5: TruthValue + model_ref（上位10カードのみ）
+- Phase 6: CompositionCard + 創発Claim
+- 既存33カードの5層スキーマ移行（ドラフト表あり、実行は未）
+- K-0007の原典確保（Fisher 1935のDOI/locator）
+- UIプロトタイプ設計（stale伝播が動作確認済みなので技術的前提は満たした）
+- 万能cell層プロトタイプ（ログ蓄積中、設計材料待ち）
+- content_hashの実値確定（pending_verificationのまま）
+
+## ユーザーの最終意図（HANDOVER_FOR_CLAUDE.mdより）
+
+目標はMIT講義カード集ではない。根拠に戻れる世界モデルを、次の層で再帰的に増幅する知識OSにする。
+成功指標はカード数ではなく、根拠追跡・再現・反例での更新・重要な問いへの回答能力。
+
+## 質問
+
+MVPの閉ループが成立した今、次にやるべき最小の作業単位は何か。以下の選択肢から選ぶか、別の提案をせよ。
+
+a) 既存33カードの5層移行を開始する（水平展開）
+b) 2本目の縦串を別ドメインで通す（例: 行動経済学、情報理論）
+c) Phase 4の共活性化マイニングを本格実装する
+d) graph.pyを新スキーマ（claim@revision単位）に対応させる
+e) policy_engineを独立モジュール化する
+f) search_engine.pyを新スキーマに接続する
+g) UIプロトタイプの最小設計を始める
+h) その他
+
+判定基準:
+1. MVPで得た知見を最も効率的に活用できるか
+2. 次の価値実証（デモ可能な成果）までの距離が短いか
+3. 手戻りリスクが小さいか
+
+出力形式:
+```yaml
+recommended_next:
+  step_1:
+    task: ...
+    rationale: ...
+    deliverable: ...
+  step_2:
+    task: ...
+    rationale: ...
+    deliverable: ...
+  step_3:
+    task: ...
+    rationale: ...
+    deliverable: ...
+  deferred: [...]
+  rationale_for_ordering: ...
+```

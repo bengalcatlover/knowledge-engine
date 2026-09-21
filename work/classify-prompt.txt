@@ -1,0 +1,50 @@
+You are classifying MIT OpenCourseWare lecture folders into academic disciplines.
+
+For each folder name below, output EXACTLY one line in this format:
+FOLDER_NAME|DEPT_CODE|DISCIPLINE|BROAD_CATEGORY
+
+Rules:
+- DEPT_CODE: MIT department number (e.g. "6", "18", "14") or special code (RES, CMS, ESD, HST, MAS, STS, SP, EC, PE, ES, OLL, IDS, META)
+- DISCIPLINE: specific field name (e.g. "Physics", "Economics", "EECS / Computer Science")
+- BROAD_CATEGORY: one of: Engineering, Natural Sciences, Computing & Engineering, Mathematics & Statistics, Social Sciences, Business & Management, Arts & Humanities, Cross-disciplinary, Meta
+
+MIT department mapping:
+1=Civil & Environmental Engineering (Engineering)
+2=Mechanical Engineering (Engineering)
+3=Materials Science & Engineering (Engineering)
+4=Architecture (Arts & Humanities)
+5=Chemistry (Natural Sciences)
+6=EECS / Computer Science (Computing & Engineering)
+7=Biology (Natural Sciences)
+8=Physics (Natural Sciences)
+9=Brain & Cognitive Sciences (Natural Sciences)
+10=Chemical Engineering (Engineering)
+11=Urban Studies & Planning (Social Sciences)
+12=Earth, Atmospheric & Planetary Sciences (Natural Sciences)
+14=Economics (Social Sciences)
+15=Management / Sloan (Business & Management)
+16=Aeronautics & Astronautics (Engineering)
+17=Political Science (Social Sciences)
+18=Mathematics (Mathematics & Statistics)
+20=Biological Engineering (Engineering)
+21A=Anthropology (Arts & Humanities), 21F/21G=Languages (Arts & Humanities), 21H=History (Arts & Humanities), 21L=Literature (Arts & Humanities), 21M=Music & Theater (Arts & Humanities), 21W=Writing (Arts & Humanities)
+22=Nuclear Science & Engineering (Engineering)
+24=Linguistics & Philosophy (Arts & Humanities)
+
+Special codes:
+CMS=Comparative Media Studies (Arts & Humanities)
+ESD=Engineering Systems (Engineering)
+HST=Health Sciences & Technology (Natural Sciences)
+MAS=Media Arts & Sciences (Computing & Engineering)
+IDS=Data, Systems & Society (Computing & Engineering)
+STS=Science, Technology & Society (Social Sciences)
+SP=Special Programs (Cross-disciplinary)
+RES=Supplemental Resources - classify by the RES sub-number (e.g. RES.6-xxx -> EECS, RES.8-xxx -> Physics, RES.18-xxx -> Math)
+
+For folders about OCW news, milestones, subscriber celebrations, "My Top Videos", "OCW Updates" etc: use META|Meta|Meta
+
+For "How We Teach" folders: extract the embedded course number and classify by that department.
+
+Output ONLY the pipe-delimited lines, no headers, no explanation.
+
+Here are the folder names to classify:

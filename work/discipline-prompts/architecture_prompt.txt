@@ -1,0 +1,67 @@
+You are creating a discipline knowledge index for: Architecture
+Broad category: Arts & Humanities
+Total courses: 3
+Total lecture units: 68
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 4.241J Theory of City Form, Spring 2013 (54 lectures)
+- 1. Introduction to Theory of City Form
+- 10. Transformations III: Vienna and Barcelona
+- 11. Transformations IV: Chicago
+- 12. Transformations V: Panopticism, St. Petersburg and Berlin
+- 13. Utopianism as Social Reform and Built Form
+- 14. 20th Century Realizations: Russia and Great Britain
+- 15. City Form and Process
+- 16. Spatial & Social Structure I: Theory
+- ** 16. Spatial & Social Structure I: Theory
+- 17. Spatial & Social Structure II: Bipolarity
+- 18. Spatial & Social Structure III: Colony & Post-colony
+- 19. Form Models I: Modern and Post-modern Urbanism
+- 2. Normative Theory I: The City as Supernatural
+- 20. Form Models II: Open-endedness and Prophecy
+- 21. Form Models III and IV: Rationality and Memory
+- 22. Cases I: Public and Private Domains
+- 23. Cases II: Suburbs and Periphery
+- 24. Cases III: Post-urbanism and Resource Conservation
+- 25. Cases IV: Hyper and Mega-urbanism
+- 26. Conclusion: Towards a Theory of City Form
+- 3. Normative Theory II: The City as Machine
+- ** 3. Normative Theory II: The City as Machine
+- 4. Normative Theory III: The City as Organism
+- 5. Descriptive and Functional Theory
+- 6. Dimensions, Patterns, Agreements, Structure, and Syntax
+- 7. The Early Cities of Capitalism
+- 8. Transformations I: London
+- 9. Transformations II: Paris
+- Teaching 4.241J/11.330J: Embracing Complexities of Urbanism
+
+### MIT 4.370 Interrogative Design Workshop, Fall 2005 (2 lectures)
+- Lec 4 | MIT 4.370 Interrogative Design Workshop, Fall 2005
+
+### MIT 4.696 A Global History of Architecture Writing, S08 (12 lectures)
+- Pres: Christian Hedrick | MIT 4.696 A Global History of Architecture Writing Seminar, Spring 2008
+- Pres: John Ellis | MIT 4.696 A Global History of Architecture Writing Seminar, Spring 2008
+- Pres: Karin Oen | MIT 4.696 A Global History of Architecture Writing Seminar, Spring 2008
+- Pres: Nancy Demerdash | MIT 4.696 A Global History of Architecture Writing Seminar, Spring 2008
+- Pres: Shiben Banerji | MIT 4.696 A Global History of Architecture Writing Seminar, Spring 2008
+- Pres: Zameer Basrai | MIT 4.696 A Global History of Architecture Writing Seminar, Spring 2008
+

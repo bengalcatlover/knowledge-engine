@@ -1,0 +1,28 @@
+あなたは長期運用される個人用・商用向け外部知能のアーキテクトです。
+
+目的は、4,258本のMIT OCW講義Markdown、ユーザーの開発経験、検証済み資料、ユーザーの判断を、CodexとClaude Codeが共通利用できる知識基盤へ育てることです。講義全文を毎回投入するRAGではなく、必要な根拠だけを取り出して記事、顧客提案、設計判断へ反映する仕組みを確定してください。
+
+ユーザーが目指す概念カードの方向は次です。
+
+concept: Gibbs free energy
+domain: thermodynamics / physical chemistry
+definition
+equations (conditions included)
+assumptions
+relationships (entropy, enthalpy, chemical potential)
+limitations
+common misconceptions
+evidence (source_id and supported claim)
+confidence for each section
+
+この方向を踏まえ、次を日本語Markdownで提案してください。
+
+1. 最終アーキテクチャ: 原資料、検索、概念、ユーザー判断、検証済み事実、出力の役割とデータの流れ。
+2. 全4,258講義を概念カードへ一括変換しない理由、概念カードを作る発火条件、作成・レビュー・昇格の流れ。
+3. 概念カードの最終スキーマ。数値のconfidenceを採用するか、根拠状態を採用するかを判断し、根拠・位置情報・AI草案とユーザー承認の区別を設計する。
+4. 記事・顧客提案を作る実際の検索・統合手順。MIT由来の考え方、外部の事実、ユーザーの判断、AI提案を混同しない方法。
+5. CodexとClaude Codeで同じ動作を再現するための最小実装。
+6. 既存構成からの移行順序と、最初に作るべき概念カードの具体例。
+7. 商用成果物での出典・権利・品質上の注意。
+
+設計は実用優先で、フォルダを増やしすぎず、通常回答での読み込み量を制御してください。必要なら既存の方針を批判し、代替案を明示してください。

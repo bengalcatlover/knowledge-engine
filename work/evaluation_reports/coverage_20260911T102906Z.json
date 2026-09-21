@@ -1,0 +1,315 @@
+{
+  "created_at": "2026-09-11T10:29:06.896179+00:00",
+  "suite": "work\\evaluation_questions.yaml",
+  "total": 20,
+  "pass_threshold": 16,
+  "counts": {
+    "accepted_ready": 1,
+    "revision_required": 3,
+    "deferred": 0,
+    "draft_only": 16,
+    "gap": 0
+  },
+  "questions": [
+    {
+      "id": "E-01",
+      "domain": "business",
+      "question": "補助金の配分ルールを変えると各社の参加行動が変わる場面で、制度をどう設計・検証するか。",
+      "expected_cards": [
+        "K-0001",
+        "K-0010"
+      ],
+      "card_statuses": [
+        "accepted",
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-02",
+      "domain": "business",
+      "question": "限られた広告枠を入札で売るとき、収益だけでなく参加者の戦略をどう考えるか。",
+      "expected_cards": [
+        "K-0002",
+        "K-0003"
+      ],
+      "card_statuses": [
+        "accepted",
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-03",
+      "domain": "daily_life",
+      "question": "同居人どうしが互いの出方を待ち、家事分担が決まらないときに何を変えるべきか。",
+      "expected_cards": [
+        "K-0003",
+        "K-0010"
+      ],
+      "card_statuses": [
+        "accepted"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "accepted_ready"
+    },
+    {
+      "id": "E-04",
+      "domain": "business",
+      "question": "中古品取引で売り手だけが品質を知るとき、買い手の不信をどう減らせるか。",
+      "expected_cards": [
+        "K-0004"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-05",
+      "domain": "daily_life",
+      "question": "健康保険の申請画面で、望ましい選択を初期設定にしてよい条件は何か。",
+      "expected_cards": [
+        "K-0005",
+        "K-0007"
+      ],
+      "card_statuses": [
+        "draft",
+        "revise"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "revision_required"
+    },
+    {
+      "id": "E-06",
+      "domain": "daily_life",
+      "question": "将来のための貯蓄を先延ばしにしてしまう行動を、どの条件で支援できるか。",
+      "expected_cards": [
+        "K-0006",
+        "K-0005"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-07",
+      "domain": "business",
+      "question": "新しい接客施策が購買率を上げたと主張する前に、何を比較すべきか。",
+      "expected_cards": [
+        "K-0007",
+        "K-0026"
+      ],
+      "card_statuses": [
+        "draft",
+        "revise"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "revision_required"
+    },
+    {
+      "id": "E-08",
+      "domain": "systems",
+      "question": "検索順位の改善が一部利用者に不利益を与えていないかを、どう測るか。",
+      "expected_cards": [
+        "K-0008",
+        "K-0007"
+      ],
+      "card_statuses": [
+        "draft",
+        "revise"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "revision_required"
+    },
+    {
+      "id": "E-09",
+      "domain": "operations",
+      "question": "問い合わせ件数の急増に対して担当者数を増減すると、遅れて混乱が大きくなるのはなぜか。",
+      "expected_cards": [
+        "K-0011"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-10",
+      "domain": "software",
+      "question": "注文の受付から取消までに不正な状態遷移を起こさない設計はどう作るか。",
+      "expected_cards": [
+        "K-0012"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-11",
+      "domain": "software",
+      "question": "依存関係のある作業を最短で完了する順序を見つけるには、どんな表現が必要か。",
+      "expected_cards": [
+        "K-0013",
+        "K-0015"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-12",
+      "domain": "science",
+      "question": "少ない観測値から故障原因の候補を更新するとき、確信度をどう扱うか。",
+      "expected_cards": [
+        "K-0014",
+        "K-0022"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-13",
+      "domain": "business",
+      "question": "在庫・配送・価格を同時に決める段階的な計画問題を、どう分解するか。",
+      "expected_cards": [
+        "K-0015",
+        "K-0018"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-14",
+      "domain": "software",
+      "question": "複数の作業エージェントが停止や再送があっても同じ注文を二重処理しないためには何が必要か。",
+      "expected_cards": [
+        "K-0016",
+        "K-0012"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-15",
+      "domain": "knowledge_systems",
+      "question": "長い報告書を要約しても、例外条件と否定条件を失わない評価方法は何か。",
+      "expected_cards": [
+        "K-0017"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-16",
+      "domain": "business",
+      "question": "需要予測の誤差を前提にした人員配置を、最悪の場合も含めてどう決めるか。",
+      "expected_cards": [
+        "K-0018"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-17",
+      "domain": "machine_learning",
+      "question": "過去データで高精度だった審査モデルが新規顧客で失敗し始めたとき、何を確認するか。",
+      "expected_cards": [
+        "K-0019",
+        "K-0033"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-18",
+      "domain": "security",
+      "question": "社内の共有文書を役割ごとに安全に閲覧させるには、何を分けて設計すべきか。",
+      "expected_cards": [
+        "K-0020"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-19",
+      "domain": "agent_systems",
+      "question": "エージェントが一連の操作を選ぶとき、短期の成功だけでなく後続への影響をどう評価するか。",
+      "expected_cards": [
+        "K-0034",
+        "K-0024"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    },
+    {
+      "id": "E-20",
+      "domain": "platforms_privacy",
+      "question": "二面市場の利用者データを分析しながら、不要な保持と第三者アクセスをどう減らすか。",
+      "expected_cards": [
+        "K-0035",
+        "K-0036"
+      ],
+      "card_statuses": [
+        "draft"
+      ],
+      "missing_cards": [],
+      "source_missing": [],
+      "result": "draft_only"
+    }
+  ],
+  "note": "draft_onlyはカード被覆の存在を示すだけで、根拠付き回答の合格ではない。"
+}

@@ -1,0 +1,26 @@
+card_id: K-0003
+card_revision: v5
+claims:
+  - id: K-0003-C1
+    type: lecture_derived
+    text: "ナッシュ均衡では、各参加者は他者の戦略に対する最適反応を選ぶ。"
+    evidence:
+      source_id: mitocw:ftCXguW2k4o
+      locator: "MIT OCW Lecture 5, Nash Equilibrium"
+      url: "https://www.youtube.com/watch?v=ftCXguW2k4o"
+      quote: "both players are playing a best response to each other's strategy"
+    disposition: supported_by_search_excerpt
+  - id: K-0003-C2
+    type: lecture_derived
+    text: "完全情報の逐次ゲームの一例では、純粋戦略ナッシュ均衡が存在する。"
+    evidence:
+      source_id: mitocw:VHex0a2JFWI
+      locator: "MIT OCW Lecture 8, Backward Induction"
+      url: "https://www.youtube.com/watch?v=VHex0a2JFWI"
+      quote: "every extensive form game with perfect information has a pure strategy Nash equilibrium"
+    disposition: supported_by_search_excerpt
+  - id: K-0003-A1
+    type: application_hypothesis
+    text: "複数エージェントの報酬設計に均衡分析を適用する。"
+    evidence: null
+    disposition: explicitly_unverified

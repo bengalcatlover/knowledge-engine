@@ -1,0 +1,219 @@
+# 評価セット v1 — 50問
+# 各問: query(検索クエリ), expected(正解カードID), type(問いの種類)
+# Recall@K = 正解カードが上位K件に1つでも含まれた問いの割合
+
+# ═══════════════════════════════════════════
+# 経済学 (15問)
+# ═══════════════════════════════════════════
+
+- query: "メカニズムデザイン 制度設計"
+  expected: [K-0001]
+  type: direct
+
+- query: "オークション 収入等価定理"
+  expected: [K-0002]
+  type: direct
+
+- query: "ナッシュ均衡 戦略的相互作用"
+  expected: [K-0003]
+  type: direct
+
+- query: "逆選択 モラルハザード 情報の非対称性"
+  expected: [K-0004]
+  type: direct
+
+- query: "ナッジ デフォルト効果 選択アーキテクチャ"
+  expected: [K-0005]
+  type: direct
+
+- query: "人はなぜ目先の利益を優先してしまうのか"
+  expected: [K-0006]
+  type: paraphrase
+
+- query: "施策の効果を正しく測る実験の方法"
+  expected: [K-0007]
+  type: paraphrase
+
+- query: "工場の排煙で周辺住民が被害を受ける問題"
+  expected: [K-0008]
+  type: scenario
+
+- query: "損したときの痛みが得したときの喜びより大きい"
+  expected: [K-0009]
+  type: paraphrase
+
+- query: "嘘をつかずに正直に申告させる仕組み"
+  expected: [K-0010, K-0001]
+  type: paraphrase
+
+- query: "入札で売り手の利益を最大化する設計"
+  expected: [K-0002, K-0001]
+  type: scenario
+
+- query: "囚人のジレンマで協力が成立する条件"
+  expected: [K-0003]
+  type: scenario
+
+- query: "中古車市場でレモンばかり残る理由"
+  expected: [K-0004]
+  type: scenario
+
+- query: "臓器提供のオプトイン・オプトアウト"
+  expected: [K-0005]
+  type: scenario
+
+- query: "ピグー税 炭素税 外部不経済の内部化"
+  expected: [K-0008]
+  type: direct
+
+# ═══════════════════════════════════════════
+# CS (15問)
+# ═══════════════════════════════════════════
+
+- query: "フィードバック制御 クローズドループ"
+  expected: [K-0011]
+  type: direct
+
+- query: "有限状態機械 オートマトン"
+  expected: [K-0012]
+  type: direct
+
+- query: "グラフ探索 BFS DFS 経路探索"
+  expected: [K-0013]
+  type: direct
+
+- query: "ベイズネットワーク 確率的推論"
+  expected: [K-0014]
+  type: direct
+
+- query: "動的計画法 DP メモ化"
+  expected: [K-0015]
+  type: direct
+
+- query: "分散システムで全ノードが同じ値に合意する方法"
+  expected: [K-0016]
+  type: paraphrase
+
+- query: "データを最小のビット数で表現する理論"
+  expected: [K-0017]
+  type: paraphrase
+
+- query: "制約付きで最適な解を見つける数学的手法"
+  expected: [K-0018]
+  type: paraphrase
+
+- query: "経験データから予測モデルを学習する"
+  expected: [K-0019]
+  type: paraphrase
+
+- query: "パスワードを安全に保存する暗号技術"
+  expected: [K-0020]
+  type: scenario
+
+- query: "サーモスタットが室温を一定に保つ仕組み"
+  expected: [K-0011]
+  type: scenario
+
+- query: "正規表現エンジンの内部動作原理"
+  expected: [K-0012]
+  type: scenario
+
+- query: "カーナビの最短経路アルゴリズム"
+  expected: [K-0013]
+  type: scenario
+
+- query: "迷惑メールフィルタの確率的分類"
+  expected: [K-0014, K-0019]
+  type: scenario
+
+- query: "フィボナッチ数列を効率的に計算する"
+  expected: [K-0015]
+  type: scenario
+
+# ═══════════════════════════════════════════
+# 数学/統計 (15問)
+# ═══════════════════════════════════════════
+
+- query: "線形代数 部分空間 SVD 特異値分解"
+  expected: [K-0021]
+  type: direct
+
+- query: "確率分布 大数の法則"
+  expected: [K-0022]
+  type: direct
+
+- query: "勾配降下法 SGD 収束"
+  expected: [K-0023]
+  type: direct
+
+- query: "マルコフ連鎖 定常分布 遷移行列"
+  expected: [K-0024]
+  type: direct
+
+- query: "最尤推定 MLE 推定量"
+  expected: [K-0025]
+  type: direct
+
+- query: "実験結果が偶然でないか判定する方法"
+  expected: [K-0026]
+  type: paraphrase
+
+- query: "音声信号を周波数ごとに分解する"
+  expected: [K-0027]
+  type: paraphrase
+
+- query: "複雑な関数を多項式で近似する"
+  expected: [K-0028]
+  type: paraphrase
+
+- query: "データ点に最もフィットする直線を引く"
+  expected: [K-0029]
+  type: paraphrase
+
+- query: "高次元データの特徴量を減らして可視化する"
+  expected: [K-0030]
+  type: paraphrase
+
+- query: "乱数を使って円周率を推定する"
+  expected: [K-0031]
+  type: scenario
+
+- query: "行列の数値計算で誤差が爆発する原因"
+  expected: [K-0032]
+  type: scenario
+
+- query: "株価の変動をモデル化する確率的な枠組み"
+  expected: [K-0033, K-0024]
+  type: scenario
+
+- query: "p値 有意水準 帰無仮説の棄却"
+  expected: [K-0026]
+  type: direct
+
+- query: "画像圧縮で情報を落とさず次元を減らす"
+  expected: [K-0030, K-0021]
+  type: scenario
+
+# ═══════════════════════════════════════════
+# 分野横断 (5問)
+# ═══════════════════════════════════════════
+
+- query: "AIの学習率を動的に調整して収束を早める"
+  expected: [K-0023, K-0018, K-0011]
+  type: cross
+
+- query: "推薦システムで行列分解を使う"
+  expected: [K-0021, K-0019]
+  type: cross
+
+- query: "A/Bテストの統計的な妥当性を保証する"
+  expected: [K-0026, K-0007]
+  type: cross
+
+- query: "ゲーム理論を使ったオークション型広告配信"
+  expected: [K-0002, K-0003, K-0001]
+  type: cross
+
+- query: "ベイズ推定でパラメータの事後分布をMCMCでサンプリング"
+  expected: [K-0014, K-0031, K-0025, K-0024]
+  type: cross

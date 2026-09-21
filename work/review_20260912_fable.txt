@@ -1,0 +1,178 @@
+```yaml
+Q1_direction:
+  decision: approved
+  rationale: >
+    「LLM=仮説生成、基盤=構造・制約・由来の保持」という分業、
+    cell層(創発)→OOP層(型付け・検証)の昇格パイプライン、
+    HYP隔離による事実と応用の分離は、いずれもハレーションゼロという
+    不変条件と整合しており、方向として正しい。
+    Phase 4の共活性化マイニングが二層設計の最初の実装になるという
+    位置づけも自然で、投機的な部分(cell層全体)を先送りしつつ
+    検証可能な最小片から進める構成になっている。
+  blind_spots:
+    - >
+      UIノード操作の「ドミノ倒し再推論」は、実体としては
+      真理維持システム(TMS/belief revision)であり、現設計には
+      その中核である「失効伝播(stale propagation)の再計算戦略」
+      「非単調推論の扱い」「再生成コストの上限」が未設計。
+      Astra案のstale機構はその種だが、UIが要求する対話的速度
+      (秒単位)と承認ゲート(日単位)のギャップが未検討。
+    - >
+      confidenceの合成規則が未定義。Fable案は「根拠経路数から
+      機械計算」とするが、経路数は独立性を保証しない
+      (Astra案のorigin_groupが必要な理由と同じ問題)。
+      ノード差し替え時にconfidenceをどう再計算するかがUI構想の
+      成立条件そのものであり、早期に形式化が必要。
+    - >
+      不動産応用(1-5)は「決定論の骨格+確率論の皮膜」という
+      アーキテクチャ思想の輸出であって、知識基盤の直接応用ではない。
+      現段階で設計対象に含めるとスコープ汚染になる。
+    - >
+      cell層は「均質セル+局所ルール」と言うが、現実装の共活性化
+      記録は検索クエリ分布に強く依存する。利用者(=自分)の
+      検索バイアスがそのまま「創発」として昇格候補に混入する。
+      昇格ゲートに新規性・独立性の検査が必要。
+
+Q2_design_coherence:
+  decision: approved
+  migration_feasible: true
+  breaking_changes:
+    - >
+      カード内の理論と応用の混在: v2カードは主張・含意・応用を
+      1枚に持つが、5層設計はapplication_hypothesisのHYP分離を
+      要求する(K-0010の「自社に適用すべき」剥離が典型)。
+      マイグレーションはコピーではなく「主張の解体・再配置」になる。
+    - >
+      confidence手入力→機械計算への転換: 既存カードの確信度は
+      移行時に「未検証の申告値」へ降格し、根拠経路が張られるまで
+      canonicalになれない。33枚全部が一時的にdraft/ready止まりになる
+      ことを許容する必要がある。
+    - >
+      エッジ意味論の再マッピング: 101本のうちis_a/has_part/
+      depends_onは新語彙に写像可能だが、isomorphic_to・
+      contrasts_withは5層のどの層内エッジかが未定義。
+      比喩遮断(epistemic_status=analogy)とemerges_from遮断は
+      Astra案の「エッジの存在≠根拠としての有効性」の先行実装
+      そのものであり、むしろ設計思想は連続している。
+    - >
+      正準文脈3つ(science/business/everyday)とAstra案のscope構造
+      (domain/conditions/exclusions)の統合規則が未定義。
+      文脈をscopeの一次元として吸収するのが妥当。
+  # 結論: 断絶はない。台帳層(append-only+ライフサイクル)は
+  # Astra案のイベント駆動状態遷移の下地としてそのまま使える。
+  # ただし移行は「一括変換」ではなく「MVP経由の逐次昇格」で行うこと。
+
+Q3_integration:
+  a_evidence_store:
+    decision: astra
+    rationale: >
+      Fable案はSRC/LEC/CSE/LOGをL4ノードにするが、これは
+      「オブジェクト層=観測可能な実体」と「根拠=主張を支持する記録」
+      を混同している。第二価格MVPで明確になる通り、L4に置くべきは
+      シミュレーター(O-0100)のような操作可能な系であり、
+      論文PDFやログは版・ハッシュ・locator・origin_groupを持つ
+      別ストアのレコードであるべき。Astra方式は
+      「LLM再生成は独立根拠にならない」「同一起源を重複評価しない」
+      をデータ構造で強制でき、ハレーションゼロ不変条件と直結する。
+      Fable案のreliability_grade(A/B/C)はevidence属性として吸収する。
+  b_node_granularity:
+    decision: hybrid
+    rationale: >
+      基盤契約はAstra案(node+claims配列+版+admission種別)を採用。
+      claim単位のエッジ端点(node@rev#claim)がないと失効伝播と
+      循環検出が層単位の粗さでしか効かず、UI構想が成立しない。
+      ただしFable案の具体型語彙(AXM/THM/DEF、THY/LAW/MTH、
+      Q/HYP/ACT/VER)はlint可能性と可読性で優れるため、
+      Astra型のサブタイプenumとして保持する
+      (例: type=FormalPrinciple, subtype=THM)。
+      Fable案の「falsification_condition空なら登録拒否」等の
+      層別必須属性検査もそのまま採用する。
+  c_edge_semantics:
+    decision: hybrid
+    rationale: >
+      骨格はAstra案: (1)ABSTRACTS_FROMの上方向導出への一本化、
+      (2)「エッジの存在」と「根拠としての有効性」の分離、
+      (3)端点の版・claim固定、(4)CONTRADICTS/SUPERSEDESの全層許可。
+      Fable案のMVP自体がエッジ方向で混乱している
+      (S-0003 abstracted_from W-0001?→不可、の自己訂正)ことは
+      evidences/abstracted_fromの双方向語彙が事故りやすい証拠。
+      ただしAstra語彙に欠けるFable案のformalized_by(L2→L1)と
+      uses_method/protocol_ref(VER→MTH)は明確な価値があるため
+      型付きエッジとして追加する。既存101本の写像表は
+      この統合語彙に対して作る。
+
+Q4_today_order:
+  steps:
+    - step: 1
+      task: >
+        (b) Phase 4共活性化ログ蓄積の即時開始。
+        台帳層は既にあるため、記録スイッチを入れるだけ。
+        スキーマ統合の影響を受けない生ログ(クエリ・ヒット対・時刻)
+        として貯める。cell層プロトタイプ(g)の前提データになる。
+      deliverable: 共活性化ログの蓄積開始確認(1件以上の記録)
+      time_estimate: 30分
+    - step: 2
+      task: >
+        (a) Fable案+Astra案の統合設計確定。
+        Q3の裁定(根拠別ストア/Astra契約+Fable型語彙/Astraエッジ骨格
+        +formalized_by・uses_method追加)を反映した統合blueprint v1を
+        書き、人間承認する。承認ゲート・状態遷移はAstra案の
+        policy_engine仕様を正とする。
+      deliverable: 統合blueprint v1(承認済み)、既存7エッジ型→新語彙の写像表
+      time_estimate: 2〜3時間
+    - step: 3
+      task: >
+        (c) 縦串MVPの起票。基本構成はAstra版
+        (B/S/U/O/Q/A/V + K-0003/K-0010/K-0007の参照利用監査)。
+        ただしAstra案の手順2の警告通り、既存Kの監査済み状態を
+        先取りせず、出典監査から始める。H1(人間実験仮説)は
+        unverifiedで隔離したまま起票する。
+      deliverable: 10ノードのdraft起票+K3枚の出典監査結果
+      time_estimate: 2〜3時間
+    - step: 4
+      task: >
+        (d) マイグレーション設計はMVP対象3枚のplacement確定のみ
+        本日実施。残り30枚は「旧ID→想定層・想定型・分解要否」の
+        マッピング表ドラフトに留め、MVP完了で得られる
+        昇格パイプラインの知見を反映してから確定する。
+      deliverable: 3枚のplacement確定+30枚のマッピング表ドラフト
+      time_estimate: 1時間
+  # 除外・延期:
+  # (e) UI設計 → defer。stale伝播とconfidence再計算が動くまで
+  #     UIは絵に描いた餅。MVPの失効伝播実証が前提条件。
+  # (f) 不動産応用 → 本日の作業から削除。スコープ汚染。
+  #     基盤のアーキテクチャが安定してから別プロジェクトとして起票。
+  # (g) cell層プロトタイプ → defer。step 1のログが溜まるまで
+  #     設計材料がない。数週間の蓄積後に着手。
+
+Q5_biggest_risk:
+  risk: >
+    ガバナンスのスループット不足による死蔵化。
+    この設計は traceability 100%・二重監査(Haiku)・最終判定(Astra)・
+    人間ゲート・根拠別ストア・版固定と、承認コストが極めて高い。
+    一方で価値の源泉(UIシミュレーション、cell層からの昇格、
+    HYPの解消)はすべて「ノードがcanonicalに到達すること」に
+    依存する。承認速度が生成速度と失効速度(stale伝播)を下回ると、
+    proposed/draftが滞留し(Fable案自身が「proposedの滞留=負債」と
+    明記)、基盤は厳密だが何も答えられない状態に陥る。
+    33枚全部が移行時に一時降格する事実が、この滞留の初期条件になる。
+  mitigation: >
+    (1) 承認の重さを主張の用途で層別化する。Astra案の
+    approval_scope(reference_use/model_assertion/test_plan)を使い、
+    参照利用は自動検査のみの軽量トラックで通す。
+    (2) 滞留SLOを成功指標に組み込む(例: draft→ready中央値48時間、
+    proposed滞留数の上限)。Fable案の「仮説解決率」を運用KPIとして
+    毎週回帰チェックする。
+    (3) 縦串MVPで「1ノードをcanonicalにする実コスト(時間・API費)」を
+    実測し、33枚+今後の生成量に外挿してパイプラインが回るかを
+    数値で確認してから水平展開する。回らないなら、ゲートを
+    緩めるのではなく自動検査(policy_engine)で通せる定型パスを増やす。
+```
+
+**補足（判定の要点）**
+
+1. **方向は正しいが、UI構想の実体はTMS**である。「ノード差し替え→再推論」は承認済みグラフ上のstale伝播+再計算であり、Astra案の失効機構がその最初の実装になる。縦串MVPの完了条件「失効の伝播」は、実はUI構想の技術的前提の検証を兼ねている。この接続を意識してMVPを設計すべき。
+
+2. **Fable案とAstra案は対立ではなく粒度の違い**。Fable案は「何を作るか」（層・型・語彙）が具体的で、Astra案は「どう腐らせないか」（版・claim・失効・権限分離）が厳密。統合は「Astraの契約の上にFableの語彙を載せる」で機械的に可能。唯一の実質的対立は根拠の置き場所（Q3-a）で、これはAstra案が正しい。
+
+3. **本日の最重要判断は「(b)を最初に、(f)を捨てる」こと**。共活性化ログは統合設計と独立に今すぐ貯め始められ、後から取り返せない唯一の資産（時間）を消費している。不動産応用は魅力的だが、今日触れると全部が遅れる。

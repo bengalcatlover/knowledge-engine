@@ -1,0 +1,58 @@
+{
+  "pilot": {
+    "title": "Bounded pilot of DSM mapping and ICD contracts for multi-agent orchestration",
+    "objective": "Test whether Design Structure Matrix mapping and Interface Control Document discipline produce measurable improvements in multi-agent coordination under controlled conditions, without presuming that either method transfers effectively from its original domain. Compare communication efficiency, integration reliability, and task performance against a matched baseline.",
+    "concepts": [
+      "Design Structure Matrix (DSM) for Agent Orchestration",
+      "Interface Control Documents (ICD) for Agent Interoperability"
+    ],
+    "hypotheses": [
+      "If a trace-derived DSM identifies high-coupling exchanges and is used for pre-specified decoupling or batching changes, held-out runs will reduce communication latency, token usage, or call volume without reducing task success relative to the matched baseline.",
+      "If DSM coupling scores are operationalized using fixed measures such as dependency frequency, blocking time, repeated payload transfer, and cycle membership, higher scores will be associated with higher latency or redundant communication on held-out traces.",
+      "If explicit ICDs define message schemas, required and optional fields, versions, validation rules, and bounded error handling, held-out runs will show fewer interface violations, renegotiations, retries, or malformed payload failures than the matched baseline.",
+      "If DSM and ICD interventions address different failure mechanisms, the combined condition will improve at least one pre-registered efficiency or reliability endpoint beyond the isolated interventions without materially reducing task quality; otherwise their effects should be treated as non-additive or unsupported."
+    ],
+    "deterministic_controls": [
+      "Use the same fixed task inputs, agent count, agent roles, model and prompt versions, tool definitions, context limits, timeout ceilings, retry ceilings, and evaluation rubric across conditions.",
+      "Compare four pre-specified conditions: baseline, DSM-only, ICD-only, and combined DSM-plus-ICD.",
+      "Keep the initial agent topology and task decomposition identical across conditions; permit only the pre-specified DSM changes and ICD enforcement changes in the relevant treatment arms.",
+      "Use deterministic mock external services with replayable requests and responses, and reset caches, state, and conversation history before every run.",
+      "Separate discovery traces used to construct the DSM from held-out evaluation traces; do not tune coupling weights or intervention rules on held-out outcomes.",
+      "Fix the DSM scoring rule and its weights before evaluation, record all seeds and configuration values, and repeat each task-condition pair enough times to characterize run-to-run variation.",
+      "Apply the same maximum resource budget and logging procedure to every condition, while separately recording any overhead caused by validation or instrumentation."
+    ],
+    "ai_tasks": [
+      "A graph-controlled multi-agent information-processing task in which agents transform, pass, and aggregate fixed intermediate records using serial, parallel, and cross-dependent topologies.",
+      "A contract-bound service task in which agents send structured requests to deterministic mock services and consume structured responses containing controlled missing, extra, malformed, or version-shifted fields.",
+      "Held-out variants that alter dependency structure and induce controlled variation in agent outputs, testing whether the methods remain usable when interactions are not static or perfectly repeatable.",
+      "Ablation tasks in which decoupling, batching, or validation is applied randomly or uniformly rather than to DSM-identified exchanges, to distinguish targeted effects from generic simplification or added process."
+    ],
+    "measurements": [
+      "Task success rate and rubric-based output quality, scored without revealing the experimental condition to the evaluator where feasible.",
+      "End-to-end latency, per-exchange latency, blocking time, timeout frequency, and latency distribution across repeated runs.",
+      "Input and output token counts, number of agent calls, number of tool calls, retry count, and a clearly labeled token-and-call cost proxy.",
+      "Observed DSM adjacency matrices, dependency frequency, blocking-time fraction, repeated or superseded payload rate, cycle membership, and the resulting pre-specified coupling score.",
+      "Counts of duplicate messages, duplicate tool requests, unnecessary retransmissions, and dependencies removed or batched by each DSM intervention.",
+      "ICD validation failures, missing or extra fields, version mismatches, rejected messages, repair actions, renegotiation events, retries, and downstream failures caused by interface incompatibility.",
+      "Resource-budget exhaustion, incomplete traces, nondeterministic service behavior, and other protocol violations that could invalidate a run.",
+      "Paired differences between conditions with uncertainty estimates, including separate results for discovery, held-out evaluation, each task family, and the combined intervention."
+    ],
+    "independent_evidence_needed": [
+      "Replication by an independent operator using a separate implementation of the DSM construction, ICD validator, orchestration changes, and logging pipeline.",
+      "Evaluation on task graphs and interface perturbations created independently of the pilot design, including dynamic or probabilistic interaction patterns not used to tune the interventions.",
+      "Independent adjudication of task quality, interface violations, and redundant communication, with agreement checked against automated logs.",
+      "Ablation evidence showing whether any observed improvement comes from targeted DSM decisions or explicit ICDs rather than from extra logging, stricter budgets, generic batching, or generic validation.",
+      "Evidence that the DSM coupling score is reproducible across repeated runs and predicts held-out bottlenecks or redundancy rather than merely describing the discovery traces.",
+      "Evidence that ICD benefits persist when message content varies within the allowed schema and when controlled malformed or ambiguous outputs occur.",
+      "Replication under at least one alternate model or configuration, if available, while preserving the same tasks, controls, and evaluation criteria."
+    ],
+    "stop_conditions": [
+      "Stop the DSM track if a coupling score cannot be computed consistently from available traces, requires post hoc manual judgments, or fails to distinguish pre-specified bottleneck or redundancy patterns on held-out data.",
+      "Stop the ICD track if schema enforcement cannot be applied consistently, if interface violations and retries do not decrease relative to baseline, or if validation overhead exceeds the pre-specified resource tolerance without a compensating reliability improvement.",
+      "Do not recommend either transfer hypothesis if task quality falls beyond the pre-specified non-inferiority margin in the treatment condition, even when latency, token use, or retries improve.",
+      "Stop claims of benefit if improvements appear only in discovery traces, disappear in the independent ablation, or depend on changing prompts, model settings, budgets, or task definitions between conditions.",
+      "Invalidate and repeat affected runs if deterministic service replay fails, logs are incomplete, condition-specific controls are violated, or resource accounting is not comparable.",
+      "Conclude that the pilot provides insufficient support if neither isolated nor combined interventions improve a pre-registered primary endpoint while preserving task quality across the held-out evaluation set."
+    ]
+  }
+}

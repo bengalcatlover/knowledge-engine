@@ -1,0 +1,2 @@
+decision: approved
+reason: 講義由来主張はC1/C2に限定され、いずれも添付台帳の引用断片（"The key is the incentive constraint" 等）で追跡できる。真実申告の数式・監査・AI適用は未検証・仮説セクションに明示分離され、限界（Caveat）も区別されている。

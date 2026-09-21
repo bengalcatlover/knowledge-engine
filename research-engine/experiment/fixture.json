@@ -1,0 +1,18 @@
+{
+  "experiment_id": "agent-interface-pilot-v1",
+  "task": {
+    "id": "normalize-and-aggregate",
+    "input_records": [
+      {"record_id": "a", "value": 3},
+      {"record_id": "b", "value": 5},
+      {"record_id": "c", "value": 7}
+    ],
+    "expected": {"count": 3, "sum": 15}
+  },
+  "conditions": ["baseline", "dsm_only", "icd_only", "dsm_and_icd"],
+  "limits": {
+    "max_attempts": 2,
+    "timeout_seconds": 30,
+    "max_agent_calls": 4
+  }
+}

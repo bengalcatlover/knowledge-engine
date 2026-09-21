@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T09:03:50.665654+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_c67abaad45f9118d",
+      "question_id": "q_fd7a6decf916d34d",
+      "question": "小さな遅延が繰り返されることで、業務フロー全体が不安定化する条件をどう見つけるか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_fd7a6decf916d34d",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "feedback delay stability"
+    },
+    {
+      "gap_id": "gap_1fa8f97973f658ac",
+      "question_id": "q_8987988fe088ed73",
+      "question": "限られた予算で複数の施策を試すとき、探索と成果の確定をどう両立させるか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_8987988fe088ed73",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "exploration exploitation decision"
+    },
+    {
+      "gap_id": "gap_038c77d55bb273d8",
+      "question_id": "q_b32f09766d855ac5",
+      "question": "情報を圧縮して共有しても、重要な例外条件や否定条件を失わない設計はどう作るか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_b32f09766d855ac5",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "information compression distortion"
+    }
+  ],
+  "plan_id": "plan_55c3df0dd2df",
+  "input_hash": "55c3df0dd2df5510df0faf7c2a620cac82a61e7cd606d99eb5054a236cc884d0"
+}

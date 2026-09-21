@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T08:52:34.587195+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_3afdc0aa47093bfc",
+      "question_id": "q_c9504364c4889918",
+      "question": "複数部門の意思決定と合意形成を設計する際に、オークション理論と収入等価性をどう使い、何を検証すべきか",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_c9504364c4889918",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0002"
+      ]
+    },
+    {
+      "gap_id": "gap_3ffb83d2d3dfb3ac",
+      "question_id": "q_05963f8359d6e496",
+      "question": "ナッシュ均衡と戦略的相互作用とは何で、近い概念と何が違うか",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_05963f8359d6e496",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0003"
+      ]
+    },
+    {
+      "gap_id": "gap_bc527e8fcde26a29",
+      "question_id": "q_1cd3ba5657771658",
+      "question": "ナッシュ均衡と戦略的相互作用はどの因果的または論理的な仕組みで働くか",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_1cd3ba5657771658",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0003"
+      ]
+    }
+  ],
+  "plan_id": "plan_ef2a1f5e3371",
+  "input_hash": "ef2a1f5e3371d4dd5df28aa5c357147c74aaea66b7f1f48b664d8d17d2dea816"
+}

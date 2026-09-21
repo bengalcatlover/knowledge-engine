@@ -1,0 +1,43 @@
+You are creating a discipline knowledge index for: Biological Engineering
+Broad category: Engineering
+Total courses: 3
+Total lecture units: 24
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 20.020 Introduction to Biological Engineering Design (2 lectures)
+- Controlling Growth | MIT 20.020 Introduction to Biological Engineering Design, Spring 2009
+
+### MIT 20.219 Becoming the Next Bill Nye： Writing and Hosting the Educational Show, IAP 2015 (10 lectures)
+- Day 11: Screening (Rough Cuts)
+- Day 7: Table-read / Post-production; Part 1: Table-read
+- Student Interview: Joshua Cheong
+- Teaching Reflection: Day 2
+- Teaching Reflection: Day 6
+
+### MIT 20.309 Biological Engineering II, Fall 2006 (12 lectures)
+- Hands-on 1: AFM force spectroscopy | MIT 20.309 Biological Engineering II, Fall 2006
+- Hands-on 2: AFM force spectroscopy | MIT 20.309 Biological Engineering II, Fall 2006
+- Hands-on 3: AFM noise measurement | MIT 20.309 Biological Engineering II, Fall 2006
+- Tutorial 1: Introduction to the lab AFM | MIT 20.309 Biological Engineering II, Fall 2006
+- Tutorial 2: More about force spectroscopy | MIT 20.309 Biological Engineering II, Fall 2006
+- Tutorial 3: AFM noise Measurement | MIT 20.309 Biological Engineering II, Fall 2006
+

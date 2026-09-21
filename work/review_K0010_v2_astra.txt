@@ -1,0 +1,2 @@
+decision: revise
+reason: Definition・MechanismにAI適用や監査・評判の記述が断定形で残り、講義由来の説明と未検証の応用仮説の分離が不徹底です。Source Referencesで講義根拠の対象外とされたこれらの記述を仮説欄へ移すか、その場で未検証と明示してください。

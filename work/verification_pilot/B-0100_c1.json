@@ -1,0 +1,20 @@
+{
+  "claim_id": "B-0100#c1",
+  "statement": "有限非空集合Dと a* in D に対し、C(f,a*,D)=0 ⟺ a* in argmax_{a in D} f(a)",
+  "scope": "有限非空集合D、実数値関数f、a*∈D。C=max(f(a)-f(a*))。最大値の存在とargmaxの定義を前提とする。",
+  "check": {
+    "passed": true,
+    "method": "symbolic_real_linear_arithmetic",
+    "obligations": {
+      "forward_counterexample": "False",
+      "reverse_counterexample": "False"
+    },
+    "negative_control_satisfiable": true,
+    "axioms": [
+      "Finite nonempty real-valued functions attain a maximum.",
+      "max(f-f(a*)) = max(f)-f(a*) by order-preserving translation.",
+      "argmax membership means f(x)<=f(a*) for all x in D."
+    ],
+    "limit": "Checker verifies linear obligations under the explicit maximum/argmax encoding; not arbitrary Japanese theorem understanding."
+  }
+}

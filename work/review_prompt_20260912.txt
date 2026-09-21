@@ -1,0 +1,124 @@
+あなたはOOP型知識創造基盤の設計レビュアーである。以下の構想・設計・現状を読み、方向性の正否、設計の正否、本日の作業順序を判定せよ。
+
+## 1. 構想の全体像
+
+### 1-1. OOP型知識創造基盤とは何か
+知識を「状態＋振る舞い＋関係を持つ自律的オブジェクト」として扱い、継承・カプセル化・多態性・合成によって新しい知識を生成・更新・再利用できる基盤。LLMに全部考えさせるのではなく、LLMは自然言語理解や仮説生成を担当し、知識基盤側が構造・制約・由来・推論可能性を保持する分業設計。
+
+### 1-2. 知識創造の形式化
+既存知識AとBを単に検索するのではなく、合成・推論・反証・評価を経て新しいKnowledge Object K_Cを生成し、その出自まで保持する。Phase 4（共活性化マイニング）で、共に検索されるカード対から合成候補を自動検出し、人間承認ゲートを通す設計。
+
+### 1-3. UIでノード組み替え → 推論シミュレーション
+最終的には「概念ノードをGUIで繋ぎ変えるだけで、前提・公理の変更がドミノ倒しのように推論結果へ波及する」UIを目指す。LLMを「思考のフライトシミュレーター」にする。例：
+- 前提条件ノードを［公平なゲーム］→［ハウスエッジ2.7%］に差し替え → マルチンゲール不成立の証明が再生成
+- 親クラスを［独立試行］→［非独立試行］に変更 → カウンティングによる期待値反転の分岐が走る
+- 資金制約を有限→無限にトグル → 破産確率ゼロ、理論上マーチンゲール成立へ
+
+### 1-4. 万能cell層との二層設計
+OOPだけでは設計者が見落とした構造は生まれない。万能cell的アプローチ（均質なセルが局所ルールで相互作用→構造がボトムアップに創発）との二層構造を検討中。
+- Layer 1（万能cell）: 生データ・暗黙知・街のコンタミインスタンス → 共活性化・パターン検出
+- Layer 2（OOP）: 創発したパターンに型を与え、制約と出自を記録 → 検証・継承・再利用可能な知識オブジェクト
+Phase 4の共活性化マイニングは、cell層→OOP層への昇格パイプラインの最初の実装になる。
+
+### 1-5. 応用可能性：不動産AIホームステージングへの接続
+この基盤の応用先として、建築前の空間を完璧に3Dモデリングするパイプラインへの接続がある。核心は「決定論の骨格（BIM/OOP）＋確率論の皮膜（生成AI）」のアーキテクチャ分離。
+- 骨格（箱と寸法）: OOPで厳密に組み立て（誤差ゼロ）
+- 肉付け（家具配置）: 空間クラスの制約を満たすルールベース＋LLM推薦
+- 皮膜（レンダリング）: 生成AIでフォトリアルに仕上げ
+
+## 2. 現在の実装状態
+
+### 2-1. Phase 3完了時点
+- 33枚のv2カード（schema_version:2、Relations構造化済み）
+- 101本の型付きエッジ（is_a, has_part, depends_on, uses, contrasts_with, isomorphic_to, supersedes）
+- ハイブリッド検索: BM25 OR + フィールド別FTS + Gemini埋め込み + RRF → Recall@6 = 100%
+- graph.py: Facet解決 + 比喩遮断 + 確信度打ち切りグラフ走査
+- 台帳層: イベントログ(append-only) + ライフサイクル(promote/deprecate) + 共活性化記録
+- 三層リンク: P(perspectives)→K(concepts)→D(data/sources)
+
+### 2-2. 設計上の不変条件（変更不可）
+- ハレーションゼロ: 架空引用禁止
+- カードは知識そのものではなくモデルへのハンドル
+- すべての主張に確信度・出所・文脈を付ける
+- 自動生成は即時採用せず候補層を通す
+- 比喩遮断: science文脈ではepistemic_status=analogyのエッジを遮断
+- emerges_fromは継承推論を遮断
+- 正準文脈3つ: science/business/everyday
+
+### 2-3. 5層世界モデル設計（Fable案・Astra案の統合待ち）
+HANDOVER_FOR_CLAUDE.mdに記載の通り、以下の5層で再帰的に知識を増幅する設計：
+基礎科学 → 科学 → 宇宙（世界モデル） → オブジェクト → 問い・行動・検証
+
+Fable案: 層をタグではなく別テーブルとして分離。ノード型(AXM/THM/DEF/THY/LAW/MTH/WM/CAU/BND/SRC/LEC/CSE/LOG/Q/HYP/ACT/VER)。根拠はL4(オブジェクト)からL1/L2/L3へevidencesで流す。
+Astra案: 根拠を5層外の独立ストアに分離。admission種別(derived/imported_reference)。エッジの存在と根拠としての有効性を区別。版単位で有向非巡回。
+
+### 2-4. 縦串MVP（第二価格オークション）
+10ノードで5層を1本貫通させ、根拠往復とHYP隔離を実証する。
+既存K-0003(ナッシュ均衡)/K-0010(IC)/K-0007(RCT)は参照資産として保持。
+
+## 3. 判定してほしいこと
+
+以下の各項目について approved / revise / defer を判定し、reviseの場合は具体的な修正案を示せ。
+
+### Q1: 方向性
+OOP型知識創造基盤 + 万能cell層の二層設計 + UIノード操作による推論シミュレーション、という全体方向は正しいか。致命的な見落としはあるか。
+
+### Q2: 現行設計の整合性
+Phase 3の実装（33カード/101エッジ/graph.py/台帳層）と、5層世界モデル設計（Fable案+Astra案）の間に、移行不能な断絶はあるか。現行実装を捨てずに5層へ進化させられるか。
+
+### Q3: Fable案とAstra案の統合判断
+以下の3つの分岐点について判定せよ：
+a) 根拠ストアを5層外に置くか（Astra案）vs L4に統合するか（Fable案）
+b) ノード型の粒度: Fable案(17型) vs Astra案(12型+汎用claim構造)
+c) エッジの意味論: evidences/formalized_by/instantiates(Fable) vs ABSTRACTS_FROM/HAS_SCOPED_INSTANCE/GUIDES_TEST_DESIGN(Astra)
+
+### Q4: 本日やるべき作業の順序
+以下の候補から、正しい順序を組み立てよ。不要なものは削除し、足りないものは追加せよ。
+a) Fable案とAstra案の統合設計を確定する
+b) Phase 4（共活性化マイニング）のログ蓄積を始める
+c) 縦串MVP（第二価格オークション）の10ノードを起票する
+d) 既存33カードのv2→5層スキーマへのマイグレーション設計
+e) UIプロトタイプの設計
+f) 不動産ホームステージング応用の設計
+g) 万能cell層のプロトタイプ設計
+
+### Q5: 最大のリスク
+この構想全体で、最も失敗確率が高い箇所はどこか。1つだけ挙げよ。
+
+## 出力形式
+
+```yaml
+Q1_direction:
+  decision: approved | revise | defer
+  rationale: ...
+  blind_spots: [...]
+
+Q2_design_coherence:
+  decision: approved | revise | defer
+  migration_feasible: true | false
+  breaking_changes: [...]
+
+Q3_integration:
+  a_evidence_store:
+    decision: fable | astra | hybrid
+    rationale: ...
+  b_node_granularity:
+    decision: fable | astra | hybrid
+    rationale: ...
+  c_edge_semantics:
+    decision: fable | astra | hybrid
+    rationale: ...
+
+Q4_today_order:
+  steps:
+    - step: 1
+      task: ...
+      deliverable: ...
+      time_estimate: ...
+    - step: 2
+      ...
+
+Q5_biggest_risk:
+  risk: ...
+  mitigation: ...
+```

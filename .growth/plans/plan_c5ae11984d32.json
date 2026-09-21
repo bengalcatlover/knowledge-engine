@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T09:05:41.602049+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_cd011d803f335af4",
+      "question_id": "q_f1defac008552589",
+      "question": "過去の成功パターンが環境変化後に失敗へ反転する兆候を、どのように検出するか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_f1defac008552589",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "nonstationary change detection"
+    },
+    {
+      "gap_id": "gap_fb1a611772411c2d",
+      "question_id": "q_7310276355232e37",
+      "question": "ナッシュ均衡と戦略的相互作用を事業・制度・ソフトウェア設計へ移すときの注意は何か",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_7310276355232e37",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0003"
+      ],
+      "external_query": null
+    },
+    {
+      "gap_id": "gap_e409a416f4f7f681",
+      "question_id": "q_8c5efb38a335563c",
+      "question": "ナッシュ均衡と戦略的相互作用が効いているかを何で測定・検証できるか",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_8c5efb38a335563c",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "既存の未承認草案への明確な言及がある。新カードではなくレビューまたは根拠補強へ送る。",
+      "related_cards": [
+        "K-0003"
+      ],
+      "external_query": null
+    }
+  ],
+  "plan_id": "plan_c5ae11984d32",
+  "input_hash": "c5ae11984d32a69b5fd2f807474c933cc24ae56dfd6dcd7f02ba1f994c6df92e"
+}

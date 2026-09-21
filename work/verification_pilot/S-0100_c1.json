@@ -1,0 +1,21 @@
+{
+  "claim_id": "S-0100#c1",
+  "statement": "入札者2人・評価額{0,1,2}の有限第二価格封印入札（同額時順位事前固定）では、正直入札が弱支配戦略であり、正直入札プロファイルがナッシュ均衡になる",
+  "scope": "単一財、入札者2人、私的価値、準線形効用、評価額と入札額はいずれも{0,1,2}、同額時は事前固定順位。人間行動や連続入札への一般化なし。",
+  "check": {
+    "passed": true,
+    "method": "exhaustive_finite_model_check",
+    "dominance_cases": 108,
+    "nash_cases": 108,
+    "counterexamples": [],
+    "nash_counterexamples": [],
+    "domain": [
+      0,
+      1,
+      2
+    ],
+    "ties": "both fixed priority orders",
+    "first_price": false,
+    "negative_control_failed": true
+  }
+}

@@ -1,0 +1,55 @@
+You are creating a discipline knowledge index for: Political Science
+Broad category: Social Sciences
+Total courses: 1
+Total lecture units: 48
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT STS.081J⧸17.395J Innovation Systems for Science, Tech, Energy, Manufacturing & Health, Spring 2017 (48 lectures)
+- Class 1, Part 1: Economic Growth Theory and the Direct Elements in Innovation
+- Class 1, Part 2: Economic Growth Theory and the Direct Elements in Innovation
+- Class 10, Part 1: The Challenge of Energy Technology Transform
+- Class 10, Part 2: The Challenge of Energy Technology Transform
+- Class 11, Part 1: Improving the Talent Base With New Education and Training Models
+- Class 11, Part 2: Improving the Talent Base With New Education and Training Models
+- Class 12, Part 1: The Future of Work and the Employment-Productivity Debate
+- Class 12, Part 2: The Future of Work and the Employment-Productivity Debate
+- ** Class 12, Part 2: The Future of Work and the Employment-Productivity Debate
+- Class 2, Part 1: Innovation Systems and Direct/Indirect Elements in the Innovation Ecosystem
+- Class 2, Part 2: Innovation Systems and Direct/Indirect Elements in the Innovation Ecosystem
+- Class 3, Part 1: The Competitive Challenge to U.S. Manufacturing
+- Class 3, Part 2: The Competitive Challenge to U.S. Manufacturing
+- Class 4, Part 1: The Challenge from Globalization for Advanced Manufacturing and New Services
+- Class 4, Part 2: The Challenge from Globalization for Advanced Manufacturing and New Services
+- ** Class 4, Part 2: The Challenge from Globalization for Advanced Manufacturing and New Services
+- Class 5, Part 1: Innovation Systems at Institutional Level & Organization of Federal Science Sup...
+- Class 5, Part 2: Innovation Systems at Institutional Level & Organization of Federal Science Sup...
+- Class 6, Part 1: Public-Private Partnership & "The Valley of Death" Between Research and Devel...
+- Class 6, Part 1: Public-Private Partnership & "The Valley of Death" Between Research and Development
+- Class 6, Part 2: Public-Private Partnership & "The Valley of Death" Between Research and Devel...
+- Class 7, Part 1: The Organization of Innovation Systems at the Face-to-Face Level
+- Class 7, Part 2: The Organization of Innovation Systems at the Face-to-Face Level
+- ** Class 7, Part 2: The Organization of Innovation Systems at the Face-to-Face Level
+- Class 8, Part 1: DARPA as the Connected Model & Government-Private Sector Interaction
+- Class 8, Part 2: DARPA as the Connected Model & Government-Private Sector Interaction
+- Class 9, Part 1: The Life Science R&D Model and National Institutes of Health (NIH)
+- Class 9, Part 2: The Life Science R&D Model and National Institutes of Health (NIH)
+

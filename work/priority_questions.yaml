@@ -1,0 +1,24 @@
+schema_version: 1
+selection_method: "local deterministic pilot: revised-card reuse, cross-domain impact, and answer-route reuse"
+status: fixed_after_low_cost_model_check
+model_inputs:
+  - gemini:gemini-3.1-flash-lite
+  - anthropic:claude-haiku-4-5
+tie_break: "Haiku案はE-09をK-0010と誤対応させたため除外し、修正見本3枚を直接使えるGemini案を採用した。"
+priority_questions:
+  - id: E-02
+    score: 5
+    reason: "K-0003を使う戦略的相互作用の代表問題で、事業設計へ再利用できる。"
+  - id: E-03
+    score: 5
+    reason: "K-0003とK-0010を組み合わせるため、単一概念で終わらない回答ルートを検証できる。"
+  - id: E-05
+    score: 5
+    reason: "K-0007を使い、生活上の選択設計と因果検証を分けて扱える。"
+  - id: E-07
+    score: 5
+    reason: "施策効果の因果主張を扱い、根拠台帳の有無を最も明確に検証できる。"
+  - id: E-08
+    score: 4
+    reason: "K-0007の因果推定と副作用評価を、システムの問いで検証できる。"
+deferred_until_pilot_complete: [E-01, E-04, E-06, E-09, E-10, E-11, E-12, E-13, E-14, E-15, E-16, E-17, E-18, E-19, E-20]

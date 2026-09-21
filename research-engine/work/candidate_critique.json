@@ -1,0 +1,48 @@
+```json
+{
+  "reviews": [
+    {
+      "label": "Design Structure Matrix (DSM) for Agent Orchestration",
+      "lecture_supported_hint": "MIT OCW Systems Engineering course (mitocw:9AtMQqCBdhw) covers DSM as a formal methodology for mapping information flow interfaces and identifying coupling dependencies in complex systems. This is directly applicable to agent workflow topology.",
+      "transfer_hypothesis": "DSM can quantify communication latency bottlenecks and reveal redundant agent interdependencies, enabling targeted cost reduction in multi-agent systems through selective decoupling or batching strategies.",
+      "caveat": "DSM was developed for hardware and organizational systems; its effectiveness for dynamic, probabilistic agent interactions (vs. static system architectures) is untested. Requires operationalization of 'coupling strength' for LLM-based agents.",
+      "recommend_for_followup": true
+    },
+    {
+      "label": "Interface Control Documents (ICD) for Agent Interoperability",
+      "lecture_supported_hint": "MIT OCW Systems Engineering (mitocw:9AtMQqCBdhw) establishes ICDs as a standard tool for formalizing data contracts and preventing systemic failures in multi-component systems. The principle of explicit interface specification is directly sourced.",
+      "transfer_hypothesis": "Applying ICD discipline to agent-to-agent and agent-to-external-service boundaries will reduce integration errors and enable cost-predictable scaling by preventing runtime renegotiation and retry storms.",
+      "caveat": "ICDs assume deterministic, static specifications; agent outputs can be non-deterministic. Unclear whether traditional ICD rigor transfers to probabilistic systems or requires a new intermediate representation (e.g., schema + confidence bounds).",
+      "recommend_for_followup": true
+    },
+    {
+      "label": "Goal-Tree and Rule-Based Reasoning",
+      "lecture_supported_hint": "MIT OCW AI course (mitocw:leXa7EKUPFk) covers goal trees and forward/backward chaining as classical deterministic inference methods. These are presented as formal alternatives to black-box probabilistic reasoning.",
+      "transfer_hypothesis": "Hybrid architectures that use rule-based reasoning for high-confidence, cost-critical decision branches could reduce token consumption and improve auditability compared to end-to-end LLM approaches.",
+      "caveat": "No direct evidence in lecture that rule-based + LLM hybrids outperform pure LLM agents in reliability or cost on realistic tasks. Requires empirical validation on specific task classes. State management simplification is speculative.",
+      "recommend_for_followup": false
+    },
+    {
+      "label": "Rapid Marketplace Experimentation",
+      "lecture_supported_hint": "MIT OCW product strategy course (mitocw:vClihWycysk) advocates 6-month iteration cycles and 'fail fast' methodology as a general principle for de-risking product investments. This is a strategic heuristic, not a technical discovery.",
+      "transfer_hypothesis": "Applying short-cycle, low-fidelity experimentation to agent system design will efficiently surface economic viability constraints and cost-per-outcome trade-offs before major engineering investment.",
+      "caveat": "This is a broad organizational practice, not a testable technical hypothesis. 'Low-fidelity prototype for multi-agent systems' is not operationalized. No agent-specific metrics or feedback loops are defined in the source.",
+      "recommend_for_followup": false
+    },
+    {
+      "label": "Performance-Oriented Code Review Cycles",
+      "lecture_supported_hint": "MIT OCW software engineering (mitocw:nukI0huUEiM) discusses peer review and performance optimization as quality gates. The concept of systematic code review for efficiency is sourced; it is a software practice, not agent-specific.",
+      "transfer_hypothesis": "Adapting mentor-based peer review to LLM-generated agent code will reduce technical debt and catch efficiency regressions in agentic systems before deployment.",
+      "caveat": "Transferability is unclear. LLM-generated code differs fundamentally from human-written code in failure modes and reviewability. No evidence that peer review of LLM outputs is more effective than automated static analysis or cost-instrumentation. Metrics for agent code performance are undefined.",
+      "recommend_for_followup": false
+    },
+    {
+      "label": "Canonical Interface Categorization",
+      "lecture_supported_hint": "MIT OCW Systems Engineering (mitocw:9AtMQqCBdhw) presents a taxonomy of interface types (physical, energy, mass, information) as a classification framework for reasoning about system resilience and failure modes.",
+      "transfer_hypothesis": "Explicitly categorizing agent interactions as information flows enables systematic identification of failure modes (e.g., latency, hallucination, token budget exhaustion) and targeted mitigation strategies.",
+      "caveat": "The taxonomy was designed for mechanical and organizational systems. 'Information flow' in agent chains is qualitatively different (probabilistic, semantic, context-dependent). Mapping to canonical categories risks oversimplification. No prior work shown applying this taxonomy to AI agents.",
+      "recommend_for_followup": false
+    }
+  ]
+}
+```

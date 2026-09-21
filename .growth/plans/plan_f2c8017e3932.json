@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T09:05:06.858973+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_4cfce538d0b4ba39",
+      "question_id": "q_1c6d94ff693c14c1",
+      "question": "複数部門が各自の最適化を続けた結果、全体最適を失う問題をどう記述するか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_1c6d94ff693c14c1",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "game theory coordination"
+    },
+    {
+      "gap_id": "gap_cd011d803f335af4",
+      "question_id": "q_f1defac008552589",
+      "question": "過去の成功パターンが環境変化後に失敗へ反転する兆候を、どのように検出するか。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_f1defac008552589",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "nonstationary change detection"
+    },
+    {
+      "gap_id": "gap_c615225f2e595119",
+      "question_id": "q_c3c09ea4ccb0b8a3",
+      "question": "測定ノイズが大きい状況で、改善施策の因果効果を誤判定しないには何が必要か。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_c3c09ea4ccb0b8a3",
+      "gap_kind": "concept_gap",
+      "recommended_action": "triage_retrieval",
+      "reason": "自己生成の現実起点探索質問。MIT根拠を得るまで新規概念とは扱わない。",
+      "related_cards": [],
+      "external_query": "causal inference measurement"
+    }
+  ],
+  "plan_id": "plan_f2c8017e3932",
+  "input_hash": "f2c8017e39325a1109f733d7850ceb2c4096df1f3e3b8b290267e0cc0110821b"
+}

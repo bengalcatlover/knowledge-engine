@@ -1,0 +1,32 @@
+You are creating a discipline knowledge index for: Health
+Broad category: Natural Sciences
+Total courses: 1
+Total lecture units: 10
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT RES.SUD-01 Substance Use Disorders Ventures Program, Spring 2025 (10 lectures)
+- Invistics Case Study: Drug Diversion
+- Perspective on What It Takes to Be Successful as an Entrepreneur
+- Prapela Case Study
+- Translating Healthcare Research into Healthcare Entrepreneurship
+- User-Developed Innovations in the Substance Use Disorder Space
+

@@ -1,0 +1,299 @@
+# 実装ロードマップ：カード33枚からの現実的な進化経路
+
+## 全体戦略の一言まとめ
+
+**「検索が死んでいる状態で上位アーキテクチャを作っても、誰も使わないログしか溜まらない」**。共活性化マイニング（創発検出）も昇格パイプラインも、すべて「実際に使われるクエリログ」が燃料です。だから順番は固定です：**検索修復 → ログ台帳 → スキーマ進化 → マイニング → モデル実行**。
+
+```
+Phase 1: 検索修復 ──────┐
+                        ├→ Phase 2: 台帳層+ライフサイクル ──┐
+（使われるシステムになる）│                                  ├→ Phase 5: 共活性化マイニング
+                        └→ Phase 3: Facet/文脈スキーマ ──┐  │   （ログ蓄積が前提）
+                                                        ├──┴→ Phase 6: model_ref実行
+                           Phase 4: 型付き関係エッジ ────┘
+```
+
+---
+
+## Phase 1（1週間）: 検索の蘇生 — Recall@6 6% → 50%超を狙う
+
+**最小変更・最大改善はここ一択**。カード構造には一切触らない。
+
+### 月曜にやること：評価ハーネスの固定
+
+50問の評価セットをコード化し、以降すべての変更をこれで測る。
+
+```python
+# eval.py — これが今後全フェーズの「テスト」になる
+import json
+def evaluate(search_fn, eval_set="eval/questions_50.jsonl", k=6):
+    hits = 0
+    for line in open(eval_set):
+        q = json.loads(line)
+        results = search_fn(q["query"], k=k)
+        if set(r["id"] for r in results) & set(q["relevant_ids"]):
+            hits += 1
+    return hits / 50
+```
+
+### 火〜木：3つの修正（効果の大きい順）
+
+**① BM25のAND→OR化＋bm25ランキング**（30分で終わる。まずこれだけで測れ）
+
+```python
+def fts_query(raw: str) -> str:
+    terms = tokenize(raw)          # 形態素解析 or 分かち書き
+    return " OR ".join(f'"{t}"' for t in terms)
+
+cur.execute("""
+    SELECT id, title, bm25(lectures_fts) AS score
+    FROM lectures_fts WHERE lectures_fts MATCH ?
+    ORDER BY score LIMIT 30
+""", (fts_query(query),))
+```
+
+**② 埋め込み検索の追加**。4,258講義なら numpy in-memory で十分（1536次元でも約26MB）。ベクトルDBは不要。
+
+```python
+# build: 講義タイトル+概要を1回だけ埋め込み → embeddings.npy に保存
+# query時:
+import numpy as np
+emb = np.load("embeddings.npy")           # (4258, d), 正規化済み
+def vec_search(query, k=30):
+    qv = embed(query)                      # OpenAI or ローカルモデル
+    scores = emb @ qv
+    return np.argsort(-scores)[:k]
+```
+
+**③ RRF（Reciprocal Rank Fusion）で融合**。スコア正規化の調整地獄を回避できる枯れた手法。
+
+```python
+def rrf_fuse(bm25_ids, vec_ids, k=60):
+    scores = {}
+    for rank, i in enumerate(bm25_ids):
+        scores[i] = scores.get(i, 0) + 1/(k + rank)
+    for rank, i in enumerate(vec_ids):
+        scores[i] = scores.get(i, 0) + 1/(k + rank)
+    return sorted(scores, key=scores.get, reverse=True)
+```
+
+**④（金曜、余裕があれば）カード経由のクエリ拡張**。クエリを33枚のカードにベクトルマッチ → ヒットしたカードの `Related Concepts` と英名をクエリに追加。これが「三層リンク」を検索品質に転化する最初の実利。
+
+### このフェーズで動くようになるもの
+- シナリオ問題・言い換え問題がヒットする検索。Recall@6が50%を超えなければPhase 2に進まない（原因分析を続ける）。
+
+---
+
+## Phase 2（1〜1.5週間）: 台帳層とライフサイクル — Astra案の「工学的定番解」部分
+
+哲学的難問（自己言及）をイベントソーシングに還元するフェーズ。**ここでの隠れた最重要成果は「共活性化ログが溜まり始めること」**（Phase 5の燃料）。
+
+### スキーマ：追記専用イベントログ（SQLite 1テーブルで十分）
+
+```sql
+CREATE TABLE events (
+  id      INTEGER PRIMARY KEY,
+  ts      TEXT NOT NULL DEFAULT (datetime('now')),
+  type    TEXT NOT NULL,   -- query_served / card_generated / card_promoted / ...
+  git_sha TEXT NOT NULL,   -- ← これがスナップショット。MVCCは作らない
+  payload TEXT NOT NULL    -- JSON
+);
+```
+
+**設計上のトリック：カードはMarkdown+Gitなのだから、`as_of` スナップショットは git SHA の記録で実現する。** バイテンポラルDBを自作しない。「あの回答はどのグラフ状態で出たか」は `git checkout <sha>` で完全再現できる。
+
+```python
+def log_query(query, activated_cards, results):
+    payload = json.dumps({
+        "query": query,
+        "activated_cards": activated_cards,   # ← Phase 5の生命線
+        "result_ids": [r["id"] for r in results],
+    })
+    db.execute("INSERT INTO events(type, git_sha, payload) VALUES (?,?,?)",
+               ("query_served", git_head(), payload))
+```
+
+### ライフサイクル：既存の `_inbox/` 運用を形式化するだけ
+
+カードのfrontmatterに追加：
+
+```yaml
+status: candidate        # ephemeral | candidate | accepted | deprecated
+provenance:
+  method: auto_generated
+  trigger_query: q_20250114_001
+  generated_by: gpt-4x
+confidence: 0.6
+```
+
+昇格CLIを作る（`kb promote <id>` → statusを書き換え、`card_promoted` イベントを記録、git commit）。**検索は `status: accepted` を優先し、candidateは明示フラグ付きでのみ返す。**
+
+### 自己強化ループ防止（この段階ではルール2つだけ実装）
+1. 使用頻度はランキング補正にのみ使い、カード本文には書かない
+2. 自動生成カードが別カードの生成をトリガーする連鎖は深度2で停止
+
+### 動くようになるもの
+- 全クエリの監査可能性（いつ・どのグラフ状態で・何を返したか）
+- `_inbox/` → `concepts/` の昇格が儀式ではなくシステムになる
+
+---
+
+## Phase 3（2週間）: Facet/文脈スキーマ — カードv2への移行
+
+33枚しかない今が移行の最安タイミング。100枚を超えてからやると地獄。
+
+### カードスキーマ v2（frontmatter部分）
+
+```yaml
+id: concept:entropy
+status: accepted
+version: 2
+core:
+  definition: "系の取りうる微視的状態数の対数に比例する量"
+facets:
+  science:
+    definition_delta: "S = k_B ln W。孤立系で非減少"
+    epistemic_status: established
+  business:
+    definition_delta: "組織・プロセスの無秩序度の比喩"
+    epistemic_status: analogy          # ← 最重要フィールド
+relations:
+  - to: concept:state-function
+    type: is_a
+    confidence: 0.95
+    epistemic_status: established
+  - to: concept:technical-debt
+    type: analogous_to
+    confidence: 0.6
+    epistemic_status: analogy          # 科学文脈の推論ではこのエッジを遮断
+```
+
+### 実装は3点のみ
+1. **正準文脈を3つに固定**：`science` / `business` / `everyday`。文脈カード階層・ist論理は作らない
+2. **遅延分割ポリシー**：全カードにファセットを書かない。意味が実際に割れているカード（推定10枚前後：エントロピー、リスク、均衡、弾力性…）だけ。残りはcoreのみでよい
+3. **resolve関数と比喩遮断**：
+
+```python
+def resolve(card, context):
+    facet = card["facets"].get(context, {})
+    return {**card["core"], **facet}
+
+def traverse(card, context, min_conf=0.3):
+    for rel in card["relations"]:
+        if context == "science" and rel["epistemic_status"] == "analogy":
+            continue   # ビジネス比喩の科学推論へのコンタミ防止弁
+        if rel["confidence"] < min_conf:
+            continue
+        yield rel
+```
+
+**Phase 4（型付き関係エッジ）は上記に吸収済み**。`Related Concepts` の文字列リストを構造化YAMLに変えるだけなので、独立フェーズにしない。33枚の書き換えはAIに一括変換させ、人間は差分レビューのみ（実質2日）。
+
+### 動くようになるもの
+- 「経営者向け」「学習者向け」で同じ概念の異なる説明を返せる
+- 確信度付きグラフ走査（確信度の積が閾値を切ったら打ち切り＝自然な探索深度制御）
+
+### 🏁 マイルストーンM1：「売れる」ライン
+Phase 3完了時点で、これは **「全回答に出所・確信度・認識論的地位が付き、比喩と科学的主張を混同せず、監査ログで再現可能な、企業向けナレッジアシスタント」** です。RAG全盛の中で「監査可能性」と「比喩汚染防止」は明確な差別化点。社内知識管理・コンサルの知識資産化の文脈でPoC販売可能。
+
+---
+
+## Phase 5（2〜3週間 + ログ蓄積の待ち時間）: 共活性化マイニングとCompositionCard
+
+**依存**：Phase 2のログが最低数百クエリ分溜まっていること。実装よりログ蓄積が律速なので、Phase 3と並行して使い込む期間を設計に入れる。
+
+### 実装はSQL1本＋スコアリングから始める
+
+```sql
+-- 頻出するカードのペア/トリプルで、共通の親カードを持たないもの
+SELECT json_extract(payload, '$.activated_cards') AS cards, COUNT(*) AS freq
+FROM events WHERE type = 'query_served'
+GROUP BY cards HAVING freq >= 5;
+```
+
+```python
+def novelty_score(card_set, graph):
+    # 既存カードでこの組み合わせを「説明」するものがあるか
+    common = set.intersection(*[graph.ancestors(c) for c in card_set])
+    return 1.0 if not common else 1.0 - graph.coverage(common, card_set)
+```
+
+高noveltyの組は **CompositionCard候補として `_inbox/` へ**（既存の自動増殖パイプラインに乗せるだけ）：
+
+```yaml
+id: candidate:comp_0091
+kind: composition
+status: candidate
+constituents: [concept:feedback, concept:delay, concept:threshold]
+detection: {method: co_activation, freq: 12, novelty: 0.82}
+emerges_from_note: "在庫管理文脈で頻出。既存カードに対応概念なし"
+```
+
+**重要な設計判断**：`emerges_from` は `has_part` と別の関係タイプにし、**継承推論を遮断するアノテーション**として扱う（部分の性質から全体を推論しない）。実装はtraverse関数のif文1つ。
+
+### 🏁 マイルストーンM2：「研究として発表できる」ライン
+Phase 5完了で発表可能な主張が揃います：**「使用ログ駆動の概念ギャップ検出＋人間ゲート付き昇格ライフサイクルを持つ、自律成長型知識グラフ」**。評価軸は (a) 検出された候補の人間承認率、(b) 承認カード追加後のRecall改善。AKBC系ワークショップ、ISWC/ESWCのin-use track、国内なら人工知能学会・SWO研究会が現実的な出し先。
+
+---
+
+## Phase 6（2週間）: model_ref と定性レジーム — 上位10カードのみ
+
+**依存**：Phase 3のスキーマv2。全カード対象にしない — **需要の高い動的概念10枚だけ**（指数成長、フィードバック、拡散、待ち行列、複利…）。
+
+```yaml
+# concept:logistic-growth に追加
+dynamics_spec:
+  qualitative_states:
+    - {id: exponential_phase, condition: "N << K"}
+    - {id: inflection,        condition: "N ≈ K/2"}
+    - {id: saturation,        condition: "N → K"}
+  transitions:
+    - {from: exponential_phase, to: inflection, driver: "資源制約の顕在化"}
+  model_ref: "models/logistic.py#solve"   # scipy.integrate、それだけ
+```
+
+実行はsubprocess＋タイムアウトのサンドボックスで、**結果はカードに書かずartifactイベントとして記録**（Phase 2の台帳に乗せる。定義と実行結果を混ぜない原則の実装）。
+
+定性レジームだけでも「加熱し続けるとどうなる？」型の質問にカード走査だけで答えられる。数値実行は付加価値デモ。
+
+---
+
+## 工数サマリと依存関係
+
+| Phase | 内容 | 工数 | 依存 | 完了時に動くもの |
+|---|---|---|---|---|
+| 1 | ハイブリッド検索+評価ハーネス | 1週 | なし | Recall@6 ≥ 50% |
+| 2 | イベント台帳+ライフサイクル | 1〜1.5週 | P1（使われること） | 監査・昇格・ログ蓄積 |
+| 3 | Facet/文脈+型付きエッジ | 2週 | P2（バージョン記録） | 文脈別回答・比喩遮断 **← 売れる** |
+| 5 | 共活性化マイニング | 2〜3週 | P2ログ蓄積+P3グラフ | 概念ギャップ自動検出 **← 発表できる** |
+| 6 | 定性レジーム+model_ref×10枚 | 2週 | P3スキーマ | 動的推論・数値実行デモ |
+
+**合計 約9〜10週間**（＋Phase 5のためのログ蓄積期間はPhase 3と並走）。
+
+---
+
+## やらなくていいこと（過剰設計リスト）
+
+| やらない | 理由 | 代わりに |
+|---|---|---|
+| RDF-star / SHACL / PROV-O フルスタック | 33枚〜数百枚にトリプルストアは運用コスト過剰 | Markdown+YAML+SQLite+Git |
+| MVCC / バイテンポラルDB自作 | Gitが既にやっている | イベントに git SHA を記録 |
+| Dempster-Shafer / 矛盾許容論理 / TruthValue全型 | 矛盾する高信頼ソースが実際に頻発してから | `confidence` float + `Unknown` の2種で開始 |
+| 大域ベイジアンネット / MLN / PSL | キャリブレーション不能、収益ゼロ | 序数的な重みで順位付けが正しければ十分 |
+| ε-machine・マクロ変数の自動発見 | 研究テーマとして単体で博士論文級 | 共活性化マイニング+人間承認 |
+| 汎用ハイブリッドオートマトンエンジン / FMU / Modelica | 需要のあるモデルは10個程度、scipyで書ける | model_ref = Pythonファイル参照 |
+| McCarthy流の完全な文脈論理・文脈カード階層 | 文脈3つの固定enumで実用上割れない | 遅延分割ポリシー |
+| ViewLens（表示層）の作り込み | Facetの `definition_delta` で当面代替可能 | 顧客要望が出たらPhase 7 |
+| 全カードへのdynamics_spec付与 | 静的概念に動力学は無意味 | 上位10枚のみ |
+
+---
+
+## 月曜の朝、最初に打つコマンド
+
+```bash
+mkdir eval && vim eval/questions_50.jsonl   # 50問を relevant_ids 付きで固定
+python eval.py                               # 現状の6%を再現・記録
+# → その日の午後にはBM25のAND→ORを入れて再計測している
+```
+
+すべての設計判断（Facetの粒度、文脈の数、TruthValueの型数）は、**この評価ハーネスの数字と、Phase 2で溜まる実クエリログが決めてくれます**。設計文書の続きを書くのは、Recall@6が50%を超えてからで十分です。

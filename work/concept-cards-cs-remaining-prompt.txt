@@ -1,0 +1,110 @@
+You are generating concept cards for a knowledge engine that bridges MIT OCW computer science lectures with business/AI applications.
+
+## Context: Already Generated Cards (K-0011 to K-0014)
+
+K-0011: フィードバック制御とクローズドループシステム (Feedback Control)
+K-0012: 状態機械とオートマトン理論 (State Machines & Automata)
+K-0013: グラフ探索アルゴリズム (Graph Search: BFS/DFS/A*)
+K-0014: 確率的推論とベイズネットワーク (Probabilistic Inference & Bayesian Networks)
+
+## Task: Generate 6 NEW concept cards (K-0015 through K-0020)
+
+Focus on CS concepts that are:
+1. Most transferable to business/AI applications
+2. Connected to the user's 4 pillars:
+   - agent_loop: Multi-agent coordination & loop structures
+   - hybrid_control: Deterministic + probabilistic decision-making
+   - next_gen_rag: Information retrieval, knowledge integration
+   - physical_grounding: Sensing, control, real-world constraints
+
+3. Complementary to K-0011 to K-0014 (not repeating their topics)
+
+## Available MIT OCW Topics to Draw From:
+
+- Computational Complexity & NP-Hardness (6.046J, 6.890)
+- Dynamic Programming (6.006, 6.046J)
+- Distributed Algorithms & Consensus (6.852)
+- Information Theory & Compression (6.004, 6.02)
+- Machine Learning & Learning Algorithms (6.034, 6.7960)
+- Signal Processing & Control Theory (6.003, 6.01SC)
+- Cryptography & Security (6.5630, 6.858)
+- Numerical Methods & Matrix Computation (18.085)
+- Optimization Theory (6.251)
+- Asynchronous Algorithms & Network Protocols (6.852, 6.033)
+
+## Output Format
+
+Generate exactly 6 concept cards, numbered K-0015 through K-0020.
+Separate each card with "===" on its own line.
+
+For EACH card, provide complete YAML frontmatter + markdown body, matching the structure below:
+
+```
+---
+concept_id: "K-XXXX"
+canonical_name: "[Concept Name in Japanese + English]"
+aliases: ["Alias 1", "Alias 2"]
+status: "draft"
+authorship: "ai_draft"
+generated_by: "gpt-5.6-luna"
+generated_at: "2026-09-09"
+prompt_version: "cs-remaining-v1"
+field_ids: ["F-EECS"]
+course_ids: ["C-MIT-XXXX"]
+pillar_tags: ["agent_loop"] # pick from: agent_loop, hybrid_control, next_gen_rag, physical_grounding (can have multiple)
+---
+
+## Definition
+
+[3-6 sentences: what IS this concept? For a smart generalist who has never heard it.]
+
+## Mechanism
+
+[How does it work? Causal/logical chain. Prose + math where helpful, always paired with natural language.]
+
+## Boundary Conditions
+
+[CRITICAL: When does this concept break down? Falsifiable conditions, not vague caveats. 4-6 items.]
+
+## Failure Modes
+
+[What goes wrong when misapplied? Observable errors, not just "it fails".]
+
+## Business Transfer
+
+### Scenario 1: [Domain]
+**Application**: [One sentence in present tense]
+**Caveat**: [What can go wrong in this specific transfer]
+
+### Scenario 2: [Domain]
+**Application**: [...]
+**Caveat**: [...]
+
+### Scenario 3: [Domain]
+**Application**: [...]
+**Caveat**: [...]
+
+## Non-Examples
+
+[Things that LOOK like this concept but are not. Forces explicit boundary-drawing.]
+
+## Source References
+
+- MIT [Course Number]: [Course Title]
+- [Other relevant sources]
+
+## Related Concepts
+
+[Name 2-3 related concept IDs from K-0011 through K-0014 or newly generated K-0015-K-0020, with explicit relationships]
+
+---
+```
+
+## Quality Checklist
+
+- [ ] Each card is genuinely different from K-0011 to K-0014
+- [ ] Boundary conditions are falsifiable (not vague)
+- [ ] Business transfer caveats are specific to the scenario, not generic
+- [ ] Non-examples are genuinely different from examples (explicit contrast)
+- [ ] Pillar tags reflect actual relevance to agent loops / hybrid control / RAG / physical grounding
+- [ ] Generated concepts are transferable to business/AI work the user does

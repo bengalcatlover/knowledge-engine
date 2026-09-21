@@ -1,0 +1,80 @@
+あなたはOOP型知識創造基盤の最終判定者である。以下のMVP縦串（第二価格封印入札）について、承認判定を行え。
+
+## 判定対象
+
+### 1. S-0100（科学 / ScopedLaw）— model_assertion承認
+- 主張: 「指定した有限第二価格封印入札では、正直入札が弱支配戦略であり、正直入札プロファイルがナッシュ均衡になる」
+- domain_of_validity: 単一財、私的価値、入札者n>=2、準線形効用、{0,1,2}の評価額
+- falsification_condition: 指定モデル内で正直入札より高い期待効用を与える逸脱戦略が存在する
+- 根拠経路: E-VICKREY-1961 (doi:10.2307/2977633, Journal of Finance 16(1), pp.8-37) → S-0100#c1 (derivation)
+- 検証結果: 36シナリオ全列挙、有利な逸脱0件 (mvp_verification_result.json)
+- 変異テスト: 第一価格変異で5件の逸脱を検出 → 検査器の判別能力を実証
+- 限界: 有限離散モデル({0,1,2})のみ。連続評価額・n>=3への拡張は未検証。人間への効果は未実験。
+
+### 2. U-0100（宇宙 / WorldModel）— model_assertion承認
+- 主張: 「指定境界条件下で、第二価格封印入札は正直入札を弱支配戦略とする市場構造を形成する」
+- scope: 入札者2人、評価額・入札額 in {0,1,2}、私的価値、準線形効用
+- boundary_conditions: 共謀なし、予算制約なし、外部性なし、同額時の順位は事前固定
+- unmodeled_factors: 入札者の心理的バイアス、繰り返しゲームによる学習効果、情報の非対称性（共通価値）
+- instantiates: K-0003(ナッシュ均衡), K-0010(インセンティブ両立性)
+- 根拠経路: U-0100 --ABSTRACTS_FROM--> O-0100 (シミュレーター) → E-SIM-V1 (execution_log, hash付き)
+
+### 3. B-0100（基礎科学 / FormalPrinciple）— model_assertion承認
+- 主張: C(f,a*,D) = max_{a in D}{f(a)-f(a*)}. C=0 iff a* in argmax f(a).
+- 証明: proof_certificate (work/proof_B0100.md, hash: 054299fc0336b5ef)
+- 依存: 有限非空集合上の最大値の存在（有限集合の完備性）、argmaxの定義
+- 性質: 構成的証明、有限集合限定、経験的前提なし
+
+### 4. 参照資産の確認
+- K-0003 (ナッシュ均衡): reference_use。Nash (1950) + MIT OCW 14.12を出典として参照利用のみ
+- K-0010 (IC): reference_use。Vickrey (1961)を出典として参照利用のみ
+- K-0007 (RCT): blocked。原典位置不足。MVPでは人間実験を実行しない
+
+### 5. HYPの隔離確認
+- H-0100: 「人間実験でも申告乖離が減少する」— proposed状態。canonical/approvedへの直接遷移不可。根拠構造エッジから隔離済み。
+
+## 不変条件の検証結果（契約テスト全通過）
+
+1. 根拠到達性: PASS — S-0100, B-0100からevidence storeまで辿れる
+2. DAG検査: PASS — 版単位で循環なし
+3. HYP隔離: PASS — H-0100はcanonicalノードから根拠エッジを受けていない
+4. stale伝播: PASS — O-0100の根拠撤回でU-0100/S-0100/B-0100がstale化
+5. 変異検出: PASS — 第一価格変異で5件検出
+6. 架空引用拒否: PASS — content_hashなしの引用でapproved拒否
+
+## 判定してほしいこと
+
+各ノードについて approved / revise / defer を判定し、reviseの場合は具体的修正案を示せ。
+
+```yaml
+B-0100:
+  decision: approved | revise | defer
+  scope: model_assertion
+  rationale: ...
+
+S-0100:
+  decision: approved | revise | defer
+  scope: model_assertion
+  rationale: ...
+
+U-0100:
+  decision: approved | revise | defer
+  scope: model_assertion
+  rationale: ...
+
+K-0003:
+  decision: approved | revise | defer
+  scope: reference_use
+  rationale: ...
+
+K-0010:
+  decision: approved | revise | defer
+  scope: reference_use
+  rationale: ...
+
+overall_mvp:
+  decision: approved | revise | defer
+  closure_conditions_met: [list]
+  closure_conditions_not_met: [list]
+  rationale: ...
+```

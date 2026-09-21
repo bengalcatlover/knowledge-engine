@@ -1,0 +1,26 @@
+card_id: K-0010
+card_revision: v2
+claims:
+  - id: K-0010-C1
+    type: lecture_derived
+    text: "契約・制度設計では誘因制約が中核となる。"
+    evidence:
+      source_id: mitocw:cAFh3oWw6Vc
+      locator: "MIT OCW Lecture 11, Contracts and Mechanism Design"
+      url: "https://www.youtube.com/watch?v=cAFh3oWw6Vc"
+      quote: "The key is the incentive constraint"
+    disposition: supported_by_search_excerpt
+  - id: K-0010-C2
+    type: lecture_derived
+    text: "契約は望ましい誘因を作るために設計される。"
+    evidence:
+      source_id: mitocw:cAFh3oWw6Vc
+      locator: "MIT OCW Lecture 11, Contracts and Mechanism Design"
+      url: "https://www.youtube.com/watch?v=cAFh3oWw6Vc"
+      quote: "the contract creates the right incentives"
+    disposition: supported_by_search_excerpt
+  - id: K-0010-A1
+    type: application_hypothesis
+    text: "AIエージェントの報酬・権限・検証設計へ誘因制約を適用する。"
+    evidence: null
+    disposition: explicitly_unverified

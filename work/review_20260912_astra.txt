@@ -1,0 +1,173 @@
+```yaml
+Q1_direction:
+  decision: revise
+  rationale: >-
+    「LLMを提案者、基盤を構造・制約・由来・承認状態の管理者とする」方向は正しい。
+    OOP層と探索的cell層の分離、候補層、人間承認、UIからのモデル変更も整合している。
+    ただしOOPは実装・モジュール化の方式であって、推論の健全性を保証する形式体系ではない。
+    中核を「OOP」単独ではなく、版付き原子主張、適用範囲、根拠、導出、実行可能モデル、
+    依存失効を持つ型付き知識グラフとして定義し直すべきである。
+    また5層は全知識が必ず直列通過する存在論ではなく、主張種別ごとに異なる根拠経路を持つ
+    ガバナンス／抽象化ビューとして扱う必要がある。修正すれば致命的な見落としはない。
+  blind_spots:
+    - >-
+      意味関係、根拠関係、導出依存、実装依存が同じ「エッジ」として混同される危険がある。
+      エッジごとに推論効果と失効伝播規則が必要。
+    - >-
+      形式定理、経験的法則、シミュレーション結果、参考文献取り込みでは必要な根拠が異なる。
+      全ノードに同一の5層根拠経路を要求してはいけない。
+    - >-
+      cell層の共活性化は発見候補でしかなく、意味的関連・因果・合成可能性を証明しない。
+      検索順位や露出による共活性化バイアスも補正対象となる。
+    - >-
+      UIで任意ノードを差し替えてLLMに説明を再生成させるだけでは推論シミュレーションにならない。
+      型検査、実行器、依存DAG、差分計算、反例検査を通る操作だけを許可すべきである。
+    - >-
+      「無限資金ならマーチンゲール成立」のような例はそのまま公理化できない。
+      資金制約を外しても負の期待値は反転せず、停止時刻や期待賭け金が未定義・発散し得るため、
+      前提変更後は決定的計算または証明で再評価する必要がある。
+    - >-
+      確信度を根拠経路数だけから計算してはいけない。同一起源、依存性、反証、適用範囲、
+      校正履歴を扱えない間は離散的な認識状態を表示する方が安全。
+    - >-
+      「ハレーションゼロ」はモデル品質ではなく、locator、版、content hashがない引用を
+      公開不能にするfail-closedなポリシーとして実装する必要がある。
+
+Q2_design_coherence:
+  decision: revise
+  migration_feasible: true
+  breaking_changes:
+    - >-
+      v2カードを5層ノードへ一対一変換してはいけない。既存K-IDは安定したハンドルとして残し、
+      内容を原子claimへ分割し、各claimをノード版、scope、根拠、認識状態へ対応させる。
+    - >-
+      FableのL4は資料・ログ、AstraのL4は観測・操作可能な実体であり定義が衝突している。
+      L4を実体・システム・プロセス・成果物に統一し、資料断片・観測・ログ・証明書は
+      5層外のevidence storeへ移す必要がある。
+    - >-
+      nodes、node_revisions、claims、edges、evidence、support_assessments、
+      approvals、eventsを分離する。既存33カードと101エッジは削除せずlegacy viewで公開する。
+    - >-
+      既存エッジは自動で新意味へ確定せず、決定的に変換可能、逆向き表示可能、要人手審査の
+      3区分に分ける。特にuses、depends_on、isomorphic_toはclaim単位のscope監査が必要。
+    - >-
+      graph.pyはカード単位からclaim@revision単位へ拡張する。比喩遮断とemerges_from遮断は維持し、
+      さらに承認範囲、依存失効、HYPからcanonicalへの根拠継承禁止を追加する。
+    - >-
+      P-K-Dは廃棄しない。Pは文脈・解釈・視点、Kはノード／claimハンドル、
+      Dはevidenceまたはartifactへの互換ビューとして残せる。
+    - >-
+      append-only台帳はそのまま活用できるが、イベントに対象revision、claim_id、入力ハッシュ、
+      ポリシー版、承認者を追加する。旧イベントは再書換えせず変換イベントを追記する。
+    - >-
+      ナッシュ均衡カードの形式的定義・存在定理と、人間行動を予測する経験的主張を分割する。
+      同様に、Methodへ一律のfalsification_conditionを要求せず、claim kind別のwarrant profileを使う。
+
+Q3_integration:
+  a_evidence_store:
+    decision: hybrid
+    rationale: >-
+      根拠ペイロードと根拠評価はAstra案どおり5層外に置く。
+      evidenceはsource version、locator、content hash、origin groupを持ち、
+      claimへの支持・反証は版付きsupport assessmentとして管理する。
+      一方、論文ファイル、シミュレーター、測定装置、実験系そのものを対象として推論する場合は、
+      それらをL4のArtifact/Systemとしても登録できる。この場合も、そのオブジェクト自体と
+      そこから得た証拠を同一視しない。FableのSRC/LEC/LOGは主としてevidence kindへ移し、
+      必要なものだけL4オブジェクトへの参照を併設する。
+
+  b_node_granularity:
+    decision: hybrid
+    rationale: >-
+      17型または12型という個数を物理スキーマの不変条件にしない。
+      Astra型の少数の安定したノードクラスを採用し、FableのAXM/THM/DEF/THY/LAW/MTH等は
+      claim kindまたは検証規則を持つfacetとして保持する。CAUやBNDも常に独立ノードにせず、
+      再利用・版管理・個別反証が必要な場合だけ昇格させる。
+      ただしHYPは独立したclaim lifecycleを持たせ、proposedからcanonicalへ直接遷移できない
+      というFableの隔離規則を維持する。層ごとの別テーブルではなく、共通基盤と型別制約で実装する。
+
+  c_edge_semantics:
+    decision: hybrid
+    rationale: >-
+      Astraの「エッジの存在は根拠としての有効性を意味しない」を基本原則とし、
+      Fableのformalized_byやinstantiatesが表す有用な区別を残す。
+      ABSTRACTS_FROMを証明、経験的一般化、実装対応のすべてに使うことは禁止する。
+      推奨分類は、DERIVES_FROM／FORMALIZED_BYを形式依存、
+      HAS_SCOPED_INSTANCEを理論と局所モデルの対応、
+      IMPLEMENTED_BYをモデルと実装の対応、
+      GUIDES_TEST_DESIGN／CHECKSをワークフロー関係とする。
+      evidencesは通常エッジから外し、evidenceとclaim間の版付きsupport assessmentにする。
+      ABSTRACTS_FROMを使う場合はderivation_ref、scope変換、依存失効規則を必須にする。
+      逆関係は表示時に生成し、instantiatesとHAS_SCOPED_INSTANCEのような逆エッジを二重保存しない。
+
+Q4_today_order:
+  steps:
+    - step: 1
+      task: "aをMVP範囲に限定して確定する"
+      deliverable: >-
+        ADR一式。最低限、L4とevidence storeの分離、nodeとclaimの分離、
+        HYP lifecycle、canonical edge一覧、claim@revision依存DAG、
+        warrant profile、旧ID互換方針を凍結する。
+        全ドメイン用の最終オントロジーまでは確定しない。
+      time_estimate: "90分"
+
+    - step: 2
+      task: "bの共活性化ログ蓄積を受動モードで開始する"
+      deliverable: >-
+        既存IDのまま追記可能なtelemetry schemaと稼働ログ。
+        query/sessionの仮名ID、正準文脈、候補集合、露出順位、クリックまたは採用、
+        検索器・インデックス版、時刻、保持期限を記録する。
+        本日はマイニング、自動合成、昇格を行わない。
+      time_estimate: "45分"
+
+    - step: 3
+      task: "縦串MVPの契約テストを先に作る"
+      deliverable: >-
+        根拠到達性、版単位DAG、HYPの非継承、根拠撤回時のstale伝播、
+        第一価格型の変異実装を検出するmutation test、架空引用拒否、
+        claim単位scope違反拒否を含む失敗先行テスト。
+      time_estimate: "60分"
+
+    - step: 4
+      task: "cの第二価格オークション縦串MVPを起票・実行する"
+      deliverable: >-
+        10ノードのMVP closure。
+        B、局所形式主張S、K-0003、K-0010、U、O、Q、独立HYP、A、Vで構成し、
+        K-0007は資産として保持するが、人間実験を実行しない今回のclosureからは外す。
+        有限入力の全列挙、独立検査器、入力・コード・出力ハッシュを保存する。
+        ノード数ではなく再現性、変異検出、境界回答、失効伝播を完了条件にする。
+      time_estimate: "180分"
+
+    - step: 5
+      task: "dの既存33カード向けマイグレーション設計を作る"
+      deliverable: >-
+        MVPで得た差分を反映したmapping table、claim分割規則、旧新ID対応表、
+        edge変換表、曖昧関係の隔離キュー、rollback／legacy view方針。
+        本日は33カードの一括移行を実行しない。
+      time_estimate: "90分"
+
+    - step: 6
+      task: "本日のgo／no-goレビューを行う"
+      deliverable: >-
+        契約テスト結果、未解決の意味論、MVPのblocked理由、翌日の実装対象を記録した
+        署名付き設計イベント。未解決事項があればスキーマをapprovedにしない。
+      time_estimate: "30分"
+
+  deferred_tasks:
+    - task: "e UIプロトタイプ"
+      reason: "実行可能なエッジ意味論と差分・失効エンジンが通るまで延期する。"
+    - task: "f 不動産ホームステージング応用"
+      reason: "骨格、制約、生成皮膜の境界契約は有望だが、基盤MVPの検証後に別縦串として扱う。"
+    - task: "g 万能cell層プロトタイプ"
+      reason: "まず露出補正可能な共活性化データと、候補からOOP層への昇格契約を蓄積する。"
+
+Q5_biggest_risk:
+  risk: >-
+    最大のリスクは、エッジの形式的・実行的意味を定義しないままOOP、5層、cell、UIを拡張し、
+    「関連している」「根拠である」「導出できる」「変更時に失効する」を混同した
+    見栄えのよいRAGグラフに終わることである。
+  mitigation: >-
+    各エッジ型に、許可する始点・終点、scope規則、推論効果、失効伝播、
+    必要なderivation／evidence、禁止する継承を機械可読契約として定義する。
+    第二価格オークションMVPで決定的実行、反例変異、根拠撤回、HYP隔離をテストし、
+    その契約を通らないノード操作はUIへ公開しない。
+```

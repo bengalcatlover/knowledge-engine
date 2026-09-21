@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-11T09:13:31.478684+00:00",
+  "offline": true,
+  "network_allowed": false,
+  "llm_allowed": false,
+  "limits": {
+    "max_roots": 3,
+    "max_generation_depth": 2,
+    "max_new_cards": 0
+  },
+  "items": [
+    {
+      "gap_id": "gap_c615225f2e595119",
+      "question_id": "q_c3c09ea4ccb0b8a3",
+      "question": "測定ノイズが大きい状況で、改善施策の因果効果を誤判定しないには何が必要か。",
+      "origin": "synthetic",
+      "generation_depth": 1,
+      "root_id": "q_c3c09ea4ccb0b8a3",
+      "gap_kind": "existing_unreviewed",
+      "recommended_action": "review_existing",
+      "reason": "施策の因果効果と測定ノイズは既存の因果推定草案の検証問題である。",
+      "related_cards": [
+        "K-0007"
+      ],
+      "external_query": "causal inference measurement"
+    }
+  ],
+  "plan_id": "plan_0baa0e54c2a9",
+  "input_hash": "0baa0e54c2a92025e44b6ccfb5331b89028e0220392d821651c961ae1f748d4c"
+}

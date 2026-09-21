@@ -1,0 +1,92 @@
+You are creating a discipline knowledge index for: Chemical Engineering
+Broad category: Engineering
+Total courses: 4
+Total lecture units: 171
+
+Below are the courses and their lecture titles from MIT OpenCourseWare.
+
+YOUR TASK: Generate a structured discipline index in Markdown with these sections:
+
+1. **YAML frontmatter** with: discipline, broad_category, courses (count), lectures (count)
+
+2. **カバー範囲** (Coverage): Group the courses into sub-topics/themes. For each theme, list which courses cover it and at what level (introductory/intermediate/advanced).
+
+3. **使える武器** (Applicable Weapons): What concepts, methods, frameworks from this discipline can be applied to real-world business problems? Be specific. Give concrete application examples. Think: consulting, AI products, automation, decision-making.
+
+4. **キーコンセプト** (Key Concepts): List the 10-20 most important transferable concepts from these lectures. For each, one line: concept name + what it means + where it appears (course name).
+
+5. **薄い/ない領域** (Gaps): What important topics in this discipline are NOT covered or very thinly covered by these lectures?
+
+6. **他分野との接続** (Cross-discipline connections): How does this discipline connect to other fields? What concepts transfer?
+
+Write in Japanese. Be specific and concrete, not generic. This index will be used to decide where to dig deeper for business applications.
+
+COURSES AND LECTURES:
+
+### MIT 10.34 Numerical Methods Applied to Chemical Engineering, Fall 2015 (69 lectures)
+- 11. Unconstrained Optimization; Newton-Raphson and Trust Region Methods
+- 12. Constrained Optimization; Equality Constraints and Lagrange Multipliers
+- 13. ODE-IVP and Numerical Integration 1
+- ** 13. ODE-IVP and Numerical Integration 1
+- 16. ODE-IVP and Numerical Integration 4
+- 18. Differntial Algebraic Equations 2
+- 19.  Differntial Algebraic Equations 3
+- 20. Boundary Value Problem 1
+- 21. Boundary Value Problems 2
+- 22. Partial Differential Equations 1
+- 25. Review Session
+- 26. Partial Differential Equations 2
+- 27. Probability Theory 2
+- 28. Models vs. Data 1
+- ** 28. Models vs. Data 1
+- 30. Models vs. Data 3
+- 33. Monte Carlo Methods 2
+- 34. Stochastic Chemical Kinetics 1
+- 35. Stochastic Chemical Kinetics 2
+- 36. Final Lecture
+- 5. Eigenvalues and Eigenvectors
+- 6. Singular Value Decomposition; Iterative Solutions of Linear Equations
+- 7. Solutions of Nonlinear Equations; Newton-Raphson Method
+- 8. Quasi-Newton-Raphson Methods
+- 9. Homotopy and Bifurcation
+- ** 9. Homotopy and Bifurcation
+
+### MIT Making Science and Engineering Pictures (2 lectures)
+- How-To-Do-It: Sharpening
+
+### MIT RES.10-001 Making Science and Engineering Pictures： A Practical Guide to Presenting Your Work, Spring 2016 (2 lectures)
+- Video 22: Speaking to the Public
+
+### MIT RES.10-S95 Physics of COVID-19 Transmission, Fall 2020 (98 lectures)
+- Airborne disease transmission in a well-mixed room: Air filtration versus masks
+- Airborne disease transmission in a well-mixed room: Airborne transmission rate
+- Airborne disease transmission in a well-mixed room: Chapter 2 overview
+- Airborne disease transmission in a well-mixed room: Drop-size distributions
+- Airborne disease transmission in a well-mixed room: Respiration and ventilation
+- Airborne disease transmission in a well-mixed room: Sedimentation and deactivation
+- Beyond the well-mixed room: Aerosol transport
+- Beyond the well-mixed room: Airborne transmission indoors
+- Beyond the well-mixed room: Chapter 5 overview
+- Beyond the well-mixed room: Forced convection
+- Beyond the well-mixed room: Natural convection
+- Beyond the well-mixed room: Respiratory puffs and jets
+- Beyond the well-mixed room: Short-range transmission
+- Beyond the well-mixed room: Social distancing
+- Beyond the well-mixed room: Turbulent jets (ASIDE)
+- Beyond the well-mixed room: Ventilation
+- Course conclusion
+- Course overview of physics of COVID-19 transmission
+- Epidemiological models: Chapter 3 overview
+- Epidemiological models: Disease spreading in a population
+- Epidemiological models: Incubation-enhanced spreading
+- Epidemiological models: Indoor disease spreading
+- Safety guideline for COVID-19: Analysis of superspreading events
+- Safety guideline for COVID-19: Case studies
+- Safety guideline for COVID-19: Chapter 4 overview
+- Safety guideline for COVID-19: Cumulative exposure time
+- Safety guideline for COVID-19: Reopening schools or businesses
+- Safety guideline for COVID-19: Risk scenarios
+- Safety guideline for COVID-19: Role of prevalence of infection
+- Safety guideline for COVID-19: Safety guideline as a simple formula
+- ... and 19 more
+

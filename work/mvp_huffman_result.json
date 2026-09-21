@@ -1,0 +1,87 @@
+{
+  "simulator": "mvp_huffman_sim.py",
+  "code_hash": "9c4afcf6c23b6597",
+  "verification": {
+    "all_pass": true,
+    "n_cases": 5,
+    "results": [
+      {
+        "name": "uniform_4",
+        "H": 2.0,
+        "L": 2.0,
+        "gap": 0.0,
+        "lower_bound_ok": true,
+        "upper_bound_ok": true,
+        "passed": true,
+        "codes": {
+          "A": "00",
+          "B": "01",
+          "C": "10",
+          "D": "11"
+        }
+      },
+      {
+        "name": "skewed",
+        "H": 1.75,
+        "L": 1.75,
+        "gap": 0.0,
+        "lower_bound_ok": true,
+        "upper_bound_ok": true,
+        "passed": true,
+        "codes": {
+          "A": "0",
+          "B": "10",
+          "C": "110",
+          "D": "111"
+        }
+      },
+      {
+        "name": "highly_skewed",
+        "H": 0.617543,
+        "L": 1.15,
+        "gap": 0.532457,
+        "lower_bound_ok": true,
+        "upper_bound_ok": true,
+        "passed": true,
+        "codes": {
+          "B": "00",
+          "D": "010",
+          "C": "011",
+          "A": "1"
+        }
+      },
+      {
+        "name": "binary",
+        "H": 0.881291,
+        "L": 1.0,
+        "gap": 0.118709,
+        "lower_bound_ok": true,
+        "upper_bound_ok": true,
+        "passed": true,
+        "codes": {
+          "1": "0",
+          "0": "1"
+        }
+      },
+      {
+        "name": "uniform_8",
+        "H": 3.0,
+        "L": 3.0,
+        "gap": 0.0,
+        "lower_bound_ok": true,
+        "upper_bound_ok": true,
+        "passed": true,
+        "codes": {
+          "A": "000",
+          "B": "001",
+          "C": "010",
+          "D": "011",
+          "E": "100",
+          "F": "101",
+          "G": "110",
+          "H": "111"
+        }
+      }
+    ]
+  }
+}

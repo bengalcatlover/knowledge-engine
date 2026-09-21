@@ -1,0 +1,49 @@
+{
+  "gap_id": "gap-4e13acdf",
+  "state": "resolved",
+  "resolution_kind": "scoped_question_answer",
+  "original_question": "Q1: 理想モデルで正直申告から利益の出る逸脱はあるか",
+  "scope_added_from_explicit_model": "単一財、入札者2人、私的価値、準線形効用、評価額と入札額はいずれも{0,1,2}、同額時は事前固定順位。人間行動や連続入札への一般化なし。",
+  "scope_was_not_assumed_universally": true,
+  "before": {
+    "status": "abstain",
+    "reason": "no_currently_validated_evidence",
+    "claim_ids": [],
+    "answer": "この質問に使える検査済みの根拠がありません。"
+  },
+  "after": {
+    "status": "answered",
+    "claim_ids": [
+      "S-0100#c1"
+    ],
+    "answer": "入札者2人・評価額{0,1,2}の有限第二価格封印入札（同額時順位事前固定）では、正直入札が弱支配戦略であり、正直入札プロファイルがナッシュ均衡になる\n適用条件: 単一財、入札者2人、私的価値、準線形効用、評価額と入札額はいずれも{0,1,2}、同額時は事前固定順位。人間行動や連続入札への一般化なし。\n根拠: [S-0100#c1] → E-CHECK-S-0100-c1 (work\\verification_pilot\\S-0100_c1.json)",
+    "context": {
+      "query": "単一財・2人・私的価値・準線形効用・評価額と入札額{0,1,2}・同額時順位固定の第二価格封印入札で、相手の入札を固定したまま正直入札から自分だけ変えて効用を増やせるか？",
+      "claims": [
+        {
+          "claim_id": "S-0100#c1",
+          "node_id": "S-0100",
+          "revision": 1,
+          "statement": "入札者2人・評価額{0,1,2}の有限第二価格封印入札（同額時順位事前固定）では、正直入札が弱支配戦略であり、正直入札プロファイルがナッシュ均衡になる",
+          "kind": "empirical",
+          "epistemic_status": "formally_verified",
+          "assumptions": "[]",
+          "scope": "単一財、入札者2人、私的価値、準線形効用、評価額と入札額はいずれも{0,1,2}、同額時は事前固定順位。人間行動や連続入札への一般化なし。",
+          "sources": [
+            {
+              "evidence_id": "E-CHECK-S-0100-c1",
+              "locator": "work\\verification_pilot\\S-0100_c1.json",
+              "source_uri": null
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "collected_evidence": [
+    "E-CHECK-S-0100-c1"
+  ],
+  "fresh_exhaustive_check": true,
+  "question_claim_promoted": false,
+  "external_api_calls": 0
+}
